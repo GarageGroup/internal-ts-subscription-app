@@ -8,5 +8,8 @@ partial class Application
     [HandlerApplicationExtension(HttpMethodName.Get, "/health")]
     internal static Dependency<IHealthCheckHandler> UseHealthCheck()
         =>
-        UseDataverseApi().UseServiceHealthCheckApi("DataverseApi").UseHealthCheckHandler();
+        HealthCheck.UseServices(
+            UseDataverseApi().UseServiceHealthCheckApi("DataverseApi"),
+            UseSqlApi().UseServiceHealthCheckApi("SqlApi"))
+        .UseHealthCheckHandler();
 }

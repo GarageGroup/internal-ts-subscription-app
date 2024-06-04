@@ -12,4 +12,9 @@ internal static partial class Application
         .UseTokenCredentialStandard()
         .UsePollyStandard()
         .UseDataverseApiClient("Dataverse");
+
+    private static Dependency<ISqlApi> UseSqlApi()
+        =>
+        DataverseDbProvider.Configure("Dataverse")
+        .UseSqlApi();
 }

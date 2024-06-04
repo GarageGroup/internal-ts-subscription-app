@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\endpoint\Project.GetLastSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.SearchSet\Endpoint\Endpoint.csproj" />
   </ItemGroup>
 
@@ -22,6 +23,8 @@
     <PackageReference Include="GarageGroup.Infra.HealthCheck.Handler" Version="0.3.0" />
     <PackageReference Include="GarageGroup.Infra.Http.Polly" Version="2.0.0" />
     <PackageReference Include="GarageGroup.Infra.SecurityToken.Validation.Middleware.Jwt" Version="3.0.0" />
+    <PackageReference Include="GarageGroup.Infra.Sql.Api" Version="2.6.0" />
+    <PackageReference Include="GarageGroup.Infra.Sql.Api.Provider.Dataverse" Version="0.1.0" />
     <PackageReference Include="GarageGroup.Infra.Swagger.Builder" Version="3.5.2" />
     <PackageReference Include="GarageGroup.Infra.Swagger.UI" Version="2.6.0" />
   </ItemGroup>

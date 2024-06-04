@@ -39,8 +39,6 @@ partial record class DbLastProject
         new($"{AliasName}.ownerid", DbFilterOperator.Equal, ownerId, "ownerId");
 
     internal static DbParameterFilter BuildMinDateFilter(DateOnly minDate)
-    {
-        
-        return new($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, minDate.ToString("yyyy-MM-dd"), "minDate");
-    }
+        =>
+        new($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, minDate.ToString("yyyy-MM-dd"), "minDate");
 }

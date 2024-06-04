@@ -8,7 +8,7 @@ partial record class DbLastProject
 {
     internal static DbRawFilter BuildIncidentStateCodeFilter()
         =>
-        new($"({AliasName}.regardingobjecttypecode <> {ProjectType.Incident:D} " +
+        new($"({AliasName}.regardingobjecttypecode <> {IncidentEntityCode} " +
             $"OR EXISTS (SELECT TOP 1 1 FROM incident AS i WHERE {AliasName}.regardingobjectid = i.incidentid AND i.statecode = 0))");
 
     internal static DbParameterArrayFilter BuildAllowedProjectTypeSetFilter()
@@ -21,7 +21,13 @@ partial record class DbLastProject
 
         static int AsInt32(ProjectType type)
             =>
-            (int)type;
+            type switch
+            {
+                ProjectType.Opportunity => 3,
+                ProjectType.Lead => 4,
+                ProjectType.Incident => 112,
+                _ => 10912
+            };
 
         static object? AsObject(int type)
             =>

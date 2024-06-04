@@ -4,6 +4,7 @@ using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Project.LastSetGet.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace GarageGroup.Internal.Timesheet;
 

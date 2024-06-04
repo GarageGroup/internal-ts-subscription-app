@@ -2,7 +2,7 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-public sealed class TodayProvider : ITodayProvider
+internal sealed class TodayProvider : ITodayProvider
 {
     public static readonly TodayProvider Instance;
 

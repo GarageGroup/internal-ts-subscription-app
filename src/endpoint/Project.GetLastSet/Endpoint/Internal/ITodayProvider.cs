@@ -2,7 +2,7 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-public interface ITodayProvider
+internal interface ITodayProvider
 {
     DateOnly Today { get; }
 }

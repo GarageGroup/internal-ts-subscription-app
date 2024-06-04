@@ -10,4 +10,6 @@ public sealed partial record class DbLastProject : IDbEntity<DbLastProject>
     private const string AliasName = "t";
 
     private const string ProjectTypeCodeFieldName = $"{AliasName}.regardingobjecttypecode";
+
+    private const int IncidentEntityCode = 112;
 }

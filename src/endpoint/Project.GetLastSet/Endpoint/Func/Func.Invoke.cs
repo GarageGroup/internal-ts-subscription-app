@@ -41,7 +41,17 @@ partial class LastProjectSetGetFunc
         new(
             id: dbTimesheetProject.ProjectId,
             name: dbTimesheetProject.Subject.OrNullIfEmpty() ?? dbTimesheetProject.ProjectName,
-            type: (ProjectType)dbTimesheetProject.ProjectTypeCode);
+            type: GetProjectType(dbTimesheetProject.ProjectTypeCode));
+
+    private static ProjectType GetProjectType(int projectTypeCode)
+        =>
+        projectTypeCode switch
+        {
+            4 => ProjectType.Lead,
+            3 => ProjectType.Opportunity,
+            112 => ProjectType.Incident,
+            _ => ProjectType.Project
+        };
 
     private DateOnly GetLastDaysPeriod()
         =>

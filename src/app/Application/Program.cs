@@ -13,5 +13,6 @@ static class Program
         .UseStandardSwaggerUI()
         .UseJwtReader()
         .UseProjectSetSearchEndpoint()
+        .UseLastProjectSetGetEndpoint()
         .RunAsync();
 }

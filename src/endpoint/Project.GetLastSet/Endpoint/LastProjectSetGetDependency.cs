@@ -10,16 +10,18 @@ namespace GarageGroup.Internal.Timesheet;
 public static class LastProjectSetGetDependency
 {
     public static Dependency<LastProjectSetGetEndpoint> UseLastProjectSetGetEndpoint<TSqlApi>(
-        this Dependency<TSqlApi> dependency)
+        this Dependency<TSqlApi, LastProjectSetGetOption> dependency)
         where TSqlApi : ISqlQueryEntitySetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
-        return dependency.Map(CreateFunc).Map(LastProjectSetGetEndpoint.Resolve);
+        return dependency.Fold(CreateFunc).Map(LastProjectSetGetEndpoint.Resolve);
 
-        static LastProjectSetGetFunc CreateFunc(TSqlApi sqlApi)
+        static LastProjectSetGetFunc CreateFunc(TSqlApi sqlApi, LastProjectSetGetOption option)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
-            return new(sqlApi);
+            ArgumentNullException.ThrowIfNull(option);
+
+            return new(sqlApi, TodayProvider.Instance, option);
         }
     }
 }

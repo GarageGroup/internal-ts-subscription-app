@@ -11,8 +11,15 @@ public static partial class LastProjectSetGetFuncTest
         =
         new(
             systemUserId: new("45b6e085-4d6e-4b2d-a26c-eb8c1c5a2e5e"),
-            top: 10,
-            minDate: new(2023, 07, 25));
+            top: 10);
+
+    private static readonly DateOnly SomeToday
+        =
+        new(2024, 05, 30);
+
+    private static readonly LastProjectSetGetOption SomeOption
+        =
+        new(daysPeriod: 30);
 
     private static readonly FlatArray<DbLastProject> SomeDbLastProjectOutput
         =
@@ -44,4 +51,9 @@ public static partial class LastProjectSetGetFuncTest
 
         return mock;
     }
+
+    private static ITodayProvider BuildTodayProvider(DateOnly date)
+        =>
+        Mock.Of<ITodayProvider>(
+            t => t.Today == date);
 }

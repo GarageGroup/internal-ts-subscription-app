@@ -7,13 +7,13 @@ namespace GarageGroup.Internal.Timesheet;
 
 partial class LastProjectSetGetFunc
 {
-    public ValueTask<Result<LastProjectSetGetOut, Failure<LastProjectSetGetFailureCode>>> InvokeAsync(
+    public ValueTask<Result<LastProjectSetGetOut, Failure<Unit>>> InvokeAsync(
         LastProjectSetGetIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            static @in => DbLastProject.QueryAll with
+            @in => DbLastProject.QueryAll with
             {
                 Top = @in.Top,
                 Filter = new DbCombinedFilter(DbLogicalOperator.And)
@@ -21,7 +21,7 @@ partial class LastProjectSetGetFunc
                     Filters =
                     [
                         DbLastProject.BuildOwnerFilter(@in.SystemUserId),
-                        DbLastProject.BuildMinDateFilter(@in.MinDate),
+                        DbLastProject.BuildMinDateFilter(option.DaysPeriod, todayProvider.Today),
                         AllowedProjectTypeSetFilter,
                         IncidentStateCodeFilter
                     ]
@@ -30,12 +30,11 @@ partial class LastProjectSetGetFunc
             })
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbLastProject>)
-        .Map(
+        .MapSuccess(
             static success => new LastProjectSetGetOut
             {
                 Projects = success.Map(MapProject)
-            },
-            static failure => failure.WithFailureCode(LastProjectSetGetFailureCode.Unknown));
+            });
 
     private static ProjectItem MapProject(DbLastProject dbTimesheetProject)
         =>

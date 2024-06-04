@@ -6,15 +6,16 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Project.LastSetGet.Test;
 
 partial class LastProjectSetGetFuncSource
 {
-    public static TheoryData<LastProjectSetGetIn, DbSelectQuery> InputGetLastTestData
+    public static TheoryData<LastProjectSetGetIn, LastProjectSetGetOption, DateOnly, DbSelectQuery> InputGetLastTestData
         =>
         new()
         {
             {
                 new(
                     systemUserId: new("bef33be0-99f5-4018-ba80-3366ec9ec1fd"),
-                    top: 7,
-                    minDate: new(2023, 05, 27)),
+                    top: 7),
+                new(daysPeriod: 30),
+                new(2024, 06, 04),
                 new("gg_timesheetactivity", "t")
                 {
                     Top = 7,
@@ -39,7 +40,7 @@ partial class LastProjectSetGetFuncSource
                             new DbParameterFilter(
                                 fieldName: "t.gg_date",
                                 @operator: DbFilterOperator.GreaterOrEqual,
-                                fieldValue: "2023-05-27",
+                                fieldValue: "2024-05-05",
                                 parameterName: "minDate"),
                             new DbParameterArrayFilter(
                                 fieldName: "t.regardingobjecttypecode",

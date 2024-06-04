@@ -32,7 +32,9 @@ partial record class DbLastProject
         =>
         new($"{AliasName}.ownerid", DbFilterOperator.Equal, ownerId, "ownerId");
 
-    internal static DbParameterFilter BuildMinDateFilter(DateOnly minDate)
-        =>
-        new($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, minDate.ToString("yyyy-MM-dd"), "minDate");
+    internal static DbParameterFilter BuildMinDateFilter(int daysPeriod, DateOnly today)
+    {
+        var minDate = today.AddDays(-daysPeriod);
+        return new($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, minDate.ToString("yyyy-MM-dd"), "minDate");
+    }
 }

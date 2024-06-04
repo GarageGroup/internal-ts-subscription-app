@@ -12,10 +12,12 @@ partial class LastProjectSetGetFuncTest
     [Theory]
     [MemberData(nameof(LastProjectSetGetFuncSource.InputGetLastTestData), MemberType = typeof(LastProjectSetGetFuncSource))]
     public static async Task InvokeAsync_ExpectMockSqlApiCalledOnce(
-        LastProjectSetGetIn input, DbSelectQuery expectedQuery)
+        LastProjectSetGetIn input, LastProjectSetGetOption option, DateOnly today, DbSelectQuery expectedQuery)
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbLastProjectOutput);
-        var func = new LastProjectSetGetFunc(mockSqlApi.Object);
+        var mockTodayProvider = BuildTodayProvider(today);
+
+        var func = new LastProjectSetGetFunc(mockSqlApi.Object, mockTodayProvider, option);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -24,16 +26,18 @@ partial class LastProjectSetGetFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_DbResultIsFailure_ExpectUnknownFailure()
+    public static async Task InvokeAsync_DbResultIsFailure_ExpectFailure()
     {
         var sourceException = new Exception("Some error message");
         var dbFailure = sourceException.ToFailure("Some Failure message");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new LastProjectSetGetFunc(mockSqlApi.Object);
+        var mockTodayProvider = BuildTodayProvider(SomeToday);
+
+        var func = new LastProjectSetGetFunc(mockSqlApi.Object, mockTodayProvider, SomeOption);
 
         var actual = await func.InvokeAsync(SomeGetLastInput, default);
-        var expected = Failure.Create(LastProjectSetGetFailureCode.Unknown, "Some Failure message", sourceException);
+        var expected = Failure.Create(Unit.Value ,"Some Failure message", sourceException);
 
         Assert.StrictEqual(expected, actual);
     }
@@ -44,7 +48,8 @@ partial class LastProjectSetGetFuncTest
         FlatArray<DbLastProject> dbTimesheetProjects, LastProjectSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheetProjects);
-        var func = new LastProjectSetGetFunc(mockSqlApi.Object);
+        var mockTodayProvider = BuildTodayProvider(SomeToday);
+        var func = new LastProjectSetGetFunc(mockSqlApi.Object, mockTodayProvider, SomeOption);
 
         var actual = await func.InvokeAsync(SomeGetLastInput, default);
         Assert.StrictEqual(expected, actual);

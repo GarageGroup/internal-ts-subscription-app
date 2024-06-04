@@ -6,18 +6,14 @@ namespace GarageGroup.Internal.Timesheet;
 public readonly record struct LastProjectSetGetIn
 {
     public LastProjectSetGetIn(
-        [ClaimIn] Guid systemUserId, 
-        [JsonBodyIn] int top, 
-        [JsonBodyIn] DateOnly minDate)
+        [ClaimIn] Guid systemUserId,
+        [JsonBodyIn, IntegerExample(50)] int? top)
     {
         SystemUserId = systemUserId;
         Top = top;
-        MinDate = minDate;
     }
 
     public Guid SystemUserId { get; }
 
-    public int Top { get; }
-
-    public DateOnly MinDate { get; }
+    public int? Top { get; }
 }

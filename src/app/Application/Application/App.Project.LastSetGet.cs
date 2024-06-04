@@ -8,5 +8,8 @@ partial class Application
     [EndpointApplicationExtension]
     internal static Dependency<LastProjectSetGetEndpoint> UseLastProjectSetGetEndpoint()
         =>
-        UseSqlApi().UseLastProjectSetGetEndpoint();
+        UseSqlApi()
+        .With(
+            ResolveLastProjectSetGetOptionOrThrow<LastProjectSetGetOption>)
+        .UseLastProjectSetGetEndpoint();
 }

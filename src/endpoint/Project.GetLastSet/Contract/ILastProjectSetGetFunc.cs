@@ -9,6 +9,6 @@ namespace GarageGroup.Internal.Timesheet;
 [EndpointTag("Project")]
 public interface ILastProjectSetGetFunc
 {
-    ValueTask<Result<LastProjectSetGetOut, Failure<LastProjectSetGetFailureCode>>> InvokeAsync(
+    ValueTask<Result<LastProjectSetGetOut, Failure<Unit>>> InvokeAsync(
         LastProjectSetGetIn input, CancellationToken cancellationToken);
 }

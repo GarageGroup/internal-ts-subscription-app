@@ -2,9 +2,9 @@
 
 public sealed record class LastProjectSetGetOption
 {
-    public LastProjectSetGetOption(int daysPeriod)
+    public LastProjectSetGetOption(int lastDaysPeriod)
         =>
-        DaysPeriod = daysPeriod;
+        LastDaysPeriod = lastDaysPeriod;
 
-    public int DaysPeriod { get; }
+    public int LastDaysPeriod { get; }
 }

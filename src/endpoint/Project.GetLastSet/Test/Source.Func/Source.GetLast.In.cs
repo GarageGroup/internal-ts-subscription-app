@@ -14,7 +14,7 @@ partial class LastProjectSetGetFuncSource
                 new(
                     systemUserId: new("bef33be0-99f5-4018-ba80-3366ec9ec1fd"),
                     top: 7),
-                new(daysPeriod: 30),
+                new(lastDaysPeriod: 30),
                 new(2024, 06, 04),
                 new("gg_timesheetactivity", "t")
                 {

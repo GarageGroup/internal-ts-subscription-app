@@ -19,7 +19,7 @@ public static partial class LastProjectSetGetFuncTest
 
     private static readonly LastProjectSetGetOption SomeOption
         =
-        new(daysPeriod: 30);
+        new(lastDaysPeriod: 30);
 
     private static readonly FlatArray<DbLastProject> SomeDbLastProjectOutput
         =

@@ -21,7 +21,7 @@ partial class LastProjectSetGetFunc
                     Filters =
                     [
                         DbLastProject.BuildOwnerFilter(@in.SystemUserId),
-                        DbLastProject.BuildMinDateFilter(option.DaysPeriod, todayProvider.Today),
+                        DbLastProject.BuildMinDateFilter(GetLastDaysPeriod()),
                         AllowedProjectTypeSetFilter,
                         IncidentStateCodeFilter
                     ]
@@ -42,4 +42,8 @@ partial class LastProjectSetGetFunc
             id: dbTimesheetProject.ProjectId,
             name: dbTimesheetProject.Subject.OrNullIfEmpty() ?? dbTimesheetProject.ProjectName,
             type: (ProjectType)dbTimesheetProject.ProjectTypeCode);
+
+    private DateOnly GetLastDaysPeriod()
+        =>
+        todayProvider.Today.AddDays(-option.LastDaysPeriod);
 }

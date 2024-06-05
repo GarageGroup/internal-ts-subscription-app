@@ -35,7 +35,7 @@ public sealed record class TimesheetSetGetItem
 
     public string Description { get; }
 
-    public Guid Id{ get; }
+    public Guid Id { get; }
 
     public StateCode? IncidentStateCode { get; }
 

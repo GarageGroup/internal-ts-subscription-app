@@ -15,15 +15,13 @@ internal sealed partial class ProjectSetSearchFunc(IDataverseImpersonateSupplier
 
     private const string IncidentEntityName = "incident";
 
-    private const int IncidentEntityCode = 112;
-
     private static readonly FlatArray<string> EntityNames
         =
         [ProjectEntityName, LeadEntityName, OpportunityEntityName, IncidentEntityName];
 
     private static readonly string ActiveIncidentFilter
         = 
-        $"objecttypecode ne {IncidentEntityCode} or statecode eq 0";
+        $"objecttypecode ne {ProjectType.Incident:D} or statecode eq 0";
 
     private static ProjectType? GetProjectType(DataverseSearchItem item)
         =>

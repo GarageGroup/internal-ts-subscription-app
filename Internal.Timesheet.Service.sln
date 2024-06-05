@@ -31,13 +31,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Projec
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.GetSet", "Timesheet.GetSet", "{3AF79A76-B7D6-4E80-9F0B-94867AFAD628}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contract", "src\endpoint\Timesheet.GetSet\Contract\Contract.csproj", "{8D666AE7-C17A-48FC-B931-5F5B8C60CFBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\endpoint\Timesheet.GetSet\Contract\Contract.csproj", "{8D666AE7-C17A-48FC-B931-5F5B8C60CFBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateCode", "src\shared\StateCode\StateCode.csproj", "{B73BDEB8-93D6-41C4-9A6C-E484E77FC2F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StateCode", "src\shared\StateCode\StateCode.csproj", "{B73BDEB8-93D6-41C4-9A6C-E484E77FC2F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoint", "src\endpoint\Timesheet.GetSet\Endpoint\Endpoint.csproj", "{6BE871F9-8334-48AE-A15B-996BDCB74568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Timesheet.GetSet\Endpoint\Endpoint.csproj", "{6BE871F9-8334-48AE-A15B-996BDCB74568}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\endpoint\Timesheet.GetSet\Test\Test.csproj", "{29B4EDB7-9B7D-4180-938A-CEF75644282D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Timesheet.GetSet\Test\Test.csproj", "{29B4EDB7-9B7D-4180-938A-CEF75644282D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.Create", "Timesheet.Create", "{4260354B-7C8D-409A-9FAD-E4DEA8673A75}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\endpoint\Timesheet.Create\Contract\Contract.csproj", "{F3138B2E-7112-4196-A8B2-56829F1AFE54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoint", "src\endpoint\Timesheet.Create\Endpoint\Endpoint.csproj", "{3D033702-FB12-491C-BA38-AF63BB131F40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\endpoint\Timesheet.Create\Test\Test.csproj", "{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +101,18 @@ Global
 		{29B4EDB7-9B7D-4180-938A-CEF75644282D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29B4EDB7-9B7D-4180-938A-CEF75644282D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29B4EDB7-9B7D-4180-938A-CEF75644282D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3138B2E-7112-4196-A8B2-56829F1AFE54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3138B2E-7112-4196-A8B2-56829F1AFE54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3138B2E-7112-4196-A8B2-56829F1AFE54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3138B2E-7112-4196-A8B2-56829F1AFE54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D033702-FB12-491C-BA38-AF63BB131F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D033702-FB12-491C-BA38-AF63BB131F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D033702-FB12-491C-BA38-AF63BB131F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D033702-FB12-491C-BA38-AF63BB131F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +133,10 @@ Global
 		{B73BDEB8-93D6-41C4-9A6C-E484E77FC2F5} = {51AE06DE-97DB-4A86-B5B0-9B5734C9470E}
 		{6BE871F9-8334-48AE-A15B-996BDCB74568} = {3AF79A76-B7D6-4E80-9F0B-94867AFAD628}
 		{29B4EDB7-9B7D-4180-938A-CEF75644282D} = {3AF79A76-B7D6-4E80-9F0B-94867AFAD628}
+		{4260354B-7C8D-409A-9FAD-E4DEA8673A75} = {583B6C67-C74B-40F7-8E76-5774DA1C910E}
+		{F3138B2E-7112-4196-A8B2-56829F1AFE54} = {4260354B-7C8D-409A-9FAD-E4DEA8673A75}
+		{3D033702-FB12-491C-BA38-AF63BB131F40} = {4260354B-7C8D-409A-9FAD-E4DEA8673A75}
+		{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0} = {4260354B-7C8D-409A-9FAD-E4DEA8673A75}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {649D8F17-1EA1-44B9-944C-F16B28858588}

@@ -2,11 +2,11 @@
 
 public enum ProjectType
 {
-    Project,
+    Project = 10912,
 
-    Opportunity,
+    Opportunity = 3,
 
-    Lead,
+    Lead = 4,
 
-    Incident
+    Incident = 112
 }

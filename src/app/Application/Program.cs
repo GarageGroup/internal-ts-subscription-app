@@ -14,5 +14,6 @@ static class Program
         .UseJwtReader()
         .UseProjectSetSearchEndpoint()
         .UseLastProjectSetGetEndpoint()
+        .UseNotificationSubscribe()
         .RunAsync();
 }

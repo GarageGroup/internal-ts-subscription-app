@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\endpoint\Notification.Subscribe\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.GetLastSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.SearchSet\Endpoint\Endpoint.csproj" />
   </ItemGroup>

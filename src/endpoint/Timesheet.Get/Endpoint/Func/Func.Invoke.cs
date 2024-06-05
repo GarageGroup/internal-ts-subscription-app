@@ -39,20 +39,10 @@ partial class TimesheetSetGetFunc
         new(
             duration: dbTimesheet.Duration,
             projectId: dbTimesheet.ProjectId,
-            projectType: GetProjectType(dbTimesheet.ProjectTypeCode),
+            projectType: (ProjectType)dbTimesheet.ProjectTypeCode,
             projectName: dbTimesheet.Subject.OrNullIfEmpty() ?? dbTimesheet.ProjectName,
             description: dbTimesheet.Description,
             id: dbTimesheet.Id,
             incidentStateCode: dbTimesheet.IncidentStateCode,
             timesheetStateCode: dbTimesheet.TimesheetStateCode);
-
-    private static ProjectType GetProjectType(int projectTypeCode)
-        =>
-        projectTypeCode switch
-        {
-            4 => ProjectType.Lead,
-            3 => ProjectType.Opportunity,
-            112 => ProjectType.Incident,
-            _ => ProjectType.Project
-        };
 }

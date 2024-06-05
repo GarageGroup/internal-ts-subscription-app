@@ -3,7 +3,7 @@ using PrimeFuncPack;
 using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Get.Test")]
+[assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test")]
 
 namespace GarageGroup.Internal.Timesheet;
 

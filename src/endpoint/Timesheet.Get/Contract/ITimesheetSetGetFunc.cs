@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/getTimesheet", Description = "Get timesheets")]
+[Endpoint(EndpointMethod.Post, "/getTimesheets", Description = "Get timesheets")]
 [EndpointTag("Timesheet")]
 public interface ITimesheetSetGetFunc
 {

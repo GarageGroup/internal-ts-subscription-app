@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Project.GetLastSet\Test\Test.csproj", "{785C89F9-064C-4B64-AFB8-7909595F0646}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.Get", "Timesheet.Get", "{3AF79A76-B7D6-4E80-9F0B-94867AFAD628}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.GetSet", "Timesheet.GetSet", "{3AF79A76-B7D6-4E80-9F0B-94867AFAD628}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contract", "src\endpoint\Timesheet.Get\Contract\Contract.csproj", "{8D666AE7-C17A-48FC-B931-5F5B8C60CFBF}"
 EndProject

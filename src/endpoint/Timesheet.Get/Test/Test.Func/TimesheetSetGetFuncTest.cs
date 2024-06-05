@@ -3,7 +3,7 @@ using System.Threading;
 using GarageGroup.Infra;
 using Moq;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Get.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test;
 
 public static partial class TimesheetSetGetFuncTest
 {

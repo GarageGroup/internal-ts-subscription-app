@@ -23,14 +23,8 @@ partial record class DbTimesheet
         new($"{AliasName}.gg_date", DbFilterOperator.Equal, date.ToString("yyyy-MM-dd"), "date");
 
     private static int AsInt32(ProjectType type)
-            =>
-            type switch
-            {
-                ProjectType.Opportunity => 3,
-                ProjectType.Lead => 4,
-                ProjectType.Incident => 112,
-                _ => 10912
-            };
+        =>
+        (int)type;
 
     private static object? AsObject(int type)
         =>

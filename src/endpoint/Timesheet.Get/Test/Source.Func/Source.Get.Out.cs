@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Get.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test;
 
 partial class TimesheetSetGetFuncSource
 {
@@ -108,7 +108,7 @@ partial class TimesheetSetGetFuncSource
                         new(
                             duration : 7,
                             projectId: Guid.Parse("de1a7bf8-7991-4c2a-870d-e6153e83ee0a"),
-                            projectType: ProjectType.Project,
+                            projectType: (ProjectType)(-15),
                             projectName : "Third company",
                             description : "Some lead description",
                             id: Guid.Parse("6f565e16-024a-4012-ad9d-150e32216125"),

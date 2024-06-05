@@ -34,7 +34,7 @@ partial class TimesheetDeleteFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord)]
     [InlineData(DataverseFailureCode.InvalidPayload)]
     [InlineData(DataverseFailureCode.InvalidFileSize)]
-    public static async Task DeleteTimesheetAsync_DataverseResultIsFailure_ExpectFailure(
+    public static async Task DeleteTimesheetAsync_DataverseResultIsUnexpectedFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode)
     {
         var sourceException = new Exception("Some error message");
@@ -50,7 +50,7 @@ partial class TimesheetDeleteFuncTest
     }
 
     [Fact]
-    public static async Task DeleteTimesheetAsync_DataverseResultIsFailureRecordNotFound_ExpectSuccess()
+    public static async Task DeleteTimesheetAsync_DataverseResultIsFailureRecordNotFoundFailure_ExpectSuccess()
     {
         var sourceException = new Exception("Some error message");
         var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure message");

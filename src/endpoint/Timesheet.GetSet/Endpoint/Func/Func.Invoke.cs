@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-partial class TimesheetSetGetFunc
+partial class TimesheetGetSetFunc
 {
-    public ValueTask<Result<TimesheetSetGetOut, Failure<Unit>>> InvokeAsync(
-         TimesheetSetGetIn input, CancellationToken cancellationToken)
+    public ValueTask<Result<TimesheetGetSetOut, Failure<Unit>>> InvokeAsync(
+         TimesheetGetSetIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
             input, cancellationToken)
@@ -29,12 +29,12 @@ partial class TimesheetSetGetFunc
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbTimesheet>)
         .MapSuccess(
-            static success => new TimesheetSetGetOut
+            static success => new TimesheetGetSetOut
             {
                 Timesheets = success.Map(MapTimesheet)
             });
 
-    private static TimesheetSetGetItem MapTimesheet(DbTimesheet dbTimesheet)
+    private static TimesheetGetSetItem MapTimesheet(DbTimesheet dbTimesheet)
         =>
         new(
             duration: dbTimesheet.Duration,

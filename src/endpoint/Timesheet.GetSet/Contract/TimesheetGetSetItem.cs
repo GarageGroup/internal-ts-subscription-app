@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public sealed record class TimesheetSetGetItem
+public sealed record class TimesheetGetSetItem
 {
-    public TimesheetSetGetItem(
+    public TimesheetGetSetItem(
         decimal duration,
         Guid projectId,
         ProjectType projectType,

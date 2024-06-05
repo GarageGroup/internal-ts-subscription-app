@@ -3,9 +3,9 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public readonly record struct TimesheetSetGetIn
+public readonly record struct TimesheetGetSetIn
 {
-    public TimesheetSetGetIn(
+    public TimesheetGetSetIn(
         [ClaimIn] Guid systemUserId,
         [JsonBodyIn] DateOnly date)
     {

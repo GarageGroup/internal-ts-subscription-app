@@ -7,16 +7,16 @@ using System.Runtime.CompilerServices;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public static class LastProjectSetGetDependency
+public static class LastProjectGetSetDependency
 {
-    public static Dependency<TimesheetSetGetEndpoint> UseTimesheetSetGetEndpoint<TSqlApi>(
+    public static Dependency<TimesheetGetSetEndpoint> UseTimesheetGetSetEndpoint<TSqlApi>(
         this Dependency<TSqlApi> dependency)
         where TSqlApi : ISqlQueryEntitySetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
-        return dependency.Map(CreateFunc).Map(TimesheetSetGetEndpoint.Resolve);
+        return dependency.Map(CreateFunc).Map(TimesheetGetSetEndpoint.Resolve);
 
-        static TimesheetSetGetFunc CreateFunc(TSqlApi sqlApi)
+        static TimesheetGetSetFunc CreateFunc(TSqlApi sqlApi)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
 

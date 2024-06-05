@@ -14,6 +14,6 @@ static class Program
         .UseJwtReader()
         .UseProjectSetSearchEndpoint()
         .UseLastProjectSetGetEndpoint()
-        .UseTimesheetSetGetEndpoint()
+        .UseTimesheetGetSetEndpoint()
         .RunAsync();
 }

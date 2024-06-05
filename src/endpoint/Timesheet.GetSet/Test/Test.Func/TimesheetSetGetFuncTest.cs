@@ -7,7 +7,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test;
 
 public static partial class TimesheetSetGetFuncTest
 {
-    private static readonly TimesheetSetGetIn SomeTimesheetSetGetInput
+    private static readonly TimesheetGetSetIn SomeTimesheetSetGetInput
         =
         new(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),

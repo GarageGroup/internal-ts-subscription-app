@@ -13,9 +13,9 @@ partial class TimesheetSetGetFuncTest
     public static async Task InvokeAsync_ExpectSqlApiCalledOnce()
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetSet);
-        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
+        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
 
-        var input = new TimesheetSetGetIn(
+        var input = new TimesheetGetSetIn(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),
             date: new(2022, 02, 05));
 
@@ -69,7 +69,7 @@ partial class TimesheetSetGetFuncTest
         var dbFailure = sourceException.ToFailure("Some failure message");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
+        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetSetGetInput, default);
         var expected = Failure.Create(Unit.Value, "Some failure message", sourceException);
@@ -80,10 +80,10 @@ partial class TimesheetSetGetFuncTest
     [Theory]
     [MemberData(nameof(TimesheetSetGetFuncSource.OutputGetTestData), MemberType = typeof(TimesheetSetGetFuncSource))]
     internal static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess(
-        FlatArray<DbTimesheet> dbTimesheets, TimesheetSetGetOut expected)
+        FlatArray<DbTimesheet> dbTimesheets, TimesheetGetSetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheets);
-        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
+        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetSetGetInput, default);
         Assert.StrictEqual(expected, actual);

@@ -15,5 +15,6 @@ static class Program
         .UseProjectSetSearchEndpoint()
         .UseLastProjectSetGetEndpoint()
         .UseTimesheetGetSetEndpoint()
+        .UseTimesheetCreateEndpoint()
         .RunAsync();
 }

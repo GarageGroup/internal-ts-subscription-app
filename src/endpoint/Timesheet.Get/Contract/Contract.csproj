@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-  	<TargetFramework>net8.0</TargetFramework>
-  	<ImplicitUsings>disable</ImplicitUsings>
-  	<Nullable>enable</Nullable>
-  	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  	<InvariantGlobalization>false</InvariantGlobalization>
-  	<RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
-  	<AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Get.Contract</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Get.Contract</AssemblyName>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Endpoint.Core" Version="0.15.0" />
-	<PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.4.0" />
-	<PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.3" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\shared\ProjectType\ProjectType.csproj" />
     <ProjectReference Include="..\..\..\shared\StateCode\StateCode.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GarageGroup.Infra.Endpoint.Core" Version="0.15.0" />
+    <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.4.0" />
+    <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

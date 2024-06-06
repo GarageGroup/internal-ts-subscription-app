@@ -7,16 +7,16 @@ using System.Runtime.CompilerServices;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public static class TagGetSetFuncDependency
+public static class TagSetGetFuncDependency
 {
-    public static Dependency<TagGetSetEndpoint> UseTagGetSetEndpoint<TSqlApi>(
+    public static Dependency<TagSetGetEndpoint> UseTagGetSetEndpoint<TSqlApi>(
         this Dependency<TSqlApi> dependency)
         where TSqlApi : ISqlQueryEntitySetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
-        return dependency.Map(CreateFunc).Map(TagGetSetEndpoint.Resolve);
+        return dependency.Map(CreateFunc).Map(TagSetGetEndpoint.Resolve);
 
-        static TagGetSetFunc CreateFunc(TSqlApi sqlApi)
+        static TagSetGetFunc CreateFunc(TSqlApi sqlApi)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
             return new(sqlApi);

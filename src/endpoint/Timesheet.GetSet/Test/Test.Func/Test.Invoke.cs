@@ -13,7 +13,7 @@ partial class TimesheetSetGetFuncTest
     public static async Task InvokeAsync_ExpectSqlApiCalledOnce()
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetSet);
-        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
+        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
 
         var input = new TimesheetSetGetIn(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),
@@ -69,7 +69,7 @@ partial class TimesheetSetGetFuncTest
         var dbFailure = sourceException.ToFailure("Some failure message");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
+        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetSetGetInput, default);
         var expected = Failure.Create(Unit.Value, "Some failure message", sourceException);
@@ -83,7 +83,7 @@ partial class TimesheetSetGetFuncTest
         FlatArray<DbTimesheet> dbTimesheets, TimesheetSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheets);
-        var func = new TimesheetGetSetFunc(mockSqlApi.Object);
+        var func = new TimesheetSetGetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetSetGetInput, default);
         Assert.StrictEqual(expected, actual);

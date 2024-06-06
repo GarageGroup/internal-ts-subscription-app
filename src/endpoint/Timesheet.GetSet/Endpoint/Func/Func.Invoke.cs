@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-partial class TimesheetGetSetFunc
+partial class TimesheetSetGetFunc
 {
     public ValueTask<Result<TimesheetSetGetOut, Failure<Unit>>> InvokeAsync(
          TimesheetSetGetIn input, CancellationToken cancellationToken)

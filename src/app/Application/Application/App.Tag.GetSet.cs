@@ -6,7 +6,7 @@ namespace GarageGroup.Internal.Timesheet;
 partial class Application
 {
     [EndpointApplicationExtension]
-    internal static Dependency<TagGetSetEndpoint> UseTagGetSetEndpoint()
+    internal static Dependency<TagSetGetEndpoint> UseTagGetSetEndpoint()
         =>
         UseSqlApi().UseTagGetSetEndpoint();
 }

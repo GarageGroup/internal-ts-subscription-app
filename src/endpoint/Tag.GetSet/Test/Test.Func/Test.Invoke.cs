@@ -13,7 +13,7 @@ partial class TagGetSetFuncTest
     public static async Task InvokeAsync_ExpectSqlApiCalledOnce()
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetTagSet);
-        var func = new TagGetSetFunc(mockSqlApi.Object);
+        var func = new TagSetGetFunc(mockSqlApi.Object);
 
         var input = new TagSetGetIn(
             systemUserId: new("82ee3d26-17f1-4e2f-adb2-eeea5119a512"),
@@ -60,7 +60,7 @@ partial class TagGetSetFuncTest
         var dbFailure = sourceException.ToFailure("Some failure text");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new TagGetSetFunc(mockSqlApi.Object);
+        var func = new TagSetGetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetTagSetGetInput, default);
         var expected = Failure.Create("Some failure text", sourceException);
@@ -74,7 +74,7 @@ partial class TagGetSetFuncTest
         FlatArray<DbTag> dbTimesheetTags, TagSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheetTags);
-        var func = new TagGetSetFunc(mockSqlApi.Object);
+        var func = new TagSetGetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetTagSetGetInput, default);
         Assert.StrictEqual(expected, actual);

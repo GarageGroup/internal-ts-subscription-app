@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-partial class TagGetSetFunc
+partial class TagSetGetFunc
 {
     public ValueTask<Result<TagSetGetOut, Failure<Unit>>> InvokeAsync(
         TagSetGetIn input, CancellationToken cancellationToken)

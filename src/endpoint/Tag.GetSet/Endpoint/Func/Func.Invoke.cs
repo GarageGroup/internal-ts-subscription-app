@@ -10,8 +10,8 @@ namespace GarageGroup.Internal.Timesheet;
 
 partial class TagGetSetFunc
 {
-    public ValueTask<Result<TagGetSetOut, Failure<Unit>>> InvokeAsync(
-        TagGetSetIn input, CancellationToken cancellationToken)
+    public ValueTask<Result<TagSetGetOut, Failure<Unit>>> InvokeAsync(
+        TagSetGetIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
             input, cancellationToken)
@@ -34,7 +34,7 @@ partial class TagGetSetFunc
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbTag>)
         .MapSuccess(
-            static success => new TagGetSetOut
+            static success => new TagSetGetOut
             {
                 Tags = success.AsEnumerable().SelectMany(GetHashTags).Distinct().ToFlatArray()
             });

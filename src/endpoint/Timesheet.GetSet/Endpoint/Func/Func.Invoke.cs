@@ -7,8 +7,8 @@ namespace GarageGroup.Internal.Timesheet;
 
 partial class TimesheetGetSetFunc
 {
-    public ValueTask<Result<TimesheetGetSetOut, Failure<Unit>>> InvokeAsync(
-         TimesheetGetSetIn input, CancellationToken cancellationToken)
+    public ValueTask<Result<TimesheetSetGetOut, Failure<Unit>>> InvokeAsync(
+         TimesheetSetGetIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
             input, cancellationToken)
@@ -29,12 +29,12 @@ partial class TimesheetGetSetFunc
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbTimesheet>)
         .MapSuccess(
-            static success => new TimesheetGetSetOut
+            static success => new TimesheetSetGetOut
             {
                 Timesheets = success.Map(MapTimesheet)
             });
 
-    private static TimesheetGetSetItem MapTimesheet(DbTimesheet dbTimesheet)
+    private static TimesheetSetGetItem MapTimesheet(DbTimesheet dbTimesheet)
         =>
         new(
             duration: dbTimesheet.Duration,

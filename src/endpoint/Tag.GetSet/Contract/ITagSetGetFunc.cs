@@ -7,8 +7,8 @@ namespace GarageGroup.Internal.Timesheet;
 
 [Endpoint(EndpointMethod.Post, "/getTags", Description = "Get tags")]
 [EndpointTag("Tag")]
-public interface ITagGetSetFunc
+public interface ITagSetGetFunc
 {
-    ValueTask<Result<TagGetSetOut, Failure<Unit>>> InvokeAsync(
-        TagGetSetIn input, CancellationToken cancellationToken);
+    ValueTask<Result<TagSetGetOut, Failure<Unit>>> InvokeAsync(
+        TagSetGetIn input, CancellationToken cancellationToken);
 }

@@ -15,7 +15,7 @@ partial class TagGetSetFuncTest
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetTagSet);
         var func = new TagGetSetFunc(mockSqlApi.Object);
 
-        var input = new TagGetSetIn(
+        var input = new TagSetGetIn(
             systemUserId: new("82ee3d26-17f1-4e2f-adb2-eeea5119a512"),
             projectId: new("58482d23-ca3e-4499-8294-cc9b588cce73"),
             minDate: new(2023, 06, 15),
@@ -71,7 +71,7 @@ partial class TagGetSetFuncTest
     [Theory]
     [MemberData(nameof(TagGetSetFuncSource.OutputTestData), MemberType = typeof(TagGetSetFuncSource))]
     internal static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess(
-        FlatArray<DbTag> dbTimesheetTags, TagGetSetOut expected)
+        FlatArray<DbTag> dbTimesheetTags, TagSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheetTags);
         var func = new TagGetSetFunc(mockSqlApi.Object);

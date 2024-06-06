@@ -5,7 +5,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Tag.GetSet.Test;
 
 partial class TagGetSetFuncSource
 {
-    public static TheoryData<FlatArray<DbTag>, TagGetSetOut> OutputTestData
+    public static TheoryData<FlatArray<DbTag>, TagSetGetOut> OutputTestData
         =>
         new()
         {

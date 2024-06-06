@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class TagGetSetFunc(ISqlQueryEntitySetSupplier sqlApi) : ITagGetSetFunc
+internal sealed partial class TagGetSetFunc(ISqlQueryEntitySetSupplier sqlApi) : ITagSetGetFunc
 {
     private const string TagStartSymbol = "#";
 

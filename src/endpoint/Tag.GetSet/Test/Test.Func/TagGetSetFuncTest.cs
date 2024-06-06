@@ -20,7 +20,7 @@ public static partial class TagGetSetFuncTest
             }
         ];
 
-    private static readonly TagGetSetIn SomeTimesheetTagSetGetInput
+    private static readonly TagSetGetIn SomeTimesheetTagSetGetInput
         =
         new(
             systemUserId: new("54f0d2cf-93a3-417e-a21a-bff4e16c1b25"),

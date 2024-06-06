@@ -15,7 +15,7 @@ partial class TimesheetSetGetFuncTest
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetSet);
         var func = new TimesheetGetSetFunc(mockSqlApi.Object);
 
-        var input = new TimesheetGetSetIn(
+        var input = new TimesheetSetGetIn(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),
             date: new(2022, 02, 05));
 
@@ -80,7 +80,7 @@ partial class TimesheetSetGetFuncTest
     [Theory]
     [MemberData(nameof(TimesheetSetGetFuncSource.OutputGetTestData), MemberType = typeof(TimesheetSetGetFuncSource))]
     internal static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess(
-        FlatArray<DbTimesheet> dbTimesheets, TimesheetGetSetOut expected)
+        FlatArray<DbTimesheet> dbTimesheets, TimesheetSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheets);
         var func = new TimesheetGetSetFunc(mockSqlApi.Object);

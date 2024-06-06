@@ -3,9 +3,9 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public sealed record class TagGetSetIn
+public sealed record class TagSetGetIn
 {
-    public TagGetSetIn(
+    public TagSetGetIn(
         [ClaimIn] Guid systemUserId, 
         [JsonBodyIn] Guid projectId, 
         [JsonBodyIn] DateOnly minDate, 

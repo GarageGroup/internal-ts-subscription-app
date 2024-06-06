@@ -13,7 +13,8 @@ internal readonly record struct NotificationTypeJson
     private const string KeyFieldName = "gg_key";
 
     public static DataverseEntityGetIn BuildGetInput(string typeKey)
-        => new(
+        => 
+        new(
             entityPluralName: EntityPluralName,
             selectFields: [IdFieldName],
             entityKey: new DataverseAlternateKey(KeyFieldName, $"'{typeKey}'"));

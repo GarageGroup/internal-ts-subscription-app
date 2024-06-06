@@ -20,8 +20,8 @@ public sealed class SubscriptionDataJsonConverter : JsonConverter<BaseSubscripti
 
         return notificationType switch
         {
-            NotificationType.DailyNotification => jsonDocument.Deserialize<DailySubscriptionData>(options),
-            NotificationType.WeeklyNotification => jsonDocument.Deserialize<WeeklySubscriptionData>(options),
+            NotificationType.DailyNotification => jsonDocument.Deserialize<DailyNotificationSubscriptionData>(options),
+            NotificationType.WeeklyNotification => jsonDocument.Deserialize<WeeklyNotificationSubscriptionData>(options),
             _ => throw new JsonException($"Notification subscription data is unexpected")
         };
     }
@@ -34,13 +34,13 @@ public sealed class SubscriptionDataJsonConverter : JsonConverter<BaseSubscripti
             return;
         }
 
-        if (value is DailySubscriptionData dailySubscriptionData)
+        if (value is DailyNotificationSubscriptionData dailySubscriptionData)
         {
             JsonSerializer.Serialize(writer, dailySubscriptionData, options);
             return;
         }
 
-        if (value is WeeklySubscriptionData weeklySubscriptionData)
+        if (value is WeeklyNotificationSubscriptionData weeklySubscriptionData)
         {
             JsonSerializer.Serialize(writer, weeklySubscriptionData, options);
             return;

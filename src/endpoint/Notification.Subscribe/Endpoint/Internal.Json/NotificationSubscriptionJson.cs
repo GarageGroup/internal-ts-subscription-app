@@ -34,5 +34,5 @@ internal sealed record class NotificationSubscriptionJson
     public bool? IsDisabled { get; init; }
     
     [JsonPropertyName(NotificationPreferencesFieldName)]
-    public string? NotificationPreferences { get; init; }
+    public string? UserPreferences { get; init; }
 }

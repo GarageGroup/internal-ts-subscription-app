@@ -14,14 +14,21 @@ internal sealed partial class NotificationSubscribeFunc
             FindBotUserIdAsync,
             FindNotificationTypeIdAsync)
         .MapSuccess(
-            results => new SaveSubscriptionInput
+            results =>
             {
-                BotUserId = results.Item1, 
-                NotificationTypeId = results.Item2, 
-                NotificationPreferences = input.UserPreferenceJson
+                var subscription = new NotificationSubscriptionJson
+                {
+                    IsDisabled = false,
+                    NotificationPreferences = SerializeUserPreferences(input.SubscriptionData)
+                };
+
+                return NotificationSubscriptionJson.BuildDataverseUpsertInput(
+                    botUserId: results.Item1,
+                    typeId: results.Item2,
+                    subscription: subscription);
             })
         .ForwardValue(
-            SaveSubscriptionAsync);
+            UpdateSubscriptionAsync);
 
     private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindBotUserIdAsync(NotificationSubscribeIn input, CancellationToken cancellationToken)
         => 
@@ -33,9 +40,9 @@ internal sealed partial class NotificationSubscribeFunc
             dataverseApi.GetEntityAsync<TelegramBotUserJson>)
         .Map(
             response => response.Value.Id,
-            failure => failure.MapFailureCode(MapFindBotUserFailureCode));
+            failure => failure.MapFailureCode(MapFailureCodeWhenFindingBotUser));
     
-    private static NotificationSubscribeFailureCode MapFindBotUserFailureCode(DataverseFailureCode failureCode) 
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingBotUser(DataverseFailureCode failureCode) 
         => 
         failureCode switch
         {
@@ -49,104 +56,57 @@ internal sealed partial class NotificationSubscribeFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            input => NotificationTypeJson.BuildGetInput(input.NotificationType))
+            MapToNotificationTypeKey)
+        .Pipe(
+            NotificationTypeJson.BuildGetInput)
         .PipeValue(
-            dataverseApi.GetEntitySetAsync<NotificationTypeJson>)
-        .MapFailure(
-            MapFailure)
-        .Forward(
-            ProcessFindNotificationTypeResponse);
+            dataverseApi.GetEntityAsync<NotificationTypeJson>)
+        .Map(
+            static response => response.Value.Id,
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingNotificationType));
 
-    private static Result<Guid, Failure<NotificationSubscribeFailureCode>> ProcessFindNotificationTypeResponse(DataverseEntitySetGetOut<NotificationTypeJson> response)
-    {
-        var types = response.Value;
-        if (types.Length == 0)
+    private static string MapToNotificationTypeKey(NotificationSubscribeIn input) 
+        => 
+        input.SubscriptionData switch
         {
-            return Failure.Create(
-                NotificationSubscribeFailureCode.NotificationTypeNotFound,
-                "Notification type with the specified key was not found");
+            DailySubscriptionData => "dailyTimesheetNotification",
+            WeeklySubscriptionData => "weeklyTimesheetNotification",
+            _ => throw new NotSupportedException("Not supported type of subscription data")
+        };
+    
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingNotificationType(DataverseFailureCode code)
+        => 
+        code switch
+        { 
+            DataverseFailureCode.RecordNotFound => NotificationSubscribeFailureCode.NotificationTypeNotFound, 
+            _ => NotificationSubscribeFailureCode.Unknown
+        };
+
+    private static string SerializeUserPreferences(BaseSubscriptionData subscriptionData)
+    {
+        if (subscriptionData is DailySubscriptionData dailySubscriptionData)
+        {
+            return dailySubscriptionData.UserPreference is not null
+                ? JsonSerializer.Serialize(dailySubscriptionData.UserPreference)
+                : string.Empty;
         }
 
-        return types[0].Id;
-    }
-    
-    private record SaveSubscriptionInput
-    {
-        public Guid NotificationTypeId { get; init; }
-        
-        public Guid BotUserId { get; init; }
-        
-        public JsonElement? NotificationPreferences { get; init; }
-    }
-    
-    private ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> SaveSubscriptionAsync(
-        SaveSubscriptionInput input, CancellationToken cancellationToken)
-        => 
-        AsyncPipeline.Pipe(
-            input, cancellationToken)
-        .PipeValue(
-            FindSubscriptionAsync)
-        .ForwardValue(
-            async (subscription, cancellationToken) =>
-            {
-                var subscriptionToSave = new NotificationSubscriptionJson
-                {
-                    BotUserId = NotificationSubscriptionJson.BuildBotUserLookupValue(input.BotUserId),
-                    NotificationType = NotificationSubscriptionJson.BuildNotificationTypeLookupValue(input.NotificationTypeId),
-                    IsDisabled = false,
-                    NotificationPreferences = input.NotificationPreferences?.ToString() ?? subscription?.NotificationPreferences
-                };
-                
-                if (subscription is null)
-                {
-                    return await CreateSubscriptionAsync(subscriptionToSave, cancellationToken);
-                }
+        if (subscriptionData is WeeklySubscriptionData weeklySubscriptionData)
+        {
+            return weeklySubscriptionData.UserPreference is not null
+                ? JsonSerializer.Serialize(weeklySubscriptionData.UserPreference)
+                : string.Empty;
+        }
 
-                return await UpdateSubscriptionAsync(subscription.Id, subscriptionToSave, cancellationToken);
-            });
+        throw new NotSupportedException("Not supported type of subscription data");
+    }
     
-    private ValueTask<Result<NotificationSubscriptionGetJson?, Failure<NotificationSubscribeFailureCode>>> FindSubscriptionAsync(SaveSubscriptionInput input, CancellationToken cancellationToken)
-        =>
-        AsyncPipeline.Pipe(
-            input, cancellationToken)
-        .Pipe(
-            input => NotificationSubscriptionGetJson.BuildDataverseGetInput(input.BotUserId, input.NotificationTypeId))
-        .PipeValue(
-            dataverseApi.GetEntitySetAsync<NotificationSubscriptionGetJson>)
-        .Map(
-            static response => response.Value.Length == 1 ? response.Value[0] : null,
-            MapFailure);
-    
-    private ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> CreateSubscriptionAsync(NotificationSubscriptionJson input, CancellationToken cancellationToken) 
+    private ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> UpdateSubscriptionAsync(DataverseEntityUpdateIn<NotificationSubscriptionJson> input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
             input, cancellationToken)
-        .Pipe(
-            NotificationSubscriptionJson.BuildDataverseCreateInput)
-        .PipeValue(
-            dataverseApi.CreateEntityAsync)
-        .MapFailure(
-            MapFailure);
-    
-    private ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> UpdateSubscriptionAsync(Guid subscriptionId, NotificationSubscriptionJson subscription, CancellationToken cancellationToken)
-        => 
-        AsyncPipeline.Pipe(
-            subscription, cancellationToken)
-        .Pipe(
-            input => NotificationSubscriptionJson.BuildDataverseUpdateInput(subscriptionId, input))
         .PipeValue(
             dataverseApi.UpdateEntityAsync)
         .MapFailure(
-            MapFailure);
-
-    private static Failure<NotificationSubscribeFailureCode> MapFailure(Failure<DataverseFailureCode> failure)
-        => 
-        failure.MapFailureCode(MapFailureCode);
-    
-    private static NotificationSubscribeFailureCode MapFailureCode(DataverseFailureCode failureCode)
-        => 
-        failureCode switch
-        { 
-            _ => NotificationSubscribeFailureCode.Unknown 
-        };
+            failure => failure.MapFailureCode(code => NotificationSubscribeFailureCode.Unknown));
 }

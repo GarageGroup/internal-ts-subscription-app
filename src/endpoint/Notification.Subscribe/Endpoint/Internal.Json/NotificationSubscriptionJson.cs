@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json.Serialization;
 using GarageGroup.Infra;
 
@@ -6,37 +5,33 @@ namespace GarageGroup.Internal.Timesheet;
 
 internal sealed record class NotificationSubscriptionJson
 {
-    internal static DataverseEntityCreateIn<NotificationSubscriptionJson> BuildDataverseCreateInput(NotificationSubscriptionJson notificationSubscription) 
-        =>
-        new (
-            entityPluralName: NotificationSubscriptionEntity.EntityPluralName,
-            entityData: notificationSubscription);
+    public const string EntityPluralName = "gg_bot_user_subscriptions";
+
+    public const string BotUserIdFieldName = "_gg_bot_user_id_value";
+
+    public const string NotificationTypeIdFieldName = "_gg_notification_type_id_value";
     
-    internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpdateInput(Guid subscriptionId, NotificationSubscriptionJson subscription) 
+    public const string NotificationPreferencesFieldName = "gg_notification_preferences";
+
+    public const string DisabledStatusFieldName = "gg_is_disabled";
+    
+    internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpsertInput(Guid botUserId, Guid typeId, NotificationSubscriptionJson subscription) 
         => 
         new (
-            entityPluralName: NotificationSubscriptionEntity.EntityPluralName, 
-            entityKey: new DataversePrimaryKey(subscriptionId), 
-            entityData: subscription);
-
-    internal static string BuildBotUserLookupValue(Guid botUserId)
-        => 
-        $"/{TelegramBotUserJson.EntityPluralName}({botUserId:D})";
-
-    internal static string BuildNotificationTypeLookupValue(Guid notificationTypeId)
-        =>
-        $"/{NotificationTypeJson.EntityPluralName}({notificationTypeId:D})";
+            entityPluralName: EntityPluralName, 
+            entityKey: new DataverseAlternateKey(
+            [
+                new (BotUserIdFieldName, botUserId.ToString()),
+                new (NotificationTypeIdFieldName, typeId.ToString()),
+            ]), 
+            entityData: subscription)
+        {
+            OperationType = DataverseUpdateOperationType.Upsert
+        };
     
-    
-    [JsonPropertyName($"{NotificationSubscriptionEntity.BotUserLookupName}@odata.bind")]
-    public string? BotUserId { get; init; }
-    
-    [JsonPropertyName($"{NotificationSubscriptionEntity.NotificationTypeLookupName}@odata.bind")]
-    public string? NotificationType { get; init; }
-    
-    [JsonPropertyName(NotificationSubscriptionEntity.DisabledStatusFieldName)]
+    [JsonPropertyName(DisabledStatusFieldName)]
     public bool? IsDisabled { get; init; }
     
-    [JsonPropertyName(NotificationSubscriptionEntity.NotificationPreferencesFieldName)]
+    [JsonPropertyName(NotificationPreferencesFieldName)]
     public string? NotificationPreferences { get; init; }
 }

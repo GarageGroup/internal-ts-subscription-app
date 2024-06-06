@@ -1,27 +1,22 @@
-﻿using System.Text.Json;
-using GarageGroup.Infra;
+﻿using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
 public sealed record class NotificationSubscribeIn
 {
     public NotificationSubscribeIn(
-        [JsonBodyIn] long botId,
-        [JsonBodyIn] long chatId, 
-        [JsonBodyIn] string? notificationType,
-        [JsonBodyIn] JsonElement? userPreferenceJson)
+        [ClaimIn] long botId,
+        [ClaimIn] long chatId, 
+        [RootBodyIn] BaseSubscriptionData subscriptionData)
     {
         BotId = botId;
         ChatId = chatId;
-        NotificationType = notificationType ?? string.Empty;
-        UserPreferenceJson = userPreferenceJson;
+        SubscriptionData = subscriptionData;
     }
     
     public long BotId { get; }
 
     public long ChatId { get; }
 
-    public string NotificationType { get; }
-
-    public JsonElement? UserPreferenceJson { get; }
+    public BaseSubscriptionData SubscriptionData { get; }
 }

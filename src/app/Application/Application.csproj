@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\endpoint\Timesheet.Create\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Timesheet.Delete\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Timesheet.GetSet\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Timesheet.Update\Endpoint\Endpoint.csproj" />
   </ItemGroup>
 
   <ItemGroup>

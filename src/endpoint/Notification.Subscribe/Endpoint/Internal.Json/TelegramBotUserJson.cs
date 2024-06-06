@@ -5,9 +5,9 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed record class TelegramBotUserJson
+internal readonly record struct TelegramBotUserJson
 {
-    public const string EntityPluralName = "gg_telegram_bot_users";
+    private const string EntityPluralName = "gg_telegram_bot_users";
 
     private const string IdFieldName = "gg_telegram_bot_userid"; 
 

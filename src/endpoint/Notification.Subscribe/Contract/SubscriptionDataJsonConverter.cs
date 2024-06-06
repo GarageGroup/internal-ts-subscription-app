@@ -1,3 +1,4 @@
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,8 +20,8 @@ public sealed class SubscriptionDataJsonConverter : JsonConverter<BaseSubscripti
 
         return notificationType switch
         {
-            NotificationType.DailyNotification => JsonSerializer.Deserialize<DailySubscriptionData>(jsonDocument, options),
-            NotificationType.WeeklyNotification => JsonSerializer.Deserialize<WeeklySubscriptionData>(jsonDocument, options),
+            NotificationType.DailyNotification => jsonDocument.Deserialize<DailySubscriptionData>(options),
+            NotificationType.WeeklyNotification => jsonDocument.Deserialize<WeeklySubscriptionData>(options),
             _ => throw new JsonException($"Notification subscription data is unexpected")
         };
     }
@@ -74,7 +75,7 @@ public sealed class SubscriptionDataJsonConverter : JsonConverter<BaseSubscripti
         if (jsonElement.ValueKind is JsonValueKind.String)
         {
             var notificationType = jsonElement.GetString();
-            return Enum.Parse<NotificationType>(notificationType, true);
+            return Enum.Parse<NotificationType>(notificationType ?? string.Empty, true);
         }
 
         throw new JsonException($"Notification type value kind {jsonElement.ValueKind} is unexpected");

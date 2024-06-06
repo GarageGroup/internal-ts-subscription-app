@@ -1,11 +1,12 @@
+using System;
 using System.Text.Json.Serialization;
 using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed record class NotificationTypeJson
+internal readonly record struct NotificationTypeJson
 {
-    public const string EntityPluralName = "gg_bot_notification_types";
+    private const string EntityPluralName = "gg_bot_notification_types";
 
     private const string IdFieldName = "gg_bot_notification_typeid";
     

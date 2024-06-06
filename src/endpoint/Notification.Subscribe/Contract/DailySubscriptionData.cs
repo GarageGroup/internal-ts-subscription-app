@@ -1,3 +1,5 @@
+using System;
+
 namespace GarageGroup.Internal.Timesheet;
 
 public record class DailySubscriptionData : BaseSubscriptionData

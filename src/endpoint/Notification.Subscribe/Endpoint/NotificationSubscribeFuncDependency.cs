@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using GarageGroup.Infra;
 using PrimeFuncPack;

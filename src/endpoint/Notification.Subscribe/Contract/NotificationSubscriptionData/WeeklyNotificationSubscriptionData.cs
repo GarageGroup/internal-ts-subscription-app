@@ -2,7 +2,7 @@ namespace GarageGroup.Internal.Timesheet;
 
 public sealed record class WeeklyNotificationSubscriptionData : BaseSubscriptionData
 {
-    public WeeklyNotificationSubscriptionData(WeeklyNotificationUserPreference userPreference)
+    public WeeklyNotificationSubscriptionData(WeeklyNotificationUserPreference? userPreference)
         => 
         UserPreference = userPreference;
     

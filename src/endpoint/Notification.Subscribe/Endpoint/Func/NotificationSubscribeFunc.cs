@@ -36,7 +36,7 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
         ArgumentNullException.ThrowIfNull(dailySubscriptionData);
         ArgumentNullException.ThrowIfNull(dailySubscriptionData.UserPreference);
         
-        if (dailySubscriptionData.UserPreference.WorkedHours < 0)
+        if (dailySubscriptionData.UserPreference.WorkedHours < 1)
         {
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Daily working hours cannot be less than zero");
         }
@@ -60,7 +60,7 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Weekdays for notifications must be specified");
         }
 
-        if (weeklyNotificationData.UserPreference.WorkedHours < 0)
+        if (weeklyNotificationData.UserPreference.WorkedHours < 1)
         {
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Total week working hours cannot be less than zero");
         }

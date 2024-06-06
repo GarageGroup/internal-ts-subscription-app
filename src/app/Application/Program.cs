@@ -18,5 +18,6 @@ static class Program
         .UseTimesheetCreateEndpoint()
         .UseTimesheetDeleteEndpoint()
         .UseTimesheetUpdateEndpoint()
+        .UseTagGetSetEndpoint()
         .RunAsync();
 }

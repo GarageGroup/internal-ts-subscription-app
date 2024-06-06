@@ -16,6 +16,13 @@ internal sealed record class TimesheetJson
             entityPluralName: EntityPluralName,
             entityData: timesheet);
 
+    internal static DataverseEntityUpdateIn<TimesheetJson> BuildDataverseUpdateInput(Guid timesheetId, TimesheetJson timesheet)
+        =>
+        new(
+            entityPluralName: EntityPluralName,
+            entityKey: new DataversePrimaryKey(timesheetId),
+            entityData: timesheet);
+
     internal static string BuildIncidentLookupValue(Guid incidentId)
         =>
         $"/incidents({incidentId:D})";

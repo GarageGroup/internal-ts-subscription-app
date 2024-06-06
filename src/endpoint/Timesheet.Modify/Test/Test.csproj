@@ -7,8 +7,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
     <IsPackable>false</IsPackable>
-    <RootNamespace>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Create.Test</RootNamespace>
-    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Create.Test</AssemblyName>
+    <RootNamespace>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test</RootNamespace>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test</AssemblyName>
   </PropertyGroup>
   
   <ItemGroup>

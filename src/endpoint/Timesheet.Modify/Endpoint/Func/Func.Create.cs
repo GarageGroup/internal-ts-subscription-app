@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-partial class TimesheetCreateFunc
+partial class TimesheetModifyFunc
 {
     public ValueTask<Result<Unit, Failure<TimesheetCreateFailureCode>>> InvokeAsync(
         TimesheetCreateIn input, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ partial class TimesheetCreateFunc
             ChannelCode = (int)ChannelCode.Telegram
         };
 
-        return BindProjectOrFailure(timesheet, input.Project);
+        return BindProjectOrFailure<TimesheetCreateFailureCode>(timesheet, input.Project);
     }
 
     private static TimesheetCreateFailureCode ToTimesheetCreateFailureCode(DataverseFailureCode failureCode)

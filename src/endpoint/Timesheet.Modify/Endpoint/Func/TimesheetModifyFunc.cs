@@ -3,10 +3,11 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class TimesheetCreateFunc(IDataverseImpersonateSupplier<IDataverseEntityCreateSupplier> dataverseApi) : ITimesheetCreateFunc
+internal sealed partial class TimesheetModifyFunc(IDataverseApiClient dataverseApi) : ITimesheetCreateFunc, ITimesheetUpdateFunc
 {
-    private static Result<TimesheetJson, Failure<TimesheetCreateFailureCode>> BindProjectOrFailure(
+    private static Result<TimesheetJson, Failure<TFailureCode>> BindProjectOrFailure<TFailureCode>(
         TimesheetJson timesheet, TimesheetProject project)
+        where TFailureCode : struct
     {
         if (project.Type is ProjectType.Project)
         {
@@ -40,6 +41,6 @@ internal sealed partial class TimesheetCreateFunc(IDataverseImpersonateSupplier<
             };
         }
 
-        return Failure.Create(TimesheetCreateFailureCode.Unknown, $"An unexpected project type: {project.Type}");
+        return Failure.Create<TFailureCode>(default, $"An unexpected project type: {project.Type}");
     }
 }

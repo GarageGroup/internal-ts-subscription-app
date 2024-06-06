@@ -39,21 +39,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Ti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Timesheet.GetSet\Test\Test.csproj", "{29B4EDB7-9B7D-4180-938A-CEF75644282D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.Create", "Timesheet.Create", "{4260354B-7C8D-409A-9FAD-E4DEA8673A75}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.Modify", "Timesheet.Modify", "{4260354B-7C8D-409A-9FAD-E4DEA8673A75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\endpoint\Timesheet.Create\Contract\Contract.csproj", "{F3138B2E-7112-4196-A8B2-56829F1AFE54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\endpoint\Timesheet.Modify\Contract\Contract.csproj", "{F3138B2E-7112-4196-A8B2-56829F1AFE54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Timesheet.Create\Endpoint\Endpoint.csproj", "{3D033702-FB12-491C-BA38-AF63BB131F40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Timesheet.Modify\Endpoint\Endpoint.csproj", "{3D033702-FB12-491C-BA38-AF63BB131F40}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Timesheet.Create\Test\Test.csproj", "{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Timesheet.Modify\Test\Test.csproj", "{8FBCBABD-BCE0-4530-A77B-A2E95E3388F0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Timesheet.Delete", "Timesheet.Delete", "{46821CED-EBCC-4556-A968-AAED1C1C4401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contract", "src\endpoint\Timesheet.Delete\Contract\Contract.csproj", "{CFFAC7B2-91F2-41E8-9352-3CA1443B848F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contract", "src\endpoint\Timesheet.Delete\Contract\Contract.csproj", "{CFFAC7B2-91F2-41E8-9352-3CA1443B848F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Endpoint", "src\endpoint\Timesheet.Delete\Endpoint\Endpoint.csproj", "{66FBCD80-744A-4C13-A4C3-8C2F06A61279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Endpoint", "src\endpoint\Timesheet.Delete\Endpoint\Endpoint.csproj", "{66FBCD80-744A-4C13-A4C3-8C2F06A61279}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "src\endpoint\Timesheet.Delete\Test\Test.csproj", "{B3CFB1D8-EC10-46B3-93E2-1AA43A012701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\endpoint\Timesheet.Delete\Test\Test.csproj", "{B3CFB1D8-EC10-46B3-93E2-1AA43A012701}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

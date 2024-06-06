@@ -7,7 +7,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
-    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Create.Contract</AssemblyName>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Contract</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

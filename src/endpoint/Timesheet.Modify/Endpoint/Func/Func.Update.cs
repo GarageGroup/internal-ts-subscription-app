@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-partial class TimesheetUpdateFunc
+partial class TimesheetModifyFunc
 {
     public ValueTask<Result<Unit, Failure<TimesheetUpdateFailureCode>>> InvokeAsync(
         TimesheetUpdateIn input, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ partial class TimesheetUpdateFunc
             Duration = input.Duration
         };
 
-        return BindProjectOrFailure(timesheet, input.Project);
+        return BindProjectOrFailure<TimesheetUpdateFailureCode>(timesheet, input.Project);
     }
 
     private static TimesheetUpdateFailureCode ToTimesheetUpdateFailureCode(DataverseFailureCode failureCode)

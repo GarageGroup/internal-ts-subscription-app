@@ -5,16 +5,15 @@ using GarageGroup.Infra;
 using Moq;
 using Xunit;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Create.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
-partial class TimesheetCreateFuncTest
+partial class TimesheetModifyFuncTest 
 {
     [Fact]
-    public static async Task InvokeAsync_InputProjectTypeIsInvalid_ExpectUnknownFailureCode()
+    public static async Task CreateInvokeAsync_InputProjectTypeIsInvalid_ExpectUnknownFailureCode()
     {
-        var mockDataverseCreateApi = BuildMockDataverseCreateApi(Result.Success<Unit>(default));
-        var mockDataverseApi = BuildMockDataverseApi(mockDataverseCreateApi.Object);
-        var func = new TimesheetCreateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var input = new TimesheetCreateIn(
             systemUserId: new("00889262-2cd5-4084-817b-d810626f2600"),
@@ -33,11 +32,10 @@ partial class TimesheetCreateFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_InputIsValid_ExpectDataverseImpersonateCalledOnce()
+    public static async Task CreateInvokeAsync_InputIsValid_ExpectDataverseImpersonateCalledOnce()
     {
-        var mockDataverseCreateApi = BuildMockDataverseCreateApi(Result.Success<Unit>(default));
-        var mockDataverseApi = BuildMockDataverseApi(mockDataverseCreateApi.Object);
-        var func = new TimesheetCreateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var input = new TimesheetCreateIn(
             systemUserId: new("4698fc58-770b-4a53-adcd-592eaded6f87"),
@@ -56,18 +54,17 @@ partial class TimesheetCreateFuncTest
     }
 
     [Theory]
-    [MemberData(nameof(TimesheetCreateFuncSource.InputTestData), MemberType = typeof(TimesheetCreateFuncSource))]
-    internal static async Task InvokeAsync_InputIsValid_ExpectDataverseCreateCalledOnce(
+    [MemberData(nameof(TimesheetModifyFuncSource.InputCreateTestData), MemberType = typeof(TimesheetModifyFuncSource))]
+    internal static async Task CreateInvokeAsync_InputIsValid_ExpectDataverseCreateCalledOnce(
         TimesheetCreateIn input, DataverseEntityCreateIn<TimesheetJson> expectedInput)
     {
-        var mockDataverseCreateApi = BuildMockDataverseCreateApi(Result.Success<Unit>(default));
-        var mockDataverseApi = BuildMockDataverseApi(mockDataverseCreateApi.Object);
-        var func = new TimesheetCreateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseCreateApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
     }
 
     [Theory]
@@ -82,16 +79,15 @@ partial class TimesheetCreateFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord, TimesheetCreateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidPayload, TimesheetCreateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidFileSize, TimesheetCreateFailureCode.Unknown)]
-    public static async Task InvokeAsync_DataverseResultIsFailure_ExpectFailure(
+    public static async Task CreateInvokeAsync_DataverseResultIsFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode, TimesheetCreateFailureCode expectedFailureCode)
     {
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
 
-        var mockDataverseCreateApi = BuildMockDataverseCreateApi(dataverseFailure);
-        var mockDataverseApi = BuildMockDataverseApi(mockDataverseCreateApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
 
-        var func = new TimesheetCreateFunc(mockDataverseApi.Object);
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetCreateInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure text", sourceException);
@@ -100,11 +96,10 @@ partial class TimesheetCreateFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
+    public static async Task CreateInvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
     {
-        var mockDataverseCreateApi = BuildMockDataverseCreateApi(Result.Success<Unit>(default));
-        var mockDataverseApi = BuildMockDataverseApi(mockDataverseCreateApi.Object);
-        var func = new TimesheetCreateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var actual = await func.InvokeAsync(SomeTimesheetCreateInput, default);
         var expected = Result.Success<Unit>(default);

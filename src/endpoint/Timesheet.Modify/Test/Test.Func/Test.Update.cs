@@ -5,15 +5,15 @@ using GarageGroup.Infra;
 using Moq;
 using Xunit;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Update.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
-partial class TimesheetUpdateFuncTest
+partial class TimesheetModifyFuncTest
 {
     [Fact]
-    public static async Task InvokeAsync_InputProjectTypeIsInvalid_ExpectUnknownFailureCode()
+    public static async Task UpdateInvokeAsync_InputProjectTypeIsInvalid_ExpectUnknownFailureCode()
     {
-        var mockDataverseApi = BuildMockDataverseUpdateApi(Result.Success<Unit>(default));
-        var func = new TimesheetUpdateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var input = new TimesheetUpdateIn(
             timesheetId: new("b7aee261-3eb4-4d20-8af5-a42c0529a30f"),
@@ -32,12 +32,12 @@ partial class TimesheetUpdateFuncTest
     }
 
     [Theory]
-    [MemberData(nameof(TimesheetUpdateFuncSource.InputTestData), MemberType = typeof(TimesheetUpdateFuncSource))]
-    internal static async Task InvokeAsync_InputIsNotNull_ExpectDataverseUpdateCalledOnce(
+    [MemberData(nameof(TimesheetModifyFuncSource.InputUpdateTestData), MemberType = typeof(TimesheetModifyFuncSource))]
+    internal static async Task UpdateInvokeAsync_InputIsNotNull_ExpectDataverseUpdateCalledOnce(
         TimesheetUpdateIn input, DataverseEntityUpdateIn<TimesheetJson> expectedInput)
     {
-        var mockDataverseApi = BuildMockDataverseUpdateApi(Result.Success<Unit>(default));
-        var func = new TimesheetUpdateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -57,28 +57,28 @@ partial class TimesheetUpdateFuncTest
     [InlineData(DataverseFailureCode.UserNotEnabled, TimesheetUpdateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.PrivilegeDenied, TimesheetUpdateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidFileSize, TimesheetUpdateFailureCode.Unknown)]
-    public static async Task InvokeAsync_DataverseResultIsFailure_ExpectFailure(
+    public static async Task UpdateInvokeAsync_DataverseResultIsFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode, TimesheetUpdateFailureCode expectedFailureCode)
     {
         var sourceException = new Exception("Some error message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
-        var mockDataverseApi = BuildMockDataverseUpdateApi(dataverseFailure);
-        var func = new TimesheetUpdateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
-        var actual = await func.InvokeAsync(SomeInput, default);
+        var actual = await func.InvokeAsync(SomeTimesheetUpdateInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure message", sourceException);
 
         Assert.StrictEqual(expected, actual);
     }
 
     [Fact]
-    public static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
+    public static async Task UpdateInvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
     {
-        var mockDataverseApi = BuildMockDataverseUpdateApi(Result.Success<Unit>(default));
-        var func = new TimesheetUpdateFunc(mockDataverseApi.Object);
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var func = new TimesheetModifyFunc(mockDataverseApi.Object);
 
-        var actual = await func.InvokeAsync(SomeInput, default);
+        var actual = await func.InvokeAsync(SomeTimesheetUpdateInput, default);
         var expected = Result.Success<Unit>(default);
 
         Assert.StrictEqual(expected, actual);

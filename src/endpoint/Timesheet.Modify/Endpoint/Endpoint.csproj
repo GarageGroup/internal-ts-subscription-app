@@ -7,16 +7,17 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
-    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Update.Contract</AssemblyName>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Endpoint</AssemblyName>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Endpoint.Core" Version="0.15.0" />
-    <PackageReference Include="PrimeFuncPack.Primitives.Strings" Version="2.0.3" />
+    <ProjectReference Include="..\Contract\Contract.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\..\shared\ProjectType\ProjectType.csproj" />
+    <PackageReference Include="EarlyFuncPack.Core.AsyncPipeline" Version="0.3.0" />
+    <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.1.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api.Abstractions" Version="3.15.0" />
   </ItemGroup>
 
 </Project>

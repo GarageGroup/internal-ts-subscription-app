@@ -5,12 +5,12 @@ namespace GarageGroup.Internal.Timesheet;
 internal sealed record class DailyNotificationUserPreferencesJson
 {
     public static DailyNotificationUserPreferencesJson Parse(DailyNotificationUserPreference userPreference)
-      =>
-      new()
-      {
-        WorkedHours = userPreference.WorkedHours,
-        FlowRuntime = userPreference.FlowRuntime
-      };
+        =>
+        new()
+        {
+            WorkedHours = userPreference.WorkedHours,
+            FlowRuntime = userPreference.FlowRuntime
+        };
     
     public int WorkedHours { get; init; }
     

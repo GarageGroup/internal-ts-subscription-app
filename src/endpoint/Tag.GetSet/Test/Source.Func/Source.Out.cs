@@ -3,7 +3,7 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Tag.GetSet.Test;
 
-partial class TagGetSetFuncSource
+partial class TagSetGetFuncSource
 {
     public static TheoryData<FlatArray<DbTag>, TagSetGetOut> OutputTestData
         =>

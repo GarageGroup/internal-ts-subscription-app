@@ -7,7 +7,7 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Tag.GetSet.Test;
 
-partial class TagGetSetFuncTest
+partial class TagSetGetFuncTest
 {
     [Fact]
     public static async Task InvokeAsync_ExpectSqlApiCalledOnce()
@@ -69,7 +69,7 @@ partial class TagGetSetFuncTest
     }
 
     [Theory]
-    [MemberData(nameof(TagGetSetFuncSource.OutputTestData), MemberType = typeof(TagGetSetFuncSource))]
+    [MemberData(nameof(TagSetGetFuncSource.OutputTestData), MemberType = typeof(TagSetGetFuncSource))]
     internal static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess(
         FlatArray<DbTag> dbTimesheetTags, TagSetGetOut expected)
     {

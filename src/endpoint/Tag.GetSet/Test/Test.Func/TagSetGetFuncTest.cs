@@ -5,7 +5,7 @@ using Moq;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Tag.GetSet.Test;
 
-public static partial class TagGetSetFuncTest
+public static partial class TagSetGetFuncTest
 {
     private static readonly FlatArray<DbTag> SomeDbTimesheetTagSet
         =

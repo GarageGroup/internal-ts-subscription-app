@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public static class LastProjectSetGetDependency
+public static class TimesheetSetGetDependency
 {
-    public static Dependency<TimesheetSetGetEndpoint> UseTimesheetGetSetEndpoint<TSqlApi>(
+    public static Dependency<TimesheetSetGetEndpoint> UseTimesheetSetGetEndpoint<TSqlApi>(
         this Dependency<TSqlApi> dependency)
         where TSqlApi : ISqlQueryEntitySetSupplier
     {

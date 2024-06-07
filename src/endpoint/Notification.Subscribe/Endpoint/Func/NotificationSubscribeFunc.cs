@@ -17,10 +17,7 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
     {
         if (input.SubscriptionData.UserPreference is null)
         {
-            return new NotificationSubscriptionJson
-            {
-                UserPreferences = string.Empty
-            };
+            return new NotificationSubscriptionJson();
         }
         
         return input.SubscriptionData switch

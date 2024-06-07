@@ -6,7 +6,7 @@ namespace GarageGroup.Internal.Timesheet;
 partial class Application
 {
     [EndpointApplicationExtension]
-    internal static Dependency<NotificationSubscribeEndpoint> UseNotificationSubscribe()
+    internal static Dependency<NotificationSubscribeEndpoint> UseNotificationSubscribeEndpoint()
         => 
         UseDataverseApi().UseNotificationSubscribe();
 }

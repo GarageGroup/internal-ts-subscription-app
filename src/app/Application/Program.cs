@@ -15,6 +15,6 @@ static class Program
         .UseProjectSetSearchEndpoint()
         .UseLastProjectSetGetEndpoint()
         .UseTimesheetGetSetEndpoint()
-        .UseNotificationSubscribe()
+        .UseNotificationSubscribeEndpoint()
         .RunAsync();
 }

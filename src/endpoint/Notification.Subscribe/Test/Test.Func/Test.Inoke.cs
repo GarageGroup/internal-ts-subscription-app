@@ -8,52 +8,126 @@ partial class NotificationSubscribeFuncTest
     [Fact]
     public static async Task InvokeAsync_ExpectSearchForUserOnce()
     {
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult:new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var notificationSubscribeOption = new NotificationSubscribeOption
+        {
+            BotId = 10
+        };
 
-        await func.InvokeAsync(SomeSubscribeInput, CancellationToken.None);
+        var input = new NotificationSubscribeIn(
+            Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
+            new DailyNotificationSubscriptionData(null));
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, notificationSubscribeOption);
+        await func.InvokeAsync(input, default);
+
+        var expected = new DataverseEntityGetIn(
+            entityPluralName: "gg_telegram_bot_users",
+            selectFields: ["gg_telegram_bot_userid"],
+            entityKey: new DataverseAlternateKey(
+            [
+                new("_gg_systemuser_id_value", "8235b18a-04e8-4092-985b-c280b5810ff0"),
+                new("gg_bot_id", "'10'"),
+            ]));
         
         dataverseApiMock.Verify(
-            x => x.GetEntityAsync<TelegramBotUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()), 
+            x => x.GetEntityAsync<TelegramBotUserJson>(expected, It.IsAny<CancellationToken>()), 
+            Times.Once);
+    }   
+
+    [Fact]
+    public static async Task InvokeAsync_ExpectFindDailyNotificationTypeOnce()
+    {
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult: new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var input = new NotificationSubscribeIn(
+            Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
+            new DailyNotificationSubscriptionData(null));
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
+        await func.InvokeAsync(input, default);
+
+        var expected = new DataverseEntityGetIn(
+            entityPluralName: "gg_bot_notification_types",
+            selectFields: ["gg_bot_notification_typeid"],
+            entityKey: new DataverseAlternateKey("gg_key", "'dailyTimesheetNotification'"));
+        
+        dataverseApiMock.Verify(
+            x => x.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), 
             Times.Once);
     }   
     
     [Fact]
-    public static async Task InvokeAsync_ExpectFindUserOnce()
+    public static async Task InvokeAsync_ExpectFindWeeklyNotificationTypeOnce()
     {
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult: new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+ 
+        var input = new NotificationSubscribeIn(
+            Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
+            new WeeklyNotificationSubscriptionData(null));
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
+        await func.InvokeAsync(input, default);
 
-        await func.InvokeAsync(SomeSubscribeInput, CancellationToken.None);
+        var expected = new DataverseEntityGetIn(
+            entityPluralName: "gg_bot_notification_types",
+            selectFields: ["gg_bot_notification_typeid"],
+            entityKey: new DataverseAlternateKey("gg_key", "'weeklyTimesheetNotification'"));
         
         dataverseApiMock.Verify(
-            x => x.GetEntityAsync<TelegramBotUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()), 
+            x => x.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), 
             Times.Once);
-    }   
-
-    [Fact]
-    public static async Task InvokeAsync_ExpectFindNotificationOnce()
-    {
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
-        await func.InvokeAsync(SomeSubscribeInput, CancellationToken.None);
-        
-        dataverseApiMock.Verify(
-            x => x.GetEntityAsync<NotificationTypeJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()), 
-            Times.Once);
-    }   
+    }
     
     [Fact]
     public static async Task InvokeAsync_ExpectUpsertNotificationSubscriptionOnce()
     {
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
+        var botUser = new TelegramBotUserJson
+        {
+            Id = Guid.Parse("1c89a21f-533f-41db-9855-9839e5685bad")
+        };
 
-        await func.InvokeAsync(SomeSubscribeInput, CancellationToken.None);
+        var notificationType = new NotificationTypeJson()
+        {
+            Id = Guid.Parse("9e7abfe2-12be-435b-bc40-795ce1a4212f")
+        };
         
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(botUser),
+            notificationTypeGetResult: new DataverseEntityGetOut<NotificationTypeJson>(notificationType),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var input = new NotificationSubscribeIn(
+            Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
+            new DailyNotificationSubscriptionData(null));
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
+        await func.InvokeAsync(input, default);
+
+        var expected = new DataverseEntityUpdateIn<NotificationSubscriptionJson>(
+            entityPluralName: "gg_bot_user_subscriptions",
+            entityKey: new DataverseAlternateKey(
+                [
+                    new ("_gg_bot_user_id_value", "1c89a21f-533f-41db-9855-9839e5685bad"),
+                    new ("_gg_notification_type_id_value", "9e7abfe2-12be-435b-bc40-795ce1a4212f")
+                ]),
+            entityData: new NotificationSubscriptionJson { IsDisabled = false })
+        {
+            OperationType = DataverseUpdateOperationType.Upsert
+        };
+            
         dataverseApiMock.Verify(
-            x => x.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<NotificationSubscriptionJson>>(), It.IsAny<CancellationToken>()), 
+            x => x.UpdateEntityAsync(expected, It.IsAny<CancellationToken>()), 
             Times.Once);
     }   
     
@@ -73,13 +147,17 @@ partial class NotificationSubscribeFuncTest
     {
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
-
-        var dataverseApiMock = BuildMockDataverseApiToTestFindBotUser(dataverseFailure);
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
-        var actual = await func.InvokeAsync(SomeSubscribeInput, default);
+    
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: dataverseFailure,
+            notificationTypeGetResult: new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
+    
+        var actual = await func.InvokeAsync(SomeSubscribeIn, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure text", sourceException);
-
+    
         Assert.StrictEqual(expected, actual);
     }
     
@@ -100,16 +178,20 @@ partial class NotificationSubscribeFuncTest
     {
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
-
-        var dataverseApiMock = BuildMockDataverseApiToTestFindNotificationType(dataverseFailure);
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
-        var actual = await func.InvokeAsync(SomeSubscribeInput, default);
+    
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult: dataverseFailure,
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
+    
+        var actual = await func.InvokeAsync(SomeSubscribeIn, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure text", sourceException);
-
+    
         Assert.StrictEqual(expected, actual);
     }
-
+    
     [Theory]
     [InlineData(0)]
     [InlineData(-10)]
@@ -123,20 +205,22 @@ partial class NotificationSubscribeFuncTest
         };
         
         var subscriptionInput = new NotificationSubscribeIn(
-            botId: long.MaxValue,
-            chatId: long.MaxValue, 
+            systemUserId: Guid.Parse("152fea7a-61e3-4f45-8715-a5591e839126"),
             subscriptionData: new DailyNotificationSubscriptionData(dailyUserPreferences)
         );
         
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult:new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
         var result = await func.InvokeAsync(subscriptionInput, CancellationToken.None);
         
         Assert.True(result.IsFailure);
         Assert.Equal(NotificationSubscribeFailureCode.InvalidQuery, result.FailureOrThrow().FailureCode);
     }
-
+    
     [Theory]
     [InlineData(1)]
     [InlineData(40)]
@@ -150,19 +234,21 @@ partial class NotificationSubscribeFuncTest
         };
         
         var subscriptionInput = new NotificationSubscribeIn(
-            botId: long.MaxValue,
-            chatId: long.MaxValue, 
+            systemUserId: Guid.Parse("152fea7a-61e3-4f45-8715-a5591e839126"),
             subscriptionData: new DailyNotificationSubscriptionData(dailyUserPreferences)
         );
         
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult:new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
         var result = await func.InvokeAsync(subscriptionInput, CancellationToken.None);
         
         Assert.True(result.IsSuccess);
     }
-
+    
     [Theory]
     [InlineData(0, Weekday.Friday)]
     [InlineData(-10, Weekday.Friday)]
@@ -178,14 +264,16 @@ partial class NotificationSubscribeFuncTest
         };
         
         var subscriptionInput = new NotificationSubscribeIn(
-            botId: long.MaxValue,
-            chatId: long.MaxValue, 
+            systemUserId: Guid.Parse("152fea7a-61e3-4f45-8715-a5591e839126"),
             subscriptionData: new WeeklyNotificationSubscriptionData(weeklyUserPreference)
         );
         
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult:new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
         var result = await func.InvokeAsync(subscriptionInput, CancellationToken.None);
         
         Assert.True(result.IsFailure);
@@ -208,14 +296,16 @@ partial class NotificationSubscribeFuncTest
         };
         
         var subscriptionInput = new NotificationSubscribeIn(
-            botId: long.MaxValue,
-            chatId: long.MaxValue, 
+            systemUserId: Guid.Parse("152fea7a-61e3-4f45-8715-a5591e839126"),
             subscriptionData: new WeeklyNotificationSubscriptionData(weeklyUserPreference)
         );
         
-        var dataverseApiMock = BuildMockDataverseApi();
-        var func = new NotificationSubscribeFunc(dataverseApiMock.Object);
-
+        var dataverseApiMock = BuildMockDataverseApi(
+            botUserGetResult: new DataverseEntityGetOut<TelegramBotUserJson>(new TelegramBotUserJson()),
+            notificationTypeGetResult:new DataverseEntityGetOut<NotificationTypeJson>(new NotificationTypeJson()),
+            subscriptionUpdateResult: Unit.Value);
+        
+        var func = new NotificationSubscribeFunc(dataverseApiMock.Object, SomeNotificationSubscribeOption);
         var result = await func.InvokeAsync(subscriptionInput, CancellationToken.None);
         
         Assert.True(result.IsSuccess);

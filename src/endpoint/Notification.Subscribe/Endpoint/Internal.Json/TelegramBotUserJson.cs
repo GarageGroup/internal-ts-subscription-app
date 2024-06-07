@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using GarageGroup.Infra;
 
@@ -15,11 +14,13 @@ internal readonly record struct TelegramBotUserJson
 
     private const string SystemUserIdFieldName = "_gg_systemuser_id_value";
 
+    private static readonly FlatArray<string> SelectedFields = [IdFieldName];
+
     public static DataverseEntityGetIn BuildGetInput(Guid systemUserId, long botId)
         =>
         new(
             entityPluralName: EntityPluralName,
-            selectFields: [IdFieldName],
+            selectFields: SelectedFields,
             entityKey: new DataverseAlternateKey(
                 [
                     new(SystemUserIdFieldName, $"{systemUserId}"),
@@ -28,5 +29,5 @@ internal readonly record struct TelegramBotUserJson
     
     
     [JsonPropertyName(IdFieldName)]
-    public Guid Id { get; init; }    
+    public Guid Id { get; init; }
 }

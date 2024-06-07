@@ -6,7 +6,8 @@ namespace GarageGroup.Internal.Timesheet;
 
 internal sealed partial class NotificationSubscribeFunc
 {
-    public ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InvokeAsync(NotificationSubscribeIn input, CancellationToken cancellationToken)
+    public ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InvokeAsync(
+        NotificationSubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
             input, cancellationToken)
@@ -16,8 +17,9 @@ internal sealed partial class NotificationSubscribeFunc
             json => new NotificationData(input, json))
         .Forward(
             InnerInvokeAsync);
-    
-    private Task<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InnerInvokeAsync(NotificationData input, CancellationToken cancellationToken) 
+
+    private Task<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InnerInvokeAsync(
+        NotificationData input, CancellationToken cancellationToken) 
         => 
         AsyncPipeline.Pipe(
             input.Input, cancellationToken)
@@ -25,15 +27,16 @@ internal sealed partial class NotificationSubscribeFunc
             FindBotUserIdAsync,
             FindNotificationTypeIdAsync)
         .MapSuccess(
-            results => NotificationSubscriptionJson.BuildDataverseUpsertInput(
-                botUserId: results.Item1,
-                typeId: results.Item2,
+            @out => NotificationSubscriptionJson.BuildDataverseUpsertInput(
+                botUserId: @out.Item1,
+                typeId: @out.Item2,
                 subscription: input.Subscription))
         .ForwardValue(
             dataverseApi.UpdateEntityAsync,
             static failure => failure.WithFailureCode(NotificationSubscribeFailureCode.Unknown));
-    
-    private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindBotUserIdAsync(NotificationSubscribeIn input, CancellationToken cancellationToken)
+
+    private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindBotUserIdAsync(
+        NotificationSubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
             input, cancellationToken)

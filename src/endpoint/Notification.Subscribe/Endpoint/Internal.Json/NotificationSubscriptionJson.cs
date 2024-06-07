@@ -11,28 +11,29 @@ internal sealed record class NotificationSubscriptionJson
     private const string BotUserIdFieldName = "_gg_bot_user_id_value";
 
     private const string NotificationTypeIdFieldName = "_gg_notification_type_id_value";
-    
+
     private const string NotificationPreferencesFieldName = "gg_notification_preferences";
 
     private const string DisabledStatusFieldName = "gg_is_disabled";
-    
-    internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpsertInput(Guid botUserId, Guid typeId, NotificationSubscriptionJson subscription) 
+
+    internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpsertInput(
+        Guid botUserId, Guid typeId, NotificationSubscriptionJson subscription) 
         => 
         new(
             entityPluralName: EntityPluralName, 
             entityKey: new DataverseAlternateKey(
-            [
-                new (BotUserIdFieldName, botUserId.ToString()),
-                new (NotificationTypeIdFieldName, typeId.ToString()),
-            ]), 
+                [
+                    new (BotUserIdFieldName, botUserId.ToString()),
+                    new (NotificationTypeIdFieldName, typeId.ToString()),
+                ]),
             entityData: subscription)
         {
             OperationType = DataverseUpdateOperationType.Upsert
         };
-    
+
     [JsonPropertyName(DisabledStatusFieldName)]
     public bool IsDisabled { get; init; }
-    
+
     [JsonPropertyName(NotificationPreferencesFieldName)]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? UserPreferences { get; init; }

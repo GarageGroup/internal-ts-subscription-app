@@ -16,7 +16,8 @@ internal readonly record struct TelegramBotUserJson
     private const string SystemUserIdFieldName = "_gg_systemuser_id_value";
 
     public static DataverseEntityGetIn BuildGetInput(Guid systemUserId, long botId)
-        => new(
+        =>
+        new(
             entityPluralName: EntityPluralName,
             selectFields: [IdFieldName],
             entityKey: new DataverseAlternateKey(

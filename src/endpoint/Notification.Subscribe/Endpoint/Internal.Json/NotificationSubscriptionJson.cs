@@ -18,7 +18,7 @@ internal sealed record class NotificationSubscriptionJson
     
     internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpsertInput(Guid botUserId, Guid typeId, NotificationSubscriptionJson subscription) 
         => 
-        new (
+        new(
             entityPluralName: EntityPluralName, 
             entityKey: new DataverseAlternateKey(
             [

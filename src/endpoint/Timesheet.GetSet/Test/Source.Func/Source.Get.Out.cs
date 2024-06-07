@@ -5,7 +5,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test;
 
 partial class TimesheetSetGetFuncSource
 {
-    public static TheoryData<FlatArray<DbTimesheet>, TimesheetGetSetOut> OutputGetTestData
+    public static TheoryData<FlatArray<DbTimesheet>, TimesheetSetGetOut> OutputGetTestData
         =>
         new()
         {

@@ -13,17 +13,17 @@ internal readonly record struct TelegramBotUserJson
 
     private const string BotIdFieldName = "gg_bot_id";
 
-    private const string ChatIdFieldName = "gg_chat_id";
+    private const string SystemUserIdFieldName = "_gg_systemuser_id_value";
 
-    public static DataverseEntityGetIn BuildGetInput(long botId, long chatId)
+    public static DataverseEntityGetIn BuildGetInput(Guid systemUserId, long botId)
         => new(
             entityPluralName: EntityPluralName,
             selectFields: [IdFieldName],
-            entityKey: new DataverseAlternateKey(new KeyValuePair<string, string>[]
-                {
-                    new(BotIdFieldName, $"'{botId}'"),
-                    new(ChatIdFieldName, $"'{chatId}'")
-                })
+            entityKey: new DataverseAlternateKey(
+                [
+                    new(SystemUserIdFieldName, $"{systemUserId}"),
+                    new(BotIdFieldName, $"'{botId}'")
+                ])
             );
     
     

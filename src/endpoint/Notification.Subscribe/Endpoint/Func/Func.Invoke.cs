@@ -38,7 +38,7 @@ internal sealed partial class NotificationSubscribeFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            static input => TelegramBotUserJson.BuildGetInput(input.BotId, input.ChatId))
+            input => TelegramBotUserJson.BuildGetInput(input.SystemUserId, option.BotId))
         .PipeValue(
             dataverseApi.GetEntityAsync<TelegramBotUserJson>)
         .Map(

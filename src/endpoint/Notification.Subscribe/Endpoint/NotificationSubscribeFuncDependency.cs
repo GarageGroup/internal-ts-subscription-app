@@ -9,15 +9,17 @@ namespace GarageGroup.Internal.Timesheet;
 
 public static class NotificationSubscribeFuncDependency
 {
-    public static Dependency<NotificationSubscribeEndpoint> UseNotificationSubscribe(this Dependency<IDataverseApiClient> dependency)
+    public static Dependency<NotificationSubscribeEndpoint> UseNotificationSubscribe(this Dependency<IDataverseApiClient, NotificationSubscribeOption> dependency)
     {
         ArgumentNullException.ThrowIfNull(dependency);
-        return dependency.Map(CreateFunc).Map(NotificationSubscribeEndpoint.Resolve);
+        return dependency.Fold(CreateFunc).Map(NotificationSubscribeEndpoint.Resolve);
     
-        static NotificationSubscribeFunc CreateFunc(IDataverseApiClient dataverseApi)
+        static NotificationSubscribeFunc CreateFunc(IDataverseApiClient dataverseApi, NotificationSubscribeOption option)
         {
             ArgumentNullException.ThrowIfNull(dataverseApi);
-            return new(dataverseApi);
+            ArgumentNullException.ThrowIfNull(option);
+            
+            return new(dataverseApi, option);
         }
     }
 }

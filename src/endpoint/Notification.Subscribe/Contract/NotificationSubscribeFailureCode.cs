@@ -6,11 +6,14 @@ public enum NotificationSubscribeFailureCode
 {
     Unknown,
     
-    [Problem(FailureStatusCode.BadRequest, true)]
+    [Problem(FailureStatusCode.NotFound, true)]
     BotUserNotFound,
 
-    [Problem(FailureStatusCode.BadRequest, true)]
+    [Problem(FailureStatusCode.NotFound, true)]
     NotificationTypeNotFound,
+    
+    [Problem(FailureStatusCode.BadRequest, true)]
+    NotificationTypeInvalid,
     
     [Problem(FailureStatusCode.BadRequest, true)]
     InvalidQuery,

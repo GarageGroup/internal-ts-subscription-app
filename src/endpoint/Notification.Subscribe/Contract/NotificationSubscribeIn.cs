@@ -1,22 +1,19 @@
-﻿using GarageGroup.Infra;
+﻿using System;
+using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
 public sealed record class NotificationSubscribeIn
 {
     public NotificationSubscribeIn(
-        [ClaimIn] long botId,
-        [ClaimIn] long chatId, 
+        [ClaimIn] Guid systemUserId,
         [RootBodyIn] BaseSubscriptionData subscriptionData)
     {
-        BotId = botId;
-        ChatId = chatId;
+        SystemUserId = systemUserId;
         SubscriptionData = subscriptionData;
     }
     
-    public long BotId { get; }
-
-    public long ChatId { get; }
+    public Guid SystemUserId { get; }
 
     public BaseSubscriptionData SubscriptionData { get; }
 }

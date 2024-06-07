@@ -9,10 +9,13 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
     private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
     
     private readonly IDataverseApiClient dataverseApi;
-    
-    internal NotificationSubscribeFunc(IDataverseApiClient dataverseApi) 
-        =>
+    private readonly NotificationSubscribeOption option;
+
+    internal NotificationSubscribeFunc(IDataverseApiClient dataverseApi, NotificationSubscribeOption option)
+    {
         this.dataverseApi = dataverseApi;
+        this.option = option;
+    }
 
     private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(NotificationSubscribeIn input)
     {
@@ -23,23 +26,25 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
         
         return input.SubscriptionData switch
         {
-            DailyNotificationSubscriptionData dailySubscriptionData => ValidateAndMapToJsonDto(dailySubscriptionData),
-            WeeklyNotificationSubscriptionData dailySubscriptionData => ValidateAndMapToJsonDto(dailySubscriptionData),
+            DailyNotificationSubscriptionData dailySubscriptionData => ValidateAndMapToJsonDto(dailySubscriptionData.UserPreference),
+            WeeklyNotificationSubscriptionData weeklySubscriptionData => ValidateAndMapToJsonDto(weeklySubscriptionData.UserPreference),
             _ => Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Unexpected type of user preferences")
         };
     }
     
-    private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(DailyNotificationSubscriptionData dailySubscriptionData)
+    private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(DailyNotificationUserPreference? userPreference)
     {
-        ArgumentNullException.ThrowIfNull(dailySubscriptionData);
-        ArgumentNullException.ThrowIfNull(dailySubscriptionData.UserPreference);
+        if (userPreference is null)
+        {
+            return new NotificationSubscriptionJson();
+        }
         
-        if (dailySubscriptionData.UserPreference.WorkedHours < 1)
+        if (userPreference.WorkedHours <= 0)
         {
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Daily working hours cannot be less than zero");
         }
 
-        var jsonUserPreferences = DailyNotificationUserPreferencesJson.Parse(dailySubscriptionData.UserPreference);
+        var jsonUserPreferences = DailyNotificationUserPreferencesJson.Parse(userPreference);
         var userPreferences = JsonSerializer.Serialize(jsonUserPreferences, SerializerOptions);
 
         return new NotificationSubscriptionJson
@@ -48,22 +53,24 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
         };
     }
     
-    private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(WeeklyNotificationSubscriptionData weeklyNotificationData)
+    private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(WeeklyNotificationUserPreference? userPreference)
     {
-        ArgumentNullException.ThrowIfNull(weeklyNotificationData);
-        ArgumentNullException.ThrowIfNull(weeklyNotificationData.UserPreference);
+        if (userPreference is null)
+        {
+            return new NotificationSubscriptionJson();
+        }
         
-        if (weeklyNotificationData.UserPreference.Weekday.IsEmpty)
+        if (userPreference.Weekday.IsEmpty)
         {
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Weekdays for notifications must be specified");
         }
 
-        if (weeklyNotificationData.UserPreference.WorkedHours < 1)
+        if (userPreference.WorkedHours <= 0)
         {
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Total week working hours cannot be less than zero");
         }
             
-        var jsonUserPreferences = WeeklyNotificationUserPreferencesJson.Parse(weeklyNotificationData.UserPreference);
+        var jsonUserPreferences = WeeklyNotificationUserPreferencesJson.Parse(userPreference);
         var userPreferences = JsonSerializer.Serialize(jsonUserPreferences, SerializerOptions);
 
         return new NotificationSubscriptionJson
@@ -86,7 +93,7 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
         {
             DailyNotificationSubscriptionData => "dailyTimesheetNotification",
             WeeklyNotificationSubscriptionData => "weeklyTimesheetNotification",
-            _ => throw new NotSupportedException("Not supported type of subscription data")
+            _ => Failure.Create(NotificationSubscribeFailureCode.NotificationTypeInvalid, "Not supported type of subscription data")
         };
     
     private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingNotificationType(DataverseFailureCode code)

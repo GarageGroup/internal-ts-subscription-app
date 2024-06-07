@@ -11,7 +11,8 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
     private readonly IDataverseApiClient dataverseApi;
     
     internal NotificationSubscribeFunc(IDataverseApiClient dataverseApi) 
-        => this.dataverseApi = dataverseApi;
+        =>
+        this.dataverseApi = dataverseApi;
 
     private static Result<NotificationSubscriptionJson, Failure<NotificationSubscribeFailureCode>> ValidateAndMapToJsonDto(NotificationSubscribeIn input)
     {

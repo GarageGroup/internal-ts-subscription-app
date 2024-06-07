@@ -24,8 +24,7 @@ internal readonly record struct TelegramBotUserJson
                 [
                     new(SystemUserIdFieldName, $"{systemUserId}"),
                     new(BotIdFieldName, $"'{botId}'")
-                ])
-            );
+                ]));
     
     
     [JsonPropertyName(IdFieldName)]

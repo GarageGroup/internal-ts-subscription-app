@@ -11,12 +11,11 @@ internal sealed partial class NotificationSubscribeFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            BuildNotificationData)
+            ValidateAndMapToJsonDto)
+        .MapSuccess(
+            json => new NotificationData(input, json))
         .Forward(
             InnerInvokeAsync);
-
-    private static Result<NotificationData, Failure<NotificationSubscribeFailureCode>> BuildNotificationData(NotificationSubscribeIn input) 
-        => ValidateAndMapToJsonDto(input).MapSuccess(json => new NotificationData(input, json));
     
     private Task<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InnerInvokeAsync(NotificationData input, CancellationToken cancellationToken) 
         => 

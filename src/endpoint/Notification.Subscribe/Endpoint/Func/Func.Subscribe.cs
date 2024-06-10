@@ -27,7 +27,7 @@ internal sealed partial class NotificationSubscribeFunc
             FindBotUserIdAsync,
             FindNotificationTypeIdAsync)
         .MapSuccess(
-            @out => NotificationSubscriptionJson.BuildDataverseUpsertInput(
+            @out => NotificationSubscriptionJson.BuildDataverseUpdateInput(
                 botUserId: @out.Item1,
                 typeId: @out.Item2,
                 subscription: input.Subscription))

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -15,17 +16,20 @@ internal sealed partial class NotificationSubscribeFunc
             FindBotUserIdAsync, 
             FindNotificationTypeIdAsync)
         .MapSuccess(
-            @out => NotificationSubscriptionJson.BuildDataverseUpsertInput(
+            @out => NotificationSubscriptionJson.BuildDataverseUpdateInput(
                 botUserId: @out.Item1,
                 typeId: @out.Item2,
+                operationType: DataverseUpdateOperationType.Update,
                 subscription: new NotificationSubscriptionJson
                 {
                     IsDisabled = true
                 }))
         .ForwardValue(
             dataverseApi.UpdateEntityAsync,
-            static failure => failure.WithFailureCode(NotificationUnsubscribeFailureCode.Unknown));
-
+            static failure => failure.MapFailureCode(MapFailureWhenUpdateSubscription))
+        .Recover(
+            RecoverUnsubscribeFailure);
+    
     private Task<Result<Guid, Failure<NotificationUnsubscribeFailureCode>>> FindBotUserIdAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 

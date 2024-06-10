@@ -118,7 +118,7 @@ partial class NotificationSubscribeFuncTest
     [Theory]
     [InlineData(NotificationType.DailyNotification)]
     [InlineData(NotificationType.WeeklyNotification)]
-    internal static async Task UnsubscribeAsync_ExpectUpsertNotificationUnsubscriptionOnce(NotificationType type)
+    internal static async Task UnsubscribeAsync_ExpectUpdateNotificationUnsubscriptionOnce(NotificationType type)
     {
         var botUser = new TelegramBotUserJson
         {
@@ -156,16 +156,15 @@ partial class NotificationSubscribeFuncTest
                 ]),
             entityData: expectedSubscriptionJson)
         {
-            OperationType = DataverseUpdateOperationType.Upsert
+            OperationType = DataverseUpdateOperationType.Update
         };
-    
+
         mockDataverseApi.Verify(x => x.UpdateEntityAsync(expected, It.IsAny<CancellationToken>()), Times.Once);
     }
-    
+
     [Theory]
     [InlineData(DataverseFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.Unauthorized)]
-    [InlineData(DataverseFailureCode.RecordNotFound)]
     [InlineData(DataverseFailureCode.PicklistValueOutOfRange)]
     [InlineData(DataverseFailureCode.UserNotEnabled)]
     [InlineData(DataverseFailureCode.PrivilegeDenied)]
@@ -174,7 +173,7 @@ partial class NotificationSubscribeFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord)]
     [InlineData(DataverseFailureCode.InvalidPayload)]
     [InlineData(DataverseFailureCode.InvalidFileSize)]
-    public static async Task UnsubscribeAsync_NotificationUpsertIsFailure_ExpectUnknownFailure(
+    public static async Task UnsubscribeAsync_NotificationUpdateIsFailure_ExpectUnknownFailure(
         DataverseFailureCode dataverseFailureCode)
     {
         var sourceException = new Exception("Some exception");
@@ -189,6 +188,20 @@ partial class NotificationSubscribeFuncTest
         Assert.StrictEqual(expected, actual);
     }
    
+    [Fact]
+    public static async Task UnsubscribeAsync_DataverseReturnsSubscriptionNotFound_ExpectSuccessResult()
+    {
+        var sourceException = new Exception("Some exception");
+        var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure message");
+
+        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, dataverseFailure);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+
+        var actual = await func.InvokeAsync(SomeUnsubscribeInput, default);
+
+        Assert.StrictEqual(Unit.Value, actual);
+    }
+
     [Fact]
     public static async Task UnsubscribeAsync_AllResultsAreSuccesses_ExpectSuccess()
     {

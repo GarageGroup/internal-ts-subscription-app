@@ -23,24 +23,9 @@ internal sealed record class TimesheetJson
             entityKey: new DataversePrimaryKey(timesheetId),
             entityData: timesheet);
 
-    internal static string BuildIncidentLookupValue(Guid incidentId)
-        =>
-        $"/incidents({incidentId:D})";
-
-    internal static string BuildLeadLookupValue(Guid leadId)
-        =>
-        $"/leads({leadId:D})";
-
-    internal static string BuildOpportunityLookupValue(Guid opportunityId)
-        =>
-        $"/opportunities({opportunityId:D})";
-
-    internal static string BuildProjectLookupValue(Guid projectId)
-        =>
-        $"/gg_projects({projectId:D})";
-
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_date")]
-    public DateOnly Date { get; init; }
+    public DateOnly? Date { get; init; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("regardingobjectid_incident@odata.bind")]
@@ -58,14 +43,17 @@ internal sealed record class TimesheetJson
     [JsonPropertyName("regardingobjectid_gg_project@odata.bind")]
     public string? ProjectLookupValue { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("subject")]
     public string? Subject { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_description")]
     public string? Description { get; init; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_duration")]
-    public decimal Duration { get; init; }
+    public decimal? Duration { get; init; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_timesheetactivity_channel")]

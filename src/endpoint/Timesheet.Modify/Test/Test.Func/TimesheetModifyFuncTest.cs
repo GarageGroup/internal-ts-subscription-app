@@ -7,32 +7,47 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
 public static partial class TimesheetModifyFuncTest
 {
-    private static readonly TimesheetUpdateIn SomeTimesheetUpdateInput
+    private static readonly DataverseEntityGetOut<ProjectJson> SomeProjectJsonOut
         =
         new(
-            timesheetId: Guid.Parse("80108b86-61ae-47ea-bd61-6d0c126a42b4"),
-            date: new(2024, 03, 17),
-            project: new(
-                id: new("3dd8b1e0-3281-49f5-842b-cd1556113823"),
-                type: ProjectType.Project,
-                displayName: "Some project name"),
-            duration: 8,
-            description: "Some description");
+            new ProjectJson()
+            {
+                Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
+                ProjectName = "Some project name"
+            });
 
-    private static readonly TimesheetCreateIn SomeTimesheetCreateInput
+    private static readonly DataverseEntityGetOut<IncidentJson> SomeIncidentJsonOut
         =
         new(
-            systemUserId: new("56276a44-1444-4f67-bdb7-774b3f25932a"),
-            date: new(2021, 10, 07),
-            project: new(
-                id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
-                type: ProjectType.Project,
-                displayName: "Some project name"),
-            duration: 9,
-            description: "Some description");
+            new IncidentJson()
+            {
+                Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
+                ProjectName = "Some project name"
+            });
 
-    private static Mock<IDataverseApiClient> BuildMockDataverseApi(
-        in Result<Unit, Failure<DataverseFailureCode>> result)
+    private static readonly DataverseEntityGetOut<OpportunityJson> SomeOpportunityJsonOut
+        =
+        new(
+            new OpportunityJson()
+            {
+                Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
+                ProjectName = "Some project name"
+            });
+
+    private static readonly DataverseEntityGetOut<LeadJson> SomeLeadJsonOut
+        =
+        new(
+            new LeadJson()
+            {
+                Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
+                CompanyName = "Some company",
+                Subject = "Some subject"
+            });
+
+    private static Mock<IDataverseApiClient> BuildMockDataverseApi<TOut>(
+        in Result<Unit, Failure<DataverseFailureCode>> result,
+        in Result<DataverseEntityGetOut<TOut>, Failure<DataverseFailureCode>> getProjectNameResult)
+        where TOut : IProjectJson, IProjectDataverseInputBuilder
     {
         var mock = new Mock<IDataverseApiClient>();
 
@@ -45,6 +60,10 @@ public static partial class TimesheetModifyFuncTest
         _ = mock
             .Setup(static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<TimesheetJson>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+
+        _ = mock
+            .Setup(static a => a.GetEntityAsync<TOut>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(getProjectNameResult);
 
         return mock;
     }

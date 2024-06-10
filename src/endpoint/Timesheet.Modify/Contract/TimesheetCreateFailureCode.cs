@@ -7,5 +7,11 @@ public enum TimesheetCreateFailureCode
     Unknown,
 
     [Problem(FailureStatusCode.Forbidden, "This method is forbidden for your account")]
-    Forbidden
+    Forbidden,
+
+    [Problem(FailureStatusCode.BadRequest, "An unexpected project type")]
+    UnexpectedProjectType,
+
+    [Problem(FailureStatusCode.NotFound, "Project not found")]
+    ProjectNotFound
 }

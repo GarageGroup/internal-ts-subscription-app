@@ -5,7 +5,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
 internal static partial class TimesheetModifyFuncSource
 {
-    public static TheoryData<TimesheetCreateIn, DataverseEntityCreateIn<TimesheetJson>> InputCreateTestData
+    public static TheoryData<TimesheetCreateIn, DataverseEntityGetOut<LeadJson>, DataverseEntityCreateIn<TimesheetJson>> InputCreateLeadTestData
         =>
         new()
         {
@@ -15,10 +15,16 @@ internal static partial class TimesheetModifyFuncSource
                     date: new(2021, 10, 07),
                     project: new(
                         id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
-                        type: ProjectType.Lead,
-                        displayName: "Some lead display name"),
+                        type: ProjectType.Lead),
                     duration: 8,
                     description: "Some message!"),
+                new(
+                    new()
+                    {
+                        Id = new("7583b4e6-23f5-eb11-94ef-00224884a588"),
+                        CompanyName = "Some company name",
+                        Subject = "Some subject"
+                    }),
                 new(
                     entityPluralName: "gg_timesheetactivities",
                     entityData: new()
@@ -27,7 +33,7 @@ internal static partial class TimesheetModifyFuncSource
                         Description = "Some message!",
                         Duration = 8,
                         LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some lead display name",
+                        Subject = "Some subject (Some company name)",
                         ChannelCode = 140120000
                     })
             },
@@ -37,10 +43,16 @@ internal static partial class TimesheetModifyFuncSource
                     date: new(2023, 01, 12),
                     project: new(
                         id: new("8829deda-5249-4412-9be5-ef5728fb928d"),
-                        type: ProjectType.Opportunity,
-                        displayName: string.Empty),
+                        type: ProjectType.Lead),
                     duration: 3,
                     description: null),
+                new(
+                    new()
+                    {
+                        Id = new("8829deda-5249-4412-9be5-ef5728fb928d"),
+                        CompanyName = null,
+                        Subject = "Some subject"
+                    }),
                 new(
                     entityPluralName: "gg_timesheetactivities",
                     entityData: new()
@@ -48,50 +60,36 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 01, 12),
                         Description = null,
                         Duration = 3,
-                        OpportunityLookupValue = "/opportunities(8829deda-5249-4412-9be5-ef5728fb928d)",
+                        LeadLookupValue = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)",
+                        Subject = "Some subject",
                         ChannelCode = 140120000
                     })
             },
             {
                 new(
-                    systemUserId: new("ce3e2f48-8eec-40f0-bb8b-60b8861a61cd"),
-                    date: new(2023, 11, 03),
+                    systemUserId: new("cede85e3-d0db-44d3-8728-ce42549eb4d0"),
+                    date: new(2023, 01, 12),
                     project: new(
-                        id: new("13f0cb5c-b251-494c-9cae-1b0708471c10"),
-                        type: ProjectType.Project,
-                        displayName: "\n\r"),
-                    duration: 15,
-                    description: string.Empty),
+                        id: new("8829deda-5249-4412-9be5-ef5728fb928d"),
+                        type: ProjectType.Lead),
+                    duration: 3,
+                    description: null),
+                new(
+                    new()
+                    {
+                        Id = new("8829deda-5249-4412-9be5-ef5728fb928d"),
+                        CompanyName = "Some company name",
+                        Subject = null
+                    }),
                 new(
                     entityPluralName: "gg_timesheetactivities",
                     entityData: new()
                     {
-                        Date = new(2023, 11, 03),
+                        Date = new(2023, 01, 12),
                         Description = null,
-                        Duration = 15,
-                        ProjectLookupValue = "/gg_projects(13f0cb5c-b251-494c-9cae-1b0708471c10)",
-                        Subject = "\n\r",
-                        ChannelCode = 140120000
-                    })
-            },
-            {
-                new(
-                    systemUserId: new("c59436f5-709c-45aa-8469-5e79412f5108"),
-                    date: new(2022, 12, 25),
-                    project: new(
-                        id: new("ca012870-a0f9-4945-a314-a14ebf690574"),
-                        type: ProjectType.Incident,
-                        displayName: null),
-                    duration: -3,
-                    description: "Some description"),
-                new(
-                    entityPluralName: "gg_timesheetactivities",
-                    entityData: new()
-                    {
-                        Date = new(2022, 12, 25),
-                        Description = "Some description",
-                        Duration = -3,
-                        IncidentLookupValue = "/incidents(ca012870-a0f9-4945-a314-a14ebf690574)",
+                        Duration = 3,
+                        LeadLookupValue = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)",
+                        Subject = "(Some company name)",
                         ChannelCode = 140120000
                     })
             }

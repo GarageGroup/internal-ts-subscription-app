@@ -13,14 +13,14 @@ partial class TimesheetModifyFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .PipeValue(
-            BuildTimesheetJsonOrFailure)
+            BuildTimesheetJsonOrFailureAsync)
         .MapSuccess(
             timesheet => TimesheetJson.BuildDataverseUpdateInput(input.TimesheetId, timesheet))
         .ForwardValue(
             dataverseApi.UpdateEntityAsync,
             static failure => failure.MapFailureCode(ToTimesheetUpdateFailureCode));
 
-    private async ValueTask<Result<TimesheetJson, Failure<TimesheetUpdateFailureCode>>> BuildTimesheetJsonOrFailure(
+    private async ValueTask<Result<TimesheetJson, Failure<TimesheetUpdateFailureCode>>> BuildTimesheetJsonOrFailureAsync(
         TimesheetUpdateIn input, CancellationToken cancellationToken)
     {
         if (input.Project is null)

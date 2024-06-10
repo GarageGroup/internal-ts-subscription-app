@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.Json;
 using GarageGroup.Infra;
 
@@ -44,12 +45,15 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Daily working hours cannot be less than zero");
         }
 
-        var jsonUserPreferences = DailyNotificationUserPreferencesJson.Parse(userPreference);
-        var userPreferences = JsonSerializer.Serialize(jsonUserPreferences, SerializerOptions);
+        var userPreferencesJson = new DailyNotificationUserPreferencesJson
+        {
+            WorkedHours = userPreference.WorkedHours,
+            FlowRuntime = userPreference.NotificationTime.Time.ToString("HH:mm")
+        };
 
         return new NotificationSubscriptionJson
         {
-            UserPreferences = userPreferences
+            UserPreferences = JsonSerializer.Serialize(userPreferencesJson, SerializerOptions)
         };
     }
     
@@ -66,13 +70,21 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             return Failure.Create(NotificationSubscribeFailureCode.InvalidQuery, "Total week working hours cannot be less than zero");
         }
 
-        var jsonUserPreferences = WeeklyNotificationUserPreferencesJson.Parse(userPreference);
-        var userPreferences = JsonSerializer.Serialize(jsonUserPreferences, SerializerOptions);
+        var userPreferencesJson = new WeeklyNotificationUserPreferencesJson
+        {
+            Weekday = string.Join(',', userPreference.Weekday.AsEnumerable().Select(AsInt32)),
+            WorkedHours = userPreference.WorkedHours,
+            FlowRuntime = userPreference.NotificationTime.Time.ToString("HH:mm")
+        };
 
         return new NotificationSubscriptionJson
         {
-            UserPreferences = userPreferences
+            UserPreferences = JsonSerializer.Serialize(userPreferencesJson, SerializerOptions)
         };
+
+        static int AsInt32(Weekday weekday)
+            =>
+            (int)weekday;
     }
 
     private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input)

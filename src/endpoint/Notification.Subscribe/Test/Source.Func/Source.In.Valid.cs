@@ -23,15 +23,26 @@ partial class NotificationSubscribeFuncSource
                 new(
                     systemUserId: Guid.Parse("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
                     subscriptionData: new DailyNotificationSubscriptionData(
-                        userPreference: new()
-                        {
-                            FlowRuntime = new(20, 0, 0),
-                            WorkedHours = 8
-                        })),
+                        userPreference: new(
+                            workedHours: 1,
+                            notificationTime: default))),
                 new()
                 {
                     IsDisabled = false,
-                    UserPreferences = "{\"workedHours\":8,\"flowRuntime\":\"20:00:00\"}"
+                    UserPreferences = "{\"workedHours\":1,\"flowRuntime\":\"18:00\"}"
+                }
+            },
+            {
+                new(
+                    systemUserId: Guid.Parse("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
+                    subscriptionData: new DailyNotificationSubscriptionData(
+                        userPreference: new(
+                            workedHours: 8,
+                            notificationTime: NotificationTime.Msk20))),
+                new()
+                {
+                    IsDisabled = false,
+                    UserPreferences = "{\"workedHours\":8,\"flowRuntime\":\"20:00\"}"
                 }
             },
             {
@@ -48,32 +59,42 @@ partial class NotificationSubscribeFuncSource
                 new(
                     systemUserId: Guid.Parse("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
-                        userPreference: new()
-                        {
-                            Weekday = [Weekday.Friday],
-                            FlowRuntime = new(19, 0, 0),
-                            WorkedHours = 35
-                        })),
+                        userPreference: new(
+                            weekday: [Weekday.Friday],
+                            workedHours: 35,
+                            notificationTime: default))),
                 new()
                 {
                     IsDisabled = false,
-                    UserPreferences = "{\"weekday\":\"5\",\"workedHours\":35,\"flowRuntime\":\"19:00:00\"}"
+                    UserPreferences = "{\"weekday\":\"5\",\"workedHours\":35,\"flowRuntime\":\"18:00\"}"
+                }
+            },
+            {
+                new(
+                    systemUserId: Guid.Parse("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
+                    subscriptionData: new WeeklyNotificationSubscriptionData(
+                        userPreference: new(
+                            weekday: [Weekday.Friday],
+                            workedHours: 1,
+                            notificationTime: NotificationTime.Msk19))),
+                new()
+                {
+                    IsDisabled = false,
+                    UserPreferences = "{\"weekday\":\"5\",\"workedHours\":1,\"flowRuntime\":\"19:00\"}"
                 }
             },
             {
                 new(
                     systemUserId: Guid.Parse("1d8f2faa-1aa4-4b6e-958f-a455343d9e72"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
-                        userPreference: new()
-                        {
-                            Weekday = [Weekday.Saturday, Weekday.Friday, Weekday.Sunday],
-                            FlowRuntime = new(21, 0, 0),
-                            WorkedHours = 40
-                        })),
+                        userPreference: new(
+                            weekday: [Weekday.Saturday, Weekday.Friday, Weekday.Sunday],
+                            workedHours: 40,
+                            notificationTime: NotificationTime.Msk21))),
                 new()
                 {
                     IsDisabled = false,
-                    UserPreferences = "{\"weekday\":\"6,5,0\",\"workedHours\":40,\"flowRuntime\":\"21:00:00\"}"
+                    UserPreferences = "{\"weekday\":\"6,5,0\",\"workedHours\":40,\"flowRuntime\":\"21:00\"}"
                 }
             }
         };

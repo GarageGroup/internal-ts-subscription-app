@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/notification/subscribe", Description = "Subscribe bot user to notification")]
+[Endpoint(EndpointMethod.Post, "/subscribeToNotification", Description = "Subscribe bot user to notification")]
 [EndpointTag("Notification")]
 public interface INotificationSubscribeFunc
 {

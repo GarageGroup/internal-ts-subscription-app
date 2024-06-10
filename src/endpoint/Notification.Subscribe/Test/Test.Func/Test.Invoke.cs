@@ -213,6 +213,7 @@ partial class NotificationSubscribeFuncTest
 
         Assert.StrictEqual(expected, actual);
     }
+
     [Fact]
     public static async Task InvokeAsync_AllResultsAreSuccesses_ExpectSuccess()
     {

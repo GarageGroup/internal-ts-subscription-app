@@ -14,7 +14,10 @@
     <ProjectReference Include="..\..\endpoint\Notification.Subscribe\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.GetLastSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.SearchSet\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Tag.GetSet\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Timesheet.Delete\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Timesheet.GetSet\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Timesheet.Modify\Endpoint\Endpoint.csproj" />
   </ItemGroup>
 
   <ItemGroup>

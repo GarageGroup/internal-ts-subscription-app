@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class NotificationSubscribeFunc : INotificationSubscribeFunc
+internal sealed partial class NotificationSubscribeFunc : INotificationSubscribeFunc, INotificationUnsubscribeFunc
 {
     private static readonly JsonSerializerOptions SerializerOptions
         =
@@ -87,16 +87,26 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             (int)weekday;
     }
 
-    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input) 
+    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input)
+        =>
+        MapToNotificationTypeKey(input.SubscriptionData.NotificationType)
+            .MapFailure(static x => x.WithFailureCode(NotificationSubscribeFailureCode.NotificationTypeInvalid));
+
+    private Result<string, Failure<NotificationUnsubscribeFailureCode>> MapToNotificationTypeKey(NotificationUnsubscribeIn input) 
         => 
-        input.SubscriptionData switch
+        MapToNotificationTypeKey(input.NotificationType)
+            .MapFailure(static x => x.WithFailureCode(NotificationUnsubscribeFailureCode.NotificationTypeInvalid));
+    
+    private static Result<string, Failure<Unit>> MapToNotificationTypeKey(NotificationType type)
+        =>
+        type switch
         {
-            DailyNotificationSubscriptionData => "dailyTimesheetNotification",
-            WeeklyNotificationSubscriptionData => "weeklyTimesheetNotification",
-            _ => Failure.Create(NotificationSubscribeFailureCode.NotificationTypeInvalid, "Not supported type of subscription data")
+            NotificationType.DailyNotification => "dailyTimesheetNotification",
+            NotificationType.WeeklyNotification => "weeklyTimesheetNotification",
+            _ => Failure.Create("Not supported type of subscription data")
         };
 
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingBotUser(DataverseFailureCode failureCode) 
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeUser(DataverseFailureCode failureCode) 
         => 
         failureCode switch
         {
@@ -104,13 +114,46 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             _ => NotificationSubscribeFailureCode.Unknown 
         };
 
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingNotificationType(DataverseFailureCode failureCode)
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeNotificationType(DataverseFailureCode failureCode)
         => 
         failureCode switch
         { 
             DataverseFailureCode.RecordNotFound => NotificationSubscribeFailureCode.NotificationTypeNotFound, 
             _ => NotificationSubscribeFailureCode.Unknown
         };
+        
+    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeUser(DataverseFailureCode failureCode) 
+        => 
+        failureCode switch
+        {
+            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.BotUserNotFound, 
+            _ => NotificationUnsubscribeFailureCode.Unknown 
+        };
 
+    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeNotificationType(DataverseFailureCode failureCode)
+        => 
+        failureCode switch
+        { 
+            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.NotificationTypeNotFound, 
+            _ => NotificationUnsubscribeFailureCode.Unknown
+        };
+    
+    private static NotificationUnsubscribeFailureCode MapFailureWhenUpdateSubscription(DataverseFailureCode failureCode)
+        => 
+        failureCode switch
+        {
+            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.SubscriptionNotFound,
+            _ => NotificationUnsubscribeFailureCode.Unknown,
+        };
+    
+    private static Result<Unit, Failure<NotificationUnsubscribeFailureCode>> RecoverUnsubscribeFailure(
+        Failure<NotificationUnsubscribeFailureCode> failure)
+        => 
+        failure.FailureCode switch
+        { 
+            NotificationUnsubscribeFailureCode.SubscriptionNotFound => Unit.Value, 
+            _ => failure
+        };
+    
     private sealed record class NotificationData(NotificationSubscribeIn Input, NotificationSubscriptionJson Subscription);
 }

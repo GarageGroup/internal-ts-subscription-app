@@ -27,7 +27,7 @@ internal sealed partial class NotificationSubscribeFunc
             FindBotUserIdAsync,
             FindNotificationTypeIdAsync)
         .MapSuccess(
-            @out => NotificationSubscriptionJson.BuildDataverseUpsertInput(
+            @out => NotificationSubscriptionJson.BuildDataverseUpdateInput(
                 botUserId: @out.Item1,
                 typeId: @out.Item2,
                 subscription: input.Subscription))
@@ -46,7 +46,7 @@ internal sealed partial class NotificationSubscribeFunc
             dataverseApi.GetEntityAsync<TelegramBotUserJson>)
         .Map(
             static response => response.Value.Id,
-            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingBotUser));
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingSubscribeUser));
 
     private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindNotificationTypeIdAsync(
         NotificationSubscribeIn input, CancellationToken cancellationToken)
@@ -59,7 +59,7 @@ internal sealed partial class NotificationSubscribeFunc
             NotificationTypeJson.BuildGetInput)
         .ForwardValue(
             dataverseApi.GetEntityAsync<NotificationTypeJson>,
-            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingNotificationType))
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingSubscribeNotificationType))
         .MapSuccess(
             static response => response.Value.Id);
 }

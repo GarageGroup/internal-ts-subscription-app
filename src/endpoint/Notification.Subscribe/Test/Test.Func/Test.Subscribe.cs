@@ -10,7 +10,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test.Te
 partial class NotificationSubscribeFuncTest
 {
     [Fact]
-    public static async Task InvokeAsync_ExpectSearchForUserCalledOnce()
+    public static async Task SubscribeAsync_ExpectSearchForUserCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
 
@@ -50,7 +50,7 @@ partial class NotificationSubscribeFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord, NotificationSubscribeFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidPayload, NotificationSubscribeFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidFileSize, NotificationSubscribeFailureCode.Unknown)]
-    public static async Task InvokeAsync_FindBotUserResultIsFailure_ExpectFailure(
+    public static async Task SubscribeAsync_FindBotUserResultIsFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode, NotificationSubscribeFailureCode expectedFailureCode)
     {
         var sourceException = new Exception("Some exception message");
@@ -66,7 +66,7 @@ partial class NotificationSubscribeFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_ExpectFindDailyNotificationTypeCalledOnce()
+    public static async Task SubscribeAsync_ExpectFindDailyNotificationTypeCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
 
@@ -86,7 +86,7 @@ partial class NotificationSubscribeFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_ExpectFindWeeklyNotificationTypeCalledOnce()
+    public static async Task SubscribeAsync_ExpectFindWeeklyNotificationTypeCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi(
             SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
@@ -118,7 +118,7 @@ partial class NotificationSubscribeFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord, NotificationSubscribeFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidPayload, NotificationSubscribeFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidFileSize, NotificationSubscribeFailureCode.Unknown)]
-    public static async Task InvokeAsync_FindNotificationTypeResultIsFailure_ExpectFailure(
+    public static async Task SubscribeAsync_FindNotificationTypeResultIsFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode, NotificationSubscribeFailureCode expectedFailureCode)
     {
         var sourceException = new Exception("Some exception message");
@@ -135,7 +135,7 @@ partial class NotificationSubscribeFuncTest
 
     [Theory]
     [MemberData(nameof(NotificationSubscribeFuncSource.InputInvalidTestData), MemberType = typeof(NotificationSubscribeFuncSource))]
-    public static async Task InvokeAsync_UserPreferenceIsInvalid_ExpectValidationFailure(
+    public static async Task SubscribeAsync_UserPreferenceIsInvalid_ExpectValidationFailure(
         NotificationSubscribeIn input, Failure<NotificationSubscribeFailureCode> expected)
     {
         var mockDataverseApi = BuildMockDataverseApi(
@@ -151,7 +151,7 @@ partial class NotificationSubscribeFuncTest
 
     [Theory]
     [MemberData(nameof(NotificationSubscribeFuncSource.InputValidTestData), MemberType = typeof(NotificationSubscribeFuncSource))]
-    internal static async Task InvokeAsync_InputIsValid_ExpectUpsertNotificationSubscriptionOnce(
+    internal static async Task SubscribeAsync_InputIsValid_ExpectUpsertNotificationSubscriptionOnce(
         NotificationSubscribeIn input, NotificationSubscriptionJson expectedSubscriptionJson)
     {
         var botUser = new TelegramBotUserJson
@@ -199,7 +199,7 @@ partial class NotificationSubscribeFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord)]
     [InlineData(DataverseFailureCode.InvalidPayload)]
     [InlineData(DataverseFailureCode.InvalidFileSize)]
-    public static async Task InvokeAsync_NotificationUpsertIsFailure_ExpectUnknownFailure(
+    public static async Task SubscribeAsync_NotificationUpsertIsFailure_ExpectUnknownFailure(
         DataverseFailureCode dataverseFailureCode)
     {
         var sourceException = new Exception("Some exception");
@@ -215,7 +215,7 @@ partial class NotificationSubscribeFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_AllResultsAreSuccesses_ExpectSuccess()
+    public static async Task SubscribeAsync_AllResultsAreSuccesses_ExpectSuccess()
     {
         var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
         var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);

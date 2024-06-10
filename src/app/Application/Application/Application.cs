@@ -24,4 +24,11 @@ internal static partial class Application
     private static IConfiguration GetConfiguration(this IServiceProvider serviceProvider)
         =>
         serviceProvider.GetRequiredService<IConfiguration>();
+    
+    private static NotificationSubscribeOption ResolveNotificationSubscribeOption(IServiceProvider serviceProvider) 
+        => 
+        new()
+        {
+            BotId = serviceProvider.GetRequiredService<IConfiguration>().GetValue<long>("TelegramBotId")
+        };
 }

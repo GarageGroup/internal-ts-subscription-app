@@ -75,20 +75,26 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
         };
     }
 
-    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input) 
-        => 
-        MapToNotificationTypeKey(input.SubscriptionData.NotificationType);
+    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input)
+        =>
+        MapToNotificationTypeKey(input.SubscriptionData.NotificationType)
+            .MapFailure(x => x.WithFailureCode(NotificationSubscribeFailureCode.NotificationTypeInvalid));
 
-    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationType type)
+    private Result<string, Failure<NotificationUnsubscribeFailureCode>> MapToNotificationTypeKey(NotificationUnsubscribeIn input) 
+        => 
+        MapToNotificationTypeKey(input.NotificationType)
+            .MapFailure(x => x.WithFailureCode(NotificationUnsubscribeFailureCode.NotificationTypeInvalid));
+    
+    private static Result<string, Failure<Unit>> MapToNotificationTypeKey(NotificationType type)
         =>
         type switch
         {
             NotificationType.DailyNotification => "dailyTimesheetNotification",
             NotificationType.WeeklyNotification => "weeklyTimesheetNotification",
-            _ => Failure.Create(NotificationSubscribeFailureCode.NotificationTypeInvalid, "Not supported type of subscription data")
+            _ => Failure.Create(Unit.Value, "Not supported type of subscription data")
         };
 
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingBotUser(DataverseFailureCode failureCode) 
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeUser(DataverseFailureCode failureCode) 
         => 
         failureCode switch
         {
@@ -96,13 +102,29 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             _ => NotificationSubscribeFailureCode.Unknown 
         };
 
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingNotificationType(DataverseFailureCode failureCode)
+    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeNotificationType(DataverseFailureCode failureCode)
         => 
         failureCode switch
         { 
             DataverseFailureCode.RecordNotFound => NotificationSubscribeFailureCode.NotificationTypeNotFound, 
             _ => NotificationSubscribeFailureCode.Unknown
         };
+        
+    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeUser(DataverseFailureCode failureCode) 
+        => 
+        failureCode switch
+        {
+            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.BotUserNotFound, 
+            _ => NotificationUnsubscribeFailureCode.Unknown 
+        };
 
+    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeNotificationType(DataverseFailureCode failureCode)
+        => 
+        failureCode switch
+        { 
+            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.NotificationTypeNotFound, 
+            _ => NotificationUnsubscribeFailureCode.Unknown
+        };
+    
     private sealed record class NotificationData(NotificationSubscribeIn Input, NotificationSubscriptionJson Subscription);
 }

@@ -7,7 +7,7 @@ public sealed record class NotificationUnsubscribeIn
 {
     public NotificationUnsubscribeIn(
         [ClaimIn] Guid systemUserId,
-        [RootBodyIn] NotificationType notificationType)
+        [JsonBodyIn] NotificationType notificationType)
     {
         SystemUserId = systemUserId;
         NotificationType = notificationType;

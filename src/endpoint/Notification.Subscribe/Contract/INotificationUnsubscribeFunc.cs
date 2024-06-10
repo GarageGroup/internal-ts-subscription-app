@@ -9,6 +9,6 @@ namespace GarageGroup.Internal.Timesheet;
 [EndpointTag("Notification")]
 public interface INotificationUnsubscribeFunc
 {
-    ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InvokeAsync(
+    ValueTask<Result<Unit, Failure<NotificationUnsubscribeFailureCode>>> InvokeAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken);
 }

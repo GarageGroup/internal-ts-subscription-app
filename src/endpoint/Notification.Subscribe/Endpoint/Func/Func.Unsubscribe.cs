@@ -6,7 +6,7 @@ namespace GarageGroup.Internal.Timesheet;
 
 internal sealed partial class NotificationSubscribeFunc
 {
-    public ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InvokeAsync(
+    public ValueTask<Result<Unit, Failure<NotificationUnsubscribeFailureCode>>> InvokeAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
@@ -24,10 +24,9 @@ internal sealed partial class NotificationSubscribeFunc
                 }))
         .ForwardValue(
             dataverseApi.UpdateEntityAsync,
-            static failure => failure.WithFailureCode(NotificationSubscribeFailureCode.Unknown))
-        .Recover(failure => Unit.Value);
+            static failure => failure.WithFailureCode(NotificationUnsubscribeFailureCode.Unknown));
 
-    private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindBotUserIdAsync(
+    private Task<Result<Guid, Failure<NotificationUnsubscribeFailureCode>>> FindBotUserIdAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
@@ -38,20 +37,20 @@ internal sealed partial class NotificationSubscribeFunc
             dataverseApi.GetEntityAsync<TelegramBotUserJson>)
         .Map(
             static response => response.Value.Id,
-            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingBotUser));
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingUnsubscribeUser));
 
-    private Task<Result<Guid, Failure<NotificationSubscribeFailureCode>>> FindNotificationTypeIdAsync(
+    private Task<Result<Guid, Failure<NotificationUnsubscribeFailureCode>>> FindNotificationTypeIdAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            input => MapToNotificationTypeKey(input.NotificationType))
+            MapToNotificationTypeKey)
         .MapSuccess(
             NotificationTypeJson.BuildGetInput)
         .ForwardValue(
             dataverseApi.GetEntityAsync<NotificationTypeJson>,
-            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingNotificationType))
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingUnsubscribeNotificationType))
         .MapSuccess(
             static response => response.Value.Id);
 }

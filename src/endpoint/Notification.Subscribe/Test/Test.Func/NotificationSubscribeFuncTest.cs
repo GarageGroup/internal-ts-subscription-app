@@ -20,6 +20,12 @@ public static partial class NotificationSubscribeFuncTest
             systemUserId: Guid.Parse("ac9bdaf3-a9c0-4b8b-833a-406bf59a9fcd"),
             subscriptionData: new DailyNotificationSubscriptionData(null));
 
+    private static readonly NotificationUnsubscribeIn SomeUnsubscribeInput
+        =
+        new(
+            systemUserId: Guid.Parse("ac9bdaf3-a9c0-4b8b-833a-406bf59a9fcd"),
+            notificationType: NotificationType.DailyNotification);
+
     private static readonly DataverseEntityGetOut<TelegramBotUserJson> SomeDataverseTelegramBotUser
         =
         new(

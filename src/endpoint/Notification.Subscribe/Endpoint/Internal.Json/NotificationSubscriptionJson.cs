@@ -17,9 +17,9 @@ internal sealed record class NotificationSubscriptionJson
     private const string DisabledStatusFieldName = "gg_is_disabled";
 
     internal static DataverseEntityUpdateIn<NotificationSubscriptionJson> BuildDataverseUpdateInput(
-        Guid botUserId, 
-        Guid typeId, 
-        NotificationSubscriptionJson subscription, 
+        Guid botUserId,
+        Guid typeId,
+        NotificationSubscriptionJson subscription,
         DataverseUpdateOperationType operationType = DataverseUpdateOperationType.Upsert) 
         => 
         new(

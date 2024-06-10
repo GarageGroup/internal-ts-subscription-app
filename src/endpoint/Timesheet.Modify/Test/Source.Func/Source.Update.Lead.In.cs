@@ -33,8 +33,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
                         Subject = "Some subject (Some company name)",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -61,8 +64,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = "Some message!",
                         Duration = 8,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some subject"
+                        Subject = "Some subject",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -89,8 +95,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = null,
                         Duration = 8,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
                         Subject = "Some subject",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -117,8 +126,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = null,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some subject (Some company name)"
+                        Subject = "Some subject (Some company name)",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -145,8 +157,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = null,
                         Duration = null,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "(Some company name)"
+                        Subject = "(Some company name)",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -164,7 +179,9 @@ internal static partial class TimesheetModifyFuncSource
                     {
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
-                        Duration = 8
+                        Duration = 8,
+                        Subject = null,
+                        ExtensionData = null
                     })
             },
         };

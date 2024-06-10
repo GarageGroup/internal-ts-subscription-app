@@ -11,12 +11,10 @@ public enum NotificationUnsubscribeFailureCode
 
     [Problem(FailureStatusCode.NotFound, true)]
     NotificationTypeNotFound,
- 
-    SubscriptionNotFound,
-    
+
     [Problem(FailureStatusCode.BadRequest, true)]
     NotificationTypeInvalid,
-    
+
     [Problem(FailureStatusCode.BadRequest, true)]
     InvalidQuery
 }

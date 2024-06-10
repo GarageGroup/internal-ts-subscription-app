@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/lastProjects", Description = "Get last user projects, leads, opportunities and incidents")]
+[Endpoint(EndpointMethod.Post, "/getLastProjects", Description = "Get last user projects, leads, opportunities and incidents")]
 [EndpointTag("Project")]
 public interface ILastProjectSetGetFunc
 {

@@ -54,6 +54,5 @@ public static partial class LastProjectSetGetFuncTest
 
     private static ITodayProvider BuildTodayProvider(DateOnly date)
         =>
-        Mock.Of<ITodayProvider>(
-            t => t.Today == date);
+        Mock.Of<ITodayProvider>(t => t.Today == date);
 }

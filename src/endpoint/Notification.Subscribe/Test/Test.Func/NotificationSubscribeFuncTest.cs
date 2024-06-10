@@ -8,14 +8,14 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test.Te
 public static partial class NotificationSubscribeFuncTest
 {
     private static readonly NotificationSubscribeOption SomeOption
-        = 
-        new ()
+        =
+        new()
         {
             BotId = 8912380915
         };
 
     private static readonly NotificationSubscribeIn SomeSubscribeInput
-        = 
+        =
         new(
             systemUserId: Guid.Parse("ac9bdaf3-a9c0-4b8b-833a-406bf59a9fcd"),
             subscriptionData: new DailyNotificationSubscriptionData(null));

@@ -7,6 +7,6 @@ partial class Application
 {
     [EndpointApplicationExtension]
     internal static Dependency<NotificationUnsubscribeEndpoint> UseNotificationUnsubscribeEndpoint()
-        => 
+        =>
         UseDataverseApi().With(ResolveNotificationSubscribeOption).UseNotificationUnsubscribe();
 }

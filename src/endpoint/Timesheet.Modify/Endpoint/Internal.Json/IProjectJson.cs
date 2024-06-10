@@ -2,7 +2,9 @@
 
 internal interface IProjectJson
 {
-    string? GetName();
+    string? Name { get; }
 
-    string GetLookupValue();
+    string LookupValue { get; }
+
+    string LookupEntity { get; }
 }

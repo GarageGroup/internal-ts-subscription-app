@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit;
+﻿using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test;
 
@@ -11,7 +10,7 @@ partial class NotificationSubscribeFuncSource
         {
             {
                 new(
-                    systemUserId: Guid.Parse("e841030b-abc6-441b-9605-d606da13ca5f"),
+                    systemUserId: new("e841030b-abc6-441b-9605-d606da13ca5f"),
                     subscriptionData: new DailyNotificationSubscriptionData(
                         userPreference: default)),
                 new()
@@ -21,7 +20,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
+                    systemUserId: new("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
                     subscriptionData: new DailyNotificationSubscriptionData(
                         userPreference: new(
                             workedHours: 1,
@@ -34,7 +33,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
+                    systemUserId: new("5dfd3ac2-7bcb-47dc-b2da-581e6039b692"),
                     subscriptionData: new DailyNotificationSubscriptionData(
                         userPreference: new(
                             workedHours: 8,
@@ -47,7 +46,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("e2518da8-0f66-464f-b6cd-d22a9c476e6d"),
+                    systemUserId: new("e2518da8-0f66-464f-b6cd-d22a9c476e6d"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
                         userPreference: default)),
                 new()
@@ -57,7 +56,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
+                    systemUserId: new("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
                         userPreference: new(
                             weekday: [Weekday.Friday],
@@ -71,7 +70,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
+                    systemUserId: new("f302bf8b-22a3-4354-bfb9-35a80c61fcdc"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
                         userPreference: new(
                             weekday: [Weekday.Friday],
@@ -85,7 +84,7 @@ partial class NotificationSubscribeFuncSource
             },
             {
                 new(
-                    systemUserId: Guid.Parse("1d8f2faa-1aa4-4b6e-958f-a455343d9e72"),
+                    systemUserId: new("1d8f2faa-1aa4-4b6e-958f-a455343d9e72"),
                     subscriptionData: new WeeklyNotificationSubscriptionData(
                         userPreference: new(
                             weekday: [Weekday.Saturday, Weekday.Friday, Weekday.Sunday],

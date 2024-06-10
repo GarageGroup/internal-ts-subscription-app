@@ -15,29 +15,19 @@ partial class TimesheetModifyFunc
         .PipeValue(
             GetProjectAsync)
         .Map(
-            project => (input, project),
+            project => new TimesheetJson(project)
+            {
+                Date = input.Date,
+                Description = input.Description.OrNullIfEmpty(),
+                Duration = input.Duration,
+                ChannelCode = TelegramChannelCode
+            },
             static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode))
-        .MapSuccess(
-            BuildTimesheetJson)
         .MapSuccess(
             TimesheetJson.BuildDataverseCreateInput)
         .ForwardValue(
             dataverseApi.Impersonate(input.SystemUserId).CreateEntityAsync,
             static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode));
-
-    private TimesheetJson BuildTimesheetJson((TimesheetCreateIn Input, IProjectJson Project) input)
-    {
-        var timesheet = new TimesheetJson
-        {
-            Subject = input.Project.GetName(),
-            Date = input.Input.Date,
-            Description = input.Input.Description.OrNullIfEmpty(),
-            Duration = input.Input.Duration,
-            ChannelCode = (int)ChannelCode.Telegram
-        };
-
-        return BindProject(timesheet, input.Project, input.Input.Project.Type);
-    }
 
     private static TimesheetCreateFailureCode ToTimesheetCreateFailureCode(DataverseFailureCode failureCode)
         =>

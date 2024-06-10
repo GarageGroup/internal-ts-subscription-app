@@ -7,6 +7,8 @@ namespace GarageGroup.Internal.Timesheet;
 
 internal sealed partial class TimesheetModifyFunc(IDataverseApiClient dataverseApi) : ITimesheetCreateFunc, ITimesheetUpdateFunc
 {
+    private const int TelegramChannelCode = 140120000;
+
     private ValueTask<Result<IProjectJson, Failure<ProjectNameFailureCode>>> GetProjectAsync(
         TimesheetProject input, CancellationToken cancellationToken)
         =>
@@ -41,34 +43,12 @@ internal sealed partial class TimesheetModifyFunc(IDataverseApiClient dataverseA
             _ => default
         };
 
-    private static TimesheetJson BindProject(
-        TimesheetJson timesheet, IProjectJson project, ProjectType projectType)
-    {
-        return projectType switch
-        {
-            ProjectType.Project => timesheet with
-            {
-                ProjectLookupValue = project.GetLookupValue()
-            },
-            ProjectType.Opportunity => timesheet with
-            {
-                OpportunityLookupValue = project.GetLookupValue()
-            },
-            ProjectType.Lead => timesheet with
-            {
-                LeadLookupValue = project.GetLookupValue()
-            },
-            _ => timesheet with
-            {
-                IncidentLookupValue = project.GetLookupValue()
-            }
-        };
-    }
-
     private enum ProjectNameFailureCode
     {
         Unknown,
+
         ProjectNotFound,
+
         InvalidProject
     }
 }

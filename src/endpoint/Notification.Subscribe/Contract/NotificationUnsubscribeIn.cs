@@ -12,7 +12,7 @@ public sealed record class NotificationUnsubscribeIn
         SystemUserId = systemUserId;
         NotificationType = notificationType;
     }
-    
+
     public Guid SystemUserId { get; }
 
     public NotificationType NotificationType { get; }

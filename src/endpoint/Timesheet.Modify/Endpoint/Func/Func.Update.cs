@@ -25,33 +25,29 @@ partial class TimesheetModifyFunc
     {
         if (input.Project is null)
         {
-            return new(
-                new TimesheetJson
-                {
-                    Date = input.Date,
-                    Description = input.Description,
-                    Duration = input.Duration
-                });
+            return new TimesheetJson
+            {
+                Date = input.Date,
+                Description = input.Description,
+                Duration = input.Duration
+            };
         }
 
         var projectName = await GetProjectAsync(input.Project, cancellationToken).ConfigureAwait(false);
-
-        return projectName.Map(
-            MapTimesheetJson,
-            static failure => failure.MapFailureCode(ToTimesheetUpdateFailureCode));
+        return projectName.Map(MapTimesheetJson, MapFailure);
 
         TimesheetJson MapTimesheetJson(IProjectJson project)
-        {
-            var timesheet = new TimesheetJson
+            =>
+            new(project)
             {
-                Subject = project.GetName(),
                 Date = input.Date,
                 Description = input.Description,
                 Duration = input.Duration
             };
 
-            return BindProject(timesheet, project, input.Project.Type);
-        }
+        static Failure<TimesheetUpdateFailureCode> MapFailure(Failure<ProjectNameFailureCode> failure)
+            =>
+            failure.MapFailureCode(ToTimesheetUpdateFailureCode);
     }
 
     private static TimesheetUpdateFailureCode ToTimesheetUpdateFailureCode(DataverseFailureCode failureCode)

@@ -3,9 +3,11 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
+using TheoryData = TheoryData<TimesheetCreateIn, DataverseEntityGetOut<OpportunityJson>, DataverseEntityCreateIn<TimesheetJson>>;
+
 internal static partial class TimesheetModifyFuncSource
 {
-    public static TheoryData<TimesheetCreateIn, DataverseEntityGetOut<OpportunityJson>, DataverseEntityCreateIn<TimesheetJson>> InputCreateOpportunityTestData
+    public static TheoryData InputCreateOpportunityTestData
         =>
         new()
         {
@@ -31,9 +33,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
+                        ChannelCode = 140120000,
                         Subject = "Some project name",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -58,8 +63,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 01, 12),
                         Description = null,
                         Duration = 3,
-                        OpportunityLookupValue = "/opportunities(8829deda-5249-4412-9be5-ef5728fb928d)",
-                        ChannelCode = 140120000
+                        ChannelCode = 140120000,
+                        Subject = null,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(8829deda-5249-4412-9be5-ef5728fb928d)"
+                        }
                     })
             },
             {
@@ -84,9 +93,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 11, 03),
                         Description = null,
                         Duration = 15,
-                        OpportunityLookupValue = "/opportunities(13f0cb5c-b251-494c-9cae-1b0708471c10)",
+                        ChannelCode = 140120000,
                         Subject = string.Empty,
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(13f0cb5c-b251-494c-9cae-1b0708471c10)"
+                        }
                     })
             },
             {
@@ -97,7 +109,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("ca012870-a0f9-4945-a314-a14ebf690574"),
                         type: ProjectType.Opportunity),
                     duration: -3,
-                    description: "\n\r"),
+                    description: "\r\n"),
                 new(
                     new()
                     {
@@ -109,11 +121,14 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2022, 12, 25),
-                        Description = "\n\r",
+                        Description = "\r\n",
                         Duration = -3,
-                        OpportunityLookupValue = "/opportunities(ca012870-a0f9-4945-a314-a14ebf690574)",
+                        ChannelCode = 140120000,
                         Subject = "\n\r",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(ca012870-a0f9-4945-a314-a14ebf690574)"
+                        }
                     })
             }
         };

@@ -17,17 +17,21 @@ internal sealed record class ProjectJson : IProjectJson, IProjectDataverseInputB
             entityKey: new DataversePrimaryKey(projectId),
             selectFields: [FieldProjectName]);
 
-    public string? GetName()
-        =>
-        ProjectName;
-
-    public string GetLookupValue()
-        =>
-        $"/{EntityPluralName}({Id:D})";
-
     [JsonPropertyName("gg_projectid")]
     public Guid Id { get; init; }
 
     [JsonPropertyName(FieldProjectName)]
     public string? ProjectName { get; init; }
+
+    string? IProjectJson.Name
+        =>
+        ProjectName;
+
+    string IProjectJson.LookupValue
+        =>
+        $"/{EntityPluralName}({Id:D})";
+
+    string IProjectJson.LookupEntity { get; }
+        =
+        "gg_project";
 }

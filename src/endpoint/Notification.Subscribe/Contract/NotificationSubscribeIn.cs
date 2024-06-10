@@ -12,7 +12,7 @@ public sealed record class NotificationSubscribeIn
         SystemUserId = systemUserId;
         SubscriptionData = subscriptionData;
     }
-    
+
     public Guid SystemUserId { get; }
 
     public BaseSubscriptionData SubscriptionData { get; }

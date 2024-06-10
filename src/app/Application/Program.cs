@@ -19,6 +19,6 @@ static class Program
         .UseTimesheetDeleteEndpoint()
         .UseTimesheetUpdateEndpoint()
         .UseTagSetGetEndpoint()
-	.UseNotificationSubscribeEndpoint()
+	    .UseNotificationSubscribeEndpoint()
         .RunAsync();
 }

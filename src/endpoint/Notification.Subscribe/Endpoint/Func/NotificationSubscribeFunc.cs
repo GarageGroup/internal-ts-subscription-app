@@ -4,7 +4,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class NotificationSubscribeFunc : INotificationSubscribeFunc
+internal sealed partial class NotificationSubscribeFunc : INotificationSubscribeFunc, INotificationUnsubscribeFunc
 {
     private static readonly JsonSerializerOptions SerializerOptions
         =
@@ -77,10 +77,14 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
 
     private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input) 
         => 
-        input.SubscriptionData switch
+        MapToNotificationTypeKey(input.SubscriptionData.NotificationType);
+
+    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationType type)
+        =>
+        type switch
         {
-            DailyNotificationSubscriptionData => "dailyTimesheetNotification",
-            WeeklyNotificationSubscriptionData => "weeklyTimesheetNotification",
+            NotificationType.DailyNotification => "dailyTimesheetNotification",
+            NotificationType.WeeklyNotification => "weeklyTimesheetNotification",
             _ => Failure.Create(NotificationSubscribeFailureCode.NotificationTypeInvalid, "Not supported type of subscription data")
         };
 

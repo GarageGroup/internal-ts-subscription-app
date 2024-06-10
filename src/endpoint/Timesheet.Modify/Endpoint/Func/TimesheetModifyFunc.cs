@@ -1,46 +1,74 @@
-﻿using System;
-using GarageGroup.Infra;
+﻿using GarageGroup.Infra;
+using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace GarageGroup.Internal.Timesheet;
 
 internal sealed partial class TimesheetModifyFunc(IDataverseApiClient dataverseApi) : ITimesheetCreateFunc, ITimesheetUpdateFunc
 {
-    private static Result<TimesheetJson, Failure<TFailureCode>> BindProjectOrFailure<TFailureCode>(
-        TimesheetJson timesheet, TimesheetProject project)
-        where TFailureCode : struct
+    private ValueTask<Result<IProjectJson, Failure<ProjectNameFailureCode>>> GetProjectAsync(
+        TimesheetProject input, CancellationToken cancellationToken)
+        =>
+        input.Type switch
+        {
+            ProjectType.Project => InnerGetProjectAsync<ProjectJson>(input.Id, cancellationToken),
+            ProjectType.Incident => InnerGetProjectAsync<IncidentJson>(input.Id, cancellationToken),
+            ProjectType.Opportunity => InnerGetProjectAsync<OpportunityJson>(input.Id, cancellationToken),
+            ProjectType.Lead => InnerGetProjectAsync<LeadJson>(input.Id, cancellationToken),
+            _ => new(Failure.Create(ProjectNameFailureCode.InvalidProject, $"An unexpected project type: {input.Type}"))
+        };
+
+    private ValueTask<Result<IProjectJson, Failure<ProjectNameFailureCode>>> InnerGetProjectAsync<TProjectJson>(
+        Guid projectId, CancellationToken cancellationToken)
+        where TProjectJson : IProjectJson, IProjectDataverseInputBuilder, new()
+        =>
+        AsyncPipeline.Pipe(
+            projectId, cancellationToken)
+        .Pipe(
+            TProjectJson.BuildDataverseEntityGetIn)
+        .PipeValue(
+            dataverseApi.GetEntityAsync<TProjectJson>)
+        .Map(
+            static @out => (IProjectJson)(@out.Value ?? new()),
+            static failure => failure.MapFailureCode(ToProjectNameFailureCode));
+
+    private static ProjectNameFailureCode ToProjectNameFailureCode(DataverseFailureCode failureCode)
+        =>
+        failureCode switch
+        {
+            DataverseFailureCode.RecordNotFound => ProjectNameFailureCode.ProjectNotFound,
+            _ => default
+        };
+
+    private static TimesheetJson BindProject(
+        TimesheetJson timesheet, IProjectJson project, ProjectType projectType)
     {
-        if (project.Type is ProjectType.Project)
+        return projectType switch
         {
-            return timesheet with
+            ProjectType.Project => timesheet with
             {
-                ProjectLookupValue = TimesheetJson.BuildProjectLookupValue(project.Id)
-            };
-        }
-
-        if (project.Type is ProjectType.Opportunity)
-        {
-            return timesheet with
+                ProjectLookupValue = project.GetLookupValue()
+            },
+            ProjectType.Opportunity => timesheet with
             {
-                OpportunityLookupValue = TimesheetJson.BuildOpportunityLookupValue(project.Id)
-            };
-        }
-
-        if (project.Type is ProjectType.Lead)
-        {
-            return timesheet with
+                OpportunityLookupValue = project.GetLookupValue()
+            },
+            ProjectType.Lead => timesheet with
             {
-                LeadLookupValue = TimesheetJson.BuildLeadLookupValue(project.Id)
-            };
-        }
-
-        if (project.Type is ProjectType.Incident)
-        {
-            return timesheet with
+                LeadLookupValue = project.GetLookupValue()
+            },
+            _ => timesheet with
             {
-                IncidentLookupValue = TimesheetJson.BuildIncidentLookupValue(project.Id)
-            };
-        }
+                IncidentLookupValue = project.GetLookupValue()
+            }
+        };
+    }
 
-        return Failure.Create<TFailureCode>(default, $"An unexpected project type: {project.Type}");
+    private enum ProjectNameFailureCode
+    {
+        Unknown,
+        ProjectNotFound,
+        InvalidProject
     }
 }

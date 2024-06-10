@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GarageGroup.Infra;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -11,27 +11,32 @@ partial class TimesheetModifyFunc
         TimesheetCreateIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
-            input, cancellationToken)
-        .Pipe(
-            BuildTimesheetJsonOrFailure)
+            input.Project, cancellationToken)
+        .PipeValue(
+            GetProjectAsync)
+        .Map(
+            project => (input, project),
+            static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode))
+        .MapSuccess(
+            BuildTimesheetJson)
         .MapSuccess(
             TimesheetJson.BuildDataverseCreateInput)
         .ForwardValue(
             dataverseApi.Impersonate(input.SystemUserId).CreateEntityAsync,
             static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode));
 
-    private Result<TimesheetJson, Failure<TimesheetCreateFailureCode>> BuildTimesheetJsonOrFailure(TimesheetCreateIn input)
+    private TimesheetJson BuildTimesheetJson((TimesheetCreateIn Input, IProjectJson Project) input)
     {
         var timesheet = new TimesheetJson
         {
-            Subject = input.Project.DisplayName,
-            Date = input.Date,
-            Description = input.Description.OrNullIfEmpty(),
-            Duration = input.Duration,
+            Subject = input.Project.GetName(),
+            Date = input.Input.Date,
+            Description = input.Input.Description.OrNullIfEmpty(),
+            Duration = input.Input.Duration,
             ChannelCode = (int)ChannelCode.Telegram
         };
 
-        return BindProjectOrFailure<TimesheetCreateFailureCode>(timesheet, input.Project);
+        return BindProject(timesheet, input.Project, input.Input.Project.Type);
     }
 
     private static TimesheetCreateFailureCode ToTimesheetCreateFailureCode(DataverseFailureCode failureCode)
@@ -40,6 +45,15 @@ partial class TimesheetModifyFunc
         {
             DataverseFailureCode.UserNotEnabled => TimesheetCreateFailureCode.Forbidden,
             DataverseFailureCode.PrivilegeDenied => TimesheetCreateFailureCode.Forbidden,
+            _ => default
+        };
+
+    private static TimesheetCreateFailureCode ToTimesheetCreateFailureCode(ProjectNameFailureCode failureCode)
+        =>
+        failureCode switch
+        {
+            ProjectNameFailureCode.ProjectNotFound => TimesheetCreateFailureCode.ProjectNotFound,
+            ProjectNameFailureCode.InvalidProject => TimesheetCreateFailureCode.UnexpectedProjectType,
             _ => default
         };
 }

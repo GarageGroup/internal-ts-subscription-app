@@ -7,5 +7,11 @@ public enum TimesheetUpdateFailureCode
     Unknown,
 
     [Problem(FailureStatusCode.NotFound, "Timesheet not found")]
-    NotFound
+    NotFound,
+
+    [Problem(FailureStatusCode.BadRequest, "An unexpected project type")]
+    UnexpectedProjectType,
+
+    [Problem(FailureStatusCode.NotFound, "Project not found")]
+    ProjectNotFound
 }

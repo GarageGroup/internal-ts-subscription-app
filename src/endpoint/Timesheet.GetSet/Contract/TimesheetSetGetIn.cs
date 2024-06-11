@@ -7,13 +7,17 @@ public readonly record struct TimesheetSetGetIn
 {
     public TimesheetSetGetIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] DateOnly date)
+        [JsonBodyIn] DateOnly dateFrom,
+        [JsonBodyIn] DateOnly dateTo)
     {
         SystemUserId = systemUserId;
-        Date = date;
+        DateFrom = dateFrom;
+        DateTo = dateTo;
     }
 
     public Guid SystemUserId { get; }
 
-    public DateOnly Date { get; }
+    public DateOnly DateFrom { get; }
+
+    public DateOnly DateTo { get; }
 }

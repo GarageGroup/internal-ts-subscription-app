@@ -17,7 +17,8 @@ partial class TimesheetSetGetFuncTest
 
         var input = new TimesheetSetGetIn(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),
-            date: new(2022, 02, 05));
+            dateFrom: new(2022, 03, 05),
+            dateTo: new(2022, 02, 05));
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -34,7 +35,8 @@ partial class TimesheetSetGetFuncTest
                 "t.gg_description AS Description",
                 "t.activityid AS Id",
                 "i.statecode AS IncidentStateCode",
-                "t.statecode AS TimesheetStateCode"
+                "t.statecode AS TimesheetStateCode",
+                "t.gg_date AS Date"
             ],
             JoinedTables =
             [
@@ -45,7 +47,14 @@ partial class TimesheetSetGetFuncTest
                 Filters =
                 [
                     new DbParameterFilter("t.ownerid", DbFilterOperator.Equal, Guid.Parse("bd8b8e33-554e-e611-80dc-c4346bad0190"), "ownerId"),
-                    new DbParameterFilter("t.gg_date", DbFilterOperator.Equal, "2022-02-05", "date"),
+                    new DbCombinedFilter(DbLogicalOperator.And)
+                    {
+                        Filters =
+                        [
+                            new DbParameterFilter("t.gg_date", DbFilterOperator.GreaterOrEqual, "2022-03-05", "dateFrom"),
+                            new DbParameterFilter("t.gg_date", DbFilterOperator.LessOrEqual, "2022-02-05", "dateTo"),
+                        ]
+                    },                    
                     new DbParameterArrayFilter(
                         fieldName: "t.regardingobjecttypecode",
                         @operator: DbArrayFilterOperator.In,
@@ -55,6 +64,7 @@ partial class TimesheetSetGetFuncTest
             },
             Orders =
             [
+                new("t.gg_date", DbOrderType.Descending),
                 new("t.createdon", DbOrderType.Ascending)
             ]
         };

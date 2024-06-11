@@ -14,7 +14,8 @@ public sealed record class TimesheetSetGetItem
         [AllowNull] string description,
         Guid id,
         [AllowNull] StateCode? incidentStateCode,
-        StateCode timesheetStateCode)
+        StateCode timesheetStateCode,
+        DateOnly date)
     { 
         ProjectId = projectId;
         ProjectType = projectType;
@@ -24,6 +25,7 @@ public sealed record class TimesheetSetGetItem
         Id = id;
         IncidentStateCode = incidentStateCode;
         TimesheetStateCode = timesheetStateCode;
+        Date = date;
     }
 
     public Guid ProjectId { get; }
@@ -42,4 +44,6 @@ public sealed record class TimesheetSetGetItem
     public StateCode? IncidentStateCode { get; }
 
     public StateCode TimesheetStateCode { get; }
+
+    public DateOnly Date { get; }
 }

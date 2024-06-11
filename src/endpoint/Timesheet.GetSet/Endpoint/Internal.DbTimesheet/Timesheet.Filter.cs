@@ -18,9 +18,16 @@ partial record class DbTimesheet
         =>
         new($"{AliasName}.ownerid", DbFilterOperator.Equal, ownerId, "ownerId");
 
-    internal static DbParameterFilter BuildDateFilter(DateOnly date)
+    internal static DbCombinedFilter BuildDateFilter(DateOnly dateFrom, DateOnly dateTo)
         =>
-        new($"{AliasName}.gg_date", DbFilterOperator.Equal, date.ToString("yyyy-MM-dd"), "date");
+        new(DbLogicalOperator.And)
+        {
+            Filters =
+            [
+                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, dateFrom.ToString("yyyy-MM-dd"), "dateFrom"),
+                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.LessOrEqual, dateTo.ToString("yyyy-MM-dd"), "dateTo")
+            ]
+        };
 
     private static int AsInt32(ProjectType type)
         =>

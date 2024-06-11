@@ -11,7 +11,8 @@ public static partial class TimesheetSetGetFuncTest
         =
         new(
             systemUserId: new("bd8b8e33-554e-e611-80dc-c4346bad0190"),
-            date: new(2022, 02, 07));
+            dateFrom: new(2022, 03, 07),
+            dateTo: new(2022, 02, 07));
 
     private static readonly FlatArray<DbTimesheet> SomeDbTimesheetSet
         =

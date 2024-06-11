@@ -20,7 +20,7 @@ partial class TimesheetSetGetFunc
                     Filters =
                     [
                         DbTimesheet.BuildOwnerFilter(@in.SystemUserId),
-                        DbTimesheet.BuildDateFilter(@in.Date),
+                        DbTimesheet.BuildDateFilter(@in.DateFrom, @in.DateTo),
                         DbTimesheet.AllowedProjectTypeSetFilter
                     ]
                 },
@@ -44,5 +44,6 @@ partial class TimesheetSetGetFunc
             description: dbTimesheet.Description,
             id: dbTimesheet.Id,
             incidentStateCode: dbTimesheet.IncidentStateCode,
-            timesheetStateCode: dbTimesheet.TimesheetStateCode);
+            timesheetStateCode: dbTimesheet.TimesheetStateCode,
+            date: DateOnly.FromDateTime(dbTimesheet.Date));
 }

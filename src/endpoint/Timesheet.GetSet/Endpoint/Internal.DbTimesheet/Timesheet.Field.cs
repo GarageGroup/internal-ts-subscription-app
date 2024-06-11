@@ -31,4 +31,7 @@ partial record class DbTimesheet
 
     [DbSelect(All, AliasName, $"{AliasName}.statecode")]
     public StateCode TimesheetStateCode { get; init; }
+
+    [DbSelect(All, AliasName, $"{AliasName}.gg_date")]
+    public DateTime Date {  get; init; }
 }

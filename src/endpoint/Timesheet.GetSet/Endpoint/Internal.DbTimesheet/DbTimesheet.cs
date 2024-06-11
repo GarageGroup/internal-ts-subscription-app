@@ -11,4 +11,6 @@ internal sealed partial record class DbTimesheet : IDbEntity<DbTimesheet>
     private const string AliasName = "t";
 
     private const string IncidentAlias = "i";
+
+    private const string DateFormat = "yyyy-MM-dd";
 }

@@ -24,8 +24,8 @@ partial record class DbTimesheet
         {
             Filters =
             [
-                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, dateFrom.ToString("yyyy-MM-dd"), "dateFrom"),
-                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.LessOrEqual, dateTo.ToString("yyyy-MM-dd"), "dateTo")
+                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.GreaterOrEqual, dateFrom.ToString(DateFormat), "dateFrom"),
+                new DbParameterFilter($"{AliasName}.gg_date", DbFilterOperator.LessOrEqual, dateTo.ToString(DateFormat), "dateTo")
             ]
         };
 

@@ -12,18 +12,19 @@ partial class ProfileGetFuncTest
     [Fact]
     public static async Task InvokeAsync_ExpectMockSqlApiCalledOnce()
     {
-        const long botId = 123123;
         var mockSqlApi = BuildMockSqlApi(SomeDbOutput);
 
+        const long botId = 123123;
         var option = new ProfileGetOption()
         {
             BotId = botId
         };
+
         var func = new ProfileGetFunc(mockSqlApi.Object, option);
 
         var cancellationToken = new CancellationToken(false);
-
         var input = new ProfileGetIn(new("bef33be0-99f5-4018-ba80-3366ec9ec1fd"));
+
         _ = await func.InvokeAsync(input, cancellationToken);
 
         var expectedQuery = new DbSelectQuery("gg_telegram_bot_user", "p")
@@ -51,6 +52,7 @@ partial class ProfileGetFuncTest
                 ]
             }
         };
+
         mockSqlApi.Verify(a => a.QueryEntityOrFailureAsync<DbProfile>(expectedQuery, cancellationToken), Times.Once);
     }
 
@@ -64,7 +66,6 @@ partial class ProfileGetFuncTest
         var dbFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-
         var func = new ProfileGetFunc(mockSqlApi.Object, SomeOption);
 
         var actual = await func.InvokeAsync(SomeInput, default);
@@ -76,13 +77,13 @@ partial class ProfileGetFuncTest
     [Fact]
     internal static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess()
     {
-        var dbOut = new DbProfile()
+        var dbOut = new DbProfile
         {
             UserName = "test",
             LanguageCode = "ru"
         };
-        var mockSqlApi = BuildMockSqlApi(dbOut);
 
+        var mockSqlApi = BuildMockSqlApi(dbOut);
         var func = new ProfileGetFunc(mockSqlApi.Object, SomeOption);
 
         var actual = await func.InvokeAsync(SomeInput, default);

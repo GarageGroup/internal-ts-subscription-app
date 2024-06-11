@@ -64,6 +64,7 @@ partial class TimesheetSetGetFuncTest
             },
             Orders =
             [
+                new("t.gg_date", DbOrderType.Descending),
                 new("t.createdon", DbOrderType.Ascending)
             ]
         };

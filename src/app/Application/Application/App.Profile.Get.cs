@@ -21,6 +21,6 @@ partial class Application
         =>
         new()
         {
-            BotId = serviceProvider.GetRequiredService<IConfiguration>().GetValue<long>("TelegramBotId")
+            BotId = serviceProvider.ResolveBotId()
         };
 }

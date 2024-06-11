@@ -21,5 +21,6 @@ static class Program
         .UseTagSetGetEndpoint()
         .UseNotificationSubscribeEndpoint()
         .UseNotificationUnsubscribeEndpoint()
+        .UseProfileGetEndpoint()
         .RunAsync();
 }

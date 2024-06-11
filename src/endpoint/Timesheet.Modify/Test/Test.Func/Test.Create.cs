@@ -10,7 +10,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 partial class TimesheetModifyFuncTest 
 {
     [Fact]
-    internal static async Task CreateInvokeAsync_InputProjectTypeIsProject_ExpectDataverseGetCalledOnce()
+    public static async Task InvokeAsync_Create_InputProjectTypeIsProject_ExpectDataverseGetCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi<ProjectJson>(Result.Success<Unit>(default), SomeProjectJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -36,7 +36,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    internal static async Task CreateInvokeAsync_InputProjectTypeIsIncident_ExpectDataverseGetCalledOnce()
+    public static async Task InvokeAsync_Create_InputProjectTypeIsIncident_ExpectDataverseGetCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi<IncidentJson>(Result.Success<Unit>(default), SomeIncidentJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -62,7 +62,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    internal static async Task CreateInvokeAsync_InputProjectTypeIsOpportunity_ExpectDataverseGetCalledOnce()
+    public static async Task InvokeAsync_Create_InputProjectTypeIsOpportunity_ExpectDataverseGetCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi<OpportunityJson>(Result.Success<Unit>(default), SomeOpportunityJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -88,7 +88,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    internal static async Task CreateInvokeAsync_InputProjectTypeIsLead_ExpectDataverseGetCalledOnce()
+    public static async Task InvokeAsync_Create_InputProjectTypeIsLead_ExpectDataverseGetCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi<LeadJson>(Result.Success<Unit>(default), SomeLeadJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -114,7 +114,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    internal static async Task CreateInvokeAsync_InputProjectTypeIsInvalid_ExpectUnexpectedProjectTypeFailureCode()
+    public static async Task InvokeAsync_Create_InputProjectTypeIsInvalid_ExpectUnexpectedProjectTypeFailureCode()
     {
         var input = new TimesheetCreateIn(
             systemUserId: new("a3fc6a92-4e7c-4fea-a8c5-3aa432a4e766"),
@@ -136,7 +136,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    internal static async Task CreateInvokeAsync_InputIsValidProjectIdIsInvalid_ExpectProjectNotFoundFailureCode()
+    public static async Task InvokeAsync_Create_InputIsValidProjectIdIsInvalid_ExpectProjectNotFoundFailureCode()
     {
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure text");
@@ -160,7 +160,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    public static async Task CreateInvokeAsync_InputIsValid_ExpectDataverseImpersonateCalledOnce()
+    public static async Task InvokeAsync_Create_InputIsValid_ExpectDataverseImpersonateCalledOnce()
     {
         var mockDataverseApi = BuildMockDataverseApi<LeadJson>(Result.Success<Unit>(default), SomeLeadJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -182,8 +182,8 @@ partial class TimesheetModifyFuncTest
 
     [Theory]
     [MemberData(nameof(TimesheetModifyFuncSource.InputCreateProjectTestData), MemberType = typeof(TimesheetModifyFuncSource))]
-    internal static async Task CreateInvokeAsync_InputIsValidForProject_ExpectDataverseCreateCalledOnce(
-        TimesheetCreateIn input, DataverseEntityGetOut<ProjectJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expectedInput)
+    internal static async Task InvokeAsync_Create_InputIsValidForProject_ExpectDataverseCreateCalledOnce(
+        TimesheetCreateIn input, DataverseEntityGetOut<ProjectJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expected)
     {
         var mockDataverseApi = BuildMockDataverseApi<ProjectJson>(Result.Success<Unit>(default), dataverseOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -191,13 +191,15 @@ partial class TimesheetModifyFuncTest
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(
+            a => a.CreateEntityAsync(It.Is<DataverseEntityCreateIn<TimesheetJson>>(@in => AreEqual(expected, @in)), cancellationToken),
+            Times.Once);
     }
 
     [Theory]
     [MemberData(nameof(TimesheetModifyFuncSource.InputCreateIncidentTestData), MemberType = typeof(TimesheetModifyFuncSource))]
-    internal static async Task CreateInvokeAsync_InputIsValidForIncident_ExpectDataverseCreateCalledOnce(
-        TimesheetCreateIn input, DataverseEntityGetOut<IncidentJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expectedInput)
+    internal static async Task InvokeAsync_Create_InputIsValidForIncident_ExpectDataverseCreateCalledOnce(
+        TimesheetCreateIn input, DataverseEntityGetOut<IncidentJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expected)
     {
         var mockDataverseApi = BuildMockDataverseApi<IncidentJson>(Result.Success<Unit>(default), dataverseOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -205,13 +207,15 @@ partial class TimesheetModifyFuncTest
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(
+            a => a.CreateEntityAsync(It.Is<DataverseEntityCreateIn<TimesheetJson>>(@in => AreEqual(expected, @in)), cancellationToken),
+            Times.Once);
     }
 
     [Theory]
     [MemberData(nameof(TimesheetModifyFuncSource.InputCreateOpportunityTestData), MemberType = typeof(TimesheetModifyFuncSource))]
-    internal static async Task CreateInvokeAsync_InputIsValidForOpportunity_ExpectDataverseCreateCalledOnce(
-        TimesheetCreateIn input, DataverseEntityGetOut<OpportunityJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expectedInput)
+    internal static async Task InvokeAsync_Create_InputIsValidForOpportunity_ExpectDataverseCreateCalledOnce(
+        TimesheetCreateIn input, DataverseEntityGetOut<OpportunityJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expected)
     {
         var mockDataverseApi = BuildMockDataverseApi<OpportunityJson>(Result.Success<Unit>(default), dataverseOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -219,13 +223,15 @@ partial class TimesheetModifyFuncTest
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(
+            a => a.CreateEntityAsync(It.Is<DataverseEntityCreateIn<TimesheetJson>>(@in => AreEqual(expected, @in)), cancellationToken),
+            Times.Once);
     }
 
     [Theory]
     [MemberData(nameof(TimesheetModifyFuncSource.InputCreateLeadTestData), MemberType = typeof(TimesheetModifyFuncSource))]
-    internal static async Task CreateInvokeAsync_InputIsValidForLead_ExpectDataverseCreateCalledOnce(
-        TimesheetCreateIn input, DataverseEntityGetOut<LeadJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expectedInput)
+    internal static async Task InvokeAsync_Create_InputIsValidForLead_ExpectDataverseCreateCalledOnce(
+        TimesheetCreateIn input, DataverseEntityGetOut<LeadJson> dataverseOut, DataverseEntityCreateIn<TimesheetJson> expected)
     {
         var mockDataverseApi = BuildMockDataverseApi<LeadJson>(Result.Success<Unit>(default), dataverseOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -233,7 +239,9 @@ partial class TimesheetModifyFuncTest
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(
+            a => a.CreateEntityAsync(It.Is<DataverseEntityCreateIn<TimesheetJson>>(@in => AreEqual(expected, @in)), cancellationToken),
+            Times.Once);
     }
 
     [Theory]
@@ -248,7 +256,7 @@ partial class TimesheetModifyFuncTest
     [InlineData(DataverseFailureCode.DuplicateRecord, TimesheetCreateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidPayload, TimesheetCreateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.InvalidFileSize, TimesheetCreateFailureCode.Unknown)]
-    public static async Task CreateInvokeAsync_DataverseResultIsFailure_ExpectFailure(
+    public static async Task InvokeAsync_Create_DataverseResultIsFailure_ExpectFailure(
         DataverseFailureCode sourceFailureCode, TimesheetCreateFailureCode expectedFailureCode)
     {
         var sourceException = new Exception("Some exception message");
@@ -274,7 +282,7 @@ partial class TimesheetModifyFuncTest
     }
 
     [Fact]
-    public static async Task CreateInvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
+    public static async Task InvokeAsync_Create_DataverseResultIsSuccess_ExpectSuccess()
     {
         var mockDataverseApi = BuildMockDataverseApi<OpportunityJson>(Result.Success<Unit>(default), SomeOpportunityJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);

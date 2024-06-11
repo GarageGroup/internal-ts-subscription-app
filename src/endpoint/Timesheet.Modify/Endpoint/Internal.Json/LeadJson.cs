@@ -20,26 +20,6 @@ internal sealed record class LeadJson : IProjectJson, IProjectDataverseInputBuil
             entityKey: new DataversePrimaryKey(leadId),
             selectFields: [FieldCompanyName, FieldSubjectName]);
 
-    public string? GetName()
-    {
-        if (string.IsNullOrEmpty(CompanyName))
-        {
-            return Subject;
-        }
-
-        var builder = new StringBuilder(Subject);
-        if (string.IsNullOrEmpty(Subject) is false)
-        {
-            builder = builder.Append(' ');
-        }
-
-        return builder.Append('(').Append(CompanyName).Append(')').ToString();
-    }
-
-    public string GetLookupValue()
-        =>
-        $"/{EntityPluralName}({Id:D})";
-
     [JsonPropertyName("leadid")]
     public Guid Id { get; init; }
 
@@ -48,4 +28,31 @@ internal sealed record class LeadJson : IProjectJson, IProjectDataverseInputBuil
 
     [JsonPropertyName(FieldSubjectName)]
     public string? Subject { get; init; }
+
+    string? IProjectJson.Name
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(CompanyName))
+            {
+                return Subject;
+            }
+
+            var builder = new StringBuilder(Subject);
+            if (string.IsNullOrEmpty(Subject) is false)
+            {
+                builder = builder.Append(' ');
+            }
+
+            return builder.Append('(').Append(CompanyName).Append(')').ToString();
+        }
+    }
+
+    string IProjectJson.LookupValue
+        =>
+        $"/{EntityPluralName}({Id:D})";
+
+    string IProjectJson.LookupEntity { get; }
+        =
+        "lead";
 }

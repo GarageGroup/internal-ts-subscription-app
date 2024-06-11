@@ -1,4 +1,5 @@
 ﻿using System;
+using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -12,5 +13,6 @@ public sealed record class TimesheetProject
 
     public Guid Id { get; }
 
+    [StringExample(nameof(ProjectType.Project))]
     public ProjectType Type { get; }
 }

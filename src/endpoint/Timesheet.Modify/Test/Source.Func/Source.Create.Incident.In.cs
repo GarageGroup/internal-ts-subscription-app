@@ -3,9 +3,11 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
+using TheoryData = TheoryData<TimesheetCreateIn, DataverseEntityGetOut<IncidentJson>, DataverseEntityCreateIn<TimesheetJson>>;
+
 internal static partial class TimesheetModifyFuncSource
 {
-    public static TheoryData<TimesheetCreateIn, DataverseEntityGetOut<IncidentJson>, DataverseEntityCreateIn<TimesheetJson>> InputCreateIncidentTestData
+    public static TheoryData InputCreateIncidentTestData
         =>
         new()
         {
@@ -31,9 +33,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        IncidentLookupValue = "/incidents(7583b4e6-23f5-eb11-94ef-00224884a588)",
+                        ChannelCode = 140120000,
                         Subject = "Some project name",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_incident@odata.bind"] = "/incidents(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -58,8 +63,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 01, 12),
                         Description = null,
                         Duration = 3,
-                        IncidentLookupValue = "/incidents(8829deda-5249-4412-9be5-ef5728fb928d)",
-                        ChannelCode = 140120000
+                        ChannelCode = 140120000,
+                        Subject = null,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_incident@odata.bind"] = "/incidents(8829deda-5249-4412-9be5-ef5728fb928d)"
+                        }
                     })
             },
             {
@@ -84,9 +93,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 11, 03),
                         Description = null,
                         Duration = 15,
-                        IncidentLookupValue = "/incidents(13f0cb5c-b251-494c-9cae-1b0708471c10)",
+                        ChannelCode = 140120000,
                         Subject = string.Empty,
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_incident@odata.bind"] = "/incidents(13f0cb5c-b251-494c-9cae-1b0708471c10)"
+                        }
                     })
             },
             {
@@ -102,7 +114,7 @@ internal static partial class TimesheetModifyFuncSource
                     new()
                     {
                         Id = new("ca012870-a0f9-4945-a314-a14ebf690574"),
-                        ProjectName = "\n\r"
+                        ProjectName = "\r\n"
                     }),
                 new(
                     entityPluralName: "gg_timesheetactivities",
@@ -111,9 +123,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2022, 12, 25),
                         Description = "\n\r",
                         Duration = -3,
-                        IncidentLookupValue = "/incidents(ca012870-a0f9-4945-a314-a14ebf690574)",
-                        Subject = "\n\r",
-                        ChannelCode = 140120000
+                        ChannelCode = 140120000,
+                        Subject = "\r\n",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_incident@odata.bind"] = "/incidents(ca012870-a0f9-4945-a314-a14ebf690574)"
+                        }
                     })
             }
         };

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using DeepEqual.Syntax;
 using GarageGroup.Infra;
 using Moq;
 
@@ -10,7 +11,7 @@ public static partial class TimesheetModifyFuncTest
     private static readonly DataverseEntityGetOut<ProjectJson> SomeProjectJsonOut
         =
         new(
-            new ProjectJson()
+            value: new()
             {
                 Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
                 ProjectName = "Some project name"
@@ -19,7 +20,7 @@ public static partial class TimesheetModifyFuncTest
     private static readonly DataverseEntityGetOut<IncidentJson> SomeIncidentJsonOut
         =
         new(
-            new IncidentJson()
+            value: new()
             {
                 Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
                 ProjectName = "Some project name"
@@ -28,7 +29,7 @@ public static partial class TimesheetModifyFuncTest
     private static readonly DataverseEntityGetOut<OpportunityJson> SomeOpportunityJsonOut
         =
         new(
-            new OpportunityJson()
+            value: new()
             {
                 Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
                 ProjectName = "Some project name"
@@ -37,7 +38,7 @@ public static partial class TimesheetModifyFuncTest
     private static readonly DataverseEntityGetOut<LeadJson> SomeLeadJsonOut
         =
         new(
-            new LeadJson()
+            value: new()
             {
                 Id = new("7babe661-cc69-474a-95a5-82ce45204ff8"),
                 CompanyName = "Some company",
@@ -46,7 +47,7 @@ public static partial class TimesheetModifyFuncTest
 
     private static Mock<IDataverseApiClient> BuildMockDataverseApi<TOut>(
         in Result<Unit, Failure<DataverseFailureCode>> result,
-        in Result<DataverseEntityGetOut<TOut>, Failure<DataverseFailureCode>> getProjectNameResult)
+        in Result<DataverseEntityGetOut<TOut>, Failure<DataverseFailureCode>> projectNameResult)
         where TOut : IProjectJson, IProjectDataverseInputBuilder
     {
         var mock = new Mock<IDataverseApiClient>();
@@ -63,8 +64,20 @@ public static partial class TimesheetModifyFuncTest
 
         _ = mock
             .Setup(static a => a.GetEntityAsync<TOut>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(getProjectNameResult);
+            .ReturnsAsync(projectNameResult);
 
         return mock;
+    }
+
+    private static bool AreEqual(DataverseEntityCreateIn<TimesheetJson> expected, DataverseEntityCreateIn<TimesheetJson> actual)
+    {
+        expected.ShouldDeepEqual(actual);
+        return true;
+    }
+
+    private static bool AreEqual(DataverseEntityUpdateIn<TimesheetJson> expected, DataverseEntityUpdateIn<TimesheetJson> actual)
+    {
+        expected.ShouldDeepEqual(actual);
+        return true;
     }
 }

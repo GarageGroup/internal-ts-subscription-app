@@ -3,9 +3,11 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
+using TheoryData = TheoryData<TimesheetUpdateIn, DataverseEntityGetOut<OpportunityJson>, DataverseEntityUpdateIn<TimesheetJson>>;
+
 internal static partial class TimesheetModifyFuncSource
 {
-    public static TheoryData<TimesheetUpdateIn, DataverseEntityGetOut<OpportunityJson>, DataverseEntityUpdateIn<TimesheetJson>> InputUpdateOpportunityTestData
+    public static TheoryData InputUpdateOpportunityTestData
         =>
         new()
         {
@@ -32,8 +34,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some project name"
+                        Subject = "Some project name",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -59,8 +64,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = "Some message!",
                         Duration = 8,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = null
+                        Subject = null,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -86,8 +94,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = null,
                         Duration = 8,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "\n\r"
+                        Subject = "\n\r",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -113,8 +124,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = null,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = string.Empty
+                        Subject = string.Empty,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -122,14 +136,14 @@ internal static partial class TimesheetModifyFuncSource
                     timesheetId: new("555685cd-bdfb-42a5-aee6-8ad7f9c3b635"),
                     date: null,
                     project: new(
-                        id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
+                        id: new("b6d557ef-8843-47b5-b169-42904b47fca8"),
                         type: ProjectType.Opportunity),
                     duration: null,
                     description: null),
                 new(
                     new()
                     {
-                        Id = new("7583b4e6-23f5-eb11-94ef-00224884a588"),
+                        Id = new("221aedd2-5e2f-422e-acfb-e1099c126958"),
                         ProjectName = "Some project name"
                     }),
                 new(
@@ -140,8 +154,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = null,
                         Duration = null,
-                        OpportunityLookupValue = "/opportunities(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some project name"
+                        Subject = "Some project name",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_opportunity@odata.bind"] = "/opportunities(221aedd2-5e2f-422e-acfb-e1099c126958)"
+                        }
                     })
             },
             {
@@ -159,7 +176,9 @@ internal static partial class TimesheetModifyFuncSource
                     {
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
-                        Duration = 8
+                        Duration = 8,
+                        Subject = null,
+                        ExtensionData = null
                     })
             },
         };

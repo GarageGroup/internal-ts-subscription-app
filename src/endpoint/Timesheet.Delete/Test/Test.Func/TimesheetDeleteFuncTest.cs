@@ -9,7 +9,8 @@ public static partial class TimesheetDeleteFuncTest
 {
     private static readonly TimesheetDeleteIn SomeInput
         =
-        new(Guid.Parse("17bdba90-1161-4715-b4bf-b416200acc79"));
+        new(
+            timesheetId: Guid.Parse("17bdba90-1161-4715-b4bf-b416200acc79"));
 
     private static Mock<IDataverseEntityDeleteSupplier> BuildMockDataverseDeleteApi(
         in Result<Unit, Failure<DataverseFailureCode>> result)

@@ -32,9 +32,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        LeadLookupValue = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)",
+                        ChannelCode = 140120000,
                         Subject = "Some subject (Some company name)",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -60,9 +63,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 01, 12),
                         Description = null,
                         Duration = 3,
-                        LeadLookupValue = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)",
+                        ChannelCode = 140120000,
                         Subject = "Some subject",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)"
+                        }
                     })
             },
             {
@@ -88,9 +94,12 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2023, 01, 12),
                         Description = null,
                         Duration = 3,
-                        LeadLookupValue = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)",
+                        ChannelCode = 140120000,
                         Subject = "(Some company name)",
-                        ChannelCode = 140120000
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_lead@odata.bind"] = "/leads(8829deda-5249-4412-9be5-ef5728fb928d)"
+                        }
                     })
             }
         };

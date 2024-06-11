@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using GarageGroup.Infra;
 
@@ -23,29 +24,23 @@ internal sealed record class TimesheetJson
             entityKey: new DataversePrimaryKey(timesheetId),
             entityData: timesheet);
 
+    internal TimesheetJson(IProjectJson? project = null)
+    {
+        if (project is null)
+        {
+            return;
+        }
+
+        Subject = project.Name;
+        ExtensionData = new()
+        {
+            [$"regardingobjectid_{project.LookupEntity}@odata.bind"] = project.LookupValue
+        };
+    }
+
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_date")]
     public DateOnly? Date { get; init; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("regardingobjectid_incident@odata.bind")]
-    public string? IncidentLookupValue { get; init; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("regardingobjectid_lead@odata.bind")]
-    public string? LeadLookupValue { get; init; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("regardingobjectid_opportunity@odata.bind")]
-    public string? OpportunityLookupValue { get; init; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("regardingobjectid_gg_project@odata.bind")]
-    public string? ProjectLookupValue { get; init; }
-
-    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    [JsonPropertyName("subject")]
-    public string? Subject { get; init; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_description")]
@@ -58,4 +53,11 @@ internal sealed record class TimesheetJson
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("gg_timesheetactivity_channel")]
     public int? ChannelCode { get; init; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    [JsonPropertyName("subject")]
+    public string? Subject { get; init; }
+
+    [JsonExtensionData]
+    public Dictionary<string, object>? ExtensionData { get; init; }
 }

@@ -2,7 +2,7 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class LastProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlApi, ITodayProvider todayProvider, LastProjectSetGetOption option) : ILastProjectSetGetFunc
+internal sealed partial class LastProjectSetGetFunc : ILastProjectSetGetFunc
 {
     private static readonly DbParameterArrayFilter AllowedProjectTypeSetFilter;
 
@@ -12,5 +12,18 @@ internal sealed partial class LastProjectSetGetFunc(ISqlQueryEntitySetSupplier s
     {
         AllowedProjectTypeSetFilter = DbLastProject.BuildAllowedProjectTypeSetFilter();
         IncidentStateCodeFilter = DbLastProject.BuildIncidentStateCodeFilter();
+    }
+
+    private readonly ISqlQueryEntitySetSupplier sqlApi;
+
+    private readonly ITodayProvider todayProvider;
+
+    private readonly LastProjectSetGetOption option;
+
+    internal LastProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlApi, ITodayProvider todayProvider, LastProjectSetGetOption option)
+    {
+        this.sqlApi = sqlApi;
+        this.todayProvider = todayProvider;
+        this.option = option;
     }
 }

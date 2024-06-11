@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -16,5 +17,6 @@ public sealed record class ProjectItem
 
     public string Name { get; }
 
+    [StringExample(nameof(ProjectType.Project))]
     public ProjectType Type { get; }
 }

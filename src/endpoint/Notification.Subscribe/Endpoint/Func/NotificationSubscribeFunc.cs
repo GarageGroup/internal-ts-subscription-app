@@ -106,54 +106,5 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             _ => Failure.Create("Not supported type of subscription data")
         };
 
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeUser(DataverseFailureCode failureCode) 
-        => 
-        failureCode switch
-        {
-            DataverseFailureCode.RecordNotFound => NotificationSubscribeFailureCode.BotUserNotFound,
-            _ => NotificationSubscribeFailureCode.Unknown 
-        };
-
-    private static NotificationSubscribeFailureCode MapFailureCodeWhenFindingSubscribeNotificationType(DataverseFailureCode failureCode)
-        => 
-        failureCode switch
-        { 
-            DataverseFailureCode.RecordNotFound => NotificationSubscribeFailureCode.NotificationTypeNotFound, 
-            _ => NotificationSubscribeFailureCode.Unknown
-        };
-        
-    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeUser(DataverseFailureCode failureCode) 
-        => 
-        failureCode switch
-        {
-            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.BotUserNotFound, 
-            _ => NotificationUnsubscribeFailureCode.Unknown 
-        };
-
-    private static NotificationUnsubscribeFailureCode MapFailureCodeWhenFindingUnsubscribeNotificationType(DataverseFailureCode failureCode)
-        => 
-        failureCode switch
-        { 
-            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.NotificationTypeNotFound, 
-            _ => NotificationUnsubscribeFailureCode.Unknown
-        };
-    
-    private static NotificationUnsubscribeFailureCode MapFailureWhenUpdateSubscription(DataverseFailureCode failureCode)
-        => 
-        failureCode switch
-        {
-            DataverseFailureCode.RecordNotFound => NotificationUnsubscribeFailureCode.SubscriptionNotFound,
-            _ => NotificationUnsubscribeFailureCode.Unknown,
-        };
-    
-    private static Result<Unit, Failure<NotificationUnsubscribeFailureCode>> RecoverUnsubscribeFailure(
-        Failure<NotificationUnsubscribeFailureCode> failure)
-        => 
-        failure.FailureCode switch
-        { 
-            NotificationUnsubscribeFailureCode.SubscriptionNotFound => Unit.Value, 
-            _ => failure
-        };
-    
     private sealed record class NotificationData(NotificationSubscribeIn Input, NotificationSubscriptionJson Subscription);
 }

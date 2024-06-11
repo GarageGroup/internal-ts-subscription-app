@@ -32,8 +32,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = 8,
-                        ProjectLookupValue = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some project name"
+                        Subject = "Some project name",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_gg_project@odata.bind"] = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -41,14 +44,14 @@ internal static partial class TimesheetModifyFuncSource
                     timesheetId: new("555685cd-bdfb-42a5-aee6-8ad7f9c3b635"),
                     date: null,
                     project: new(
-                        id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
+                        id: new("34990bca-f251-401d-aa80-45151ebd5211"),
                         type: ProjectType.Project),
                     duration: 8,
                     description: "Some message!"),
                 new(
                     new()
                     {
-                        Id = new("7583b4e6-23f5-eb11-94ef-00224884a588"),
+                        Id = new("ab8405ac-b9df-4710-86b4-3337fed27c09"),
                         ProjectName = null
                     }),
                 new(
@@ -59,8 +62,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = "Some message!",
                         Duration = 8,
-                        ProjectLookupValue = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = null
+                        Subject = null,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_gg_project@odata.bind"] = "/gg_projects(ab8405ac-b9df-4710-86b4-3337fed27c09)"
+                        }
                     })
             },
             {
@@ -86,8 +92,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = null,
                         Duration = 8,
-                        ProjectLookupValue = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "\n\r"
+                        Subject = "\n\r",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_gg_project@odata.bind"] = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -113,8 +122,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
                         Duration = null,
-                        ProjectLookupValue = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = string.Empty
+                        Subject = string.Empty,
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_gg_project@odata.bind"] = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -140,8 +152,11 @@ internal static partial class TimesheetModifyFuncSource
                         Date = null,
                         Description = null,
                         Duration = null,
-                        ProjectLookupValue = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)",
-                        Subject = "Some project name"
+                        Subject = "Some project name",
+                        ExtensionData = new()
+                        {
+                            ["regardingobjectid_gg_project@odata.bind"] = "/gg_projects(7583b4e6-23f5-eb11-94ef-00224884a588)"
+                        }
                     })
             },
             {
@@ -159,7 +174,9 @@ internal static partial class TimesheetModifyFuncSource
                     {
                         Date = new(2021, 10, 07),
                         Description = "Some message!",
-                        Duration = 8
+                        Duration = 8,
+                        Subject = null,
+                        ExtensionData = null
                     })
             },
         };

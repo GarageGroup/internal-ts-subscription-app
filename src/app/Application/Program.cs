@@ -23,5 +23,6 @@ static class Program
         .UseNotificationUnsubscribeEndpoint()
         .UseProfileGetEndpoint()
         .UseProfileUpdateEndpoint()
+        .UseUserSignOutEndpoint()
         .RunAsync();
 }

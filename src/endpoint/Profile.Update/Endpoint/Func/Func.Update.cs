@@ -15,7 +15,7 @@ partial class ProfileUpdateFunc
         .Pipe(
             static @in => new ProfileJson()
             {
-                LanguageCode = @in.LanguageCode
+                LanguageCode = @in.LanguageCode?.Code
             })
         .Pipe(
             profile => ProfileJson.BuildDataverseInput(input.SystemUserId, option.BotId, profile))

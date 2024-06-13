@@ -18,7 +18,7 @@ public static partial class ProfileUpdateFuncTest
         =
         new(
             systemUserId: new("c22c378d-7913-4316-8e61-5a5c35987355"),
-            languageCode: "en");
+            languageCode: ProfileLanguage.English);
 
     private static Mock<IDataverseEntityUpdateSupplier> BuildMockDataverseApi(
         in Result<Unit, Failure<DataverseFailureCode>> result)

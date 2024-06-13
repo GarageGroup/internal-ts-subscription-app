@@ -3,7 +3,7 @@ using Moq;
 using System;
 using System.Threading;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.User.SignOut.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
 
 public static partial class UserSignOutFuncTest
 {

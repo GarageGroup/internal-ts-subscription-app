@@ -5,27 +5,28 @@ using GarageGroup.Infra;
 using Moq;
 using Xunit;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignIn.Test;
 
-partial class UserSignOutFuncTest
+partial class UserSignInFuncTest
 {
     [Theory]
-    [MemberData(nameof(UserSignOutFuncSource.InputTestData), MemberType = typeof(UserSignOutFuncSource))]
+    [MemberData(nameof(UserSignInFuncSource.InputTestData), MemberType = typeof(UserSignInFuncSource))]
     internal static async Task InvokeAsync_ExpectDataverseUpdateCalledOnce(
-        UserSignOutOption option, UserSignOutIn input, DataverseEntityUpdateIn<UserJson> expectedInput)
+        UserSignInOption option, UserSignInIn input, DataverseEntityCreateIn<UserJson> expectedInput)
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new UserSignOutFunc(mockDataverseApi.Object, option);
+        var func = new UserSignInFunc(mockDataverseApi.Object, option);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
 
-        mockDataverseApi.Verify(a => a.UpdateEntityAsync(expectedInput, cancellationToken), Times.Once);
+        mockDataverseApi.Verify(a => a.CreateEntityAsync(expectedInput, cancellationToken), Times.Once);
     }
 
     [Theory]
     [InlineData(DataverseFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.Unauthorized)]
+    [InlineData(DataverseFailureCode.RecordNotFound)]
     [InlineData(DataverseFailureCode.PicklistValueOutOfRange)]
     [InlineData(DataverseFailureCode.Throttling)]
     [InlineData(DataverseFailureCode.SearchableEntityNotFound)]
@@ -41,7 +42,7 @@ partial class UserSignOutFuncTest
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
         var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
+        var func = new UserSignInFunc(mockDataverseApi.Object, SomeOption);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Failure.Create("Some failure message", sourceException);
@@ -50,25 +51,10 @@ partial class UserSignOutFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_DataverseResultIsRecordNotFoundFailure_ExpectSuccess()
-    {
-        var sourceException = new Exception("Some error message");
-        var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure message");
-
-        var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
-
-        var actual = await func.InvokeAsync(SomeInput, default);
-        var expected = Result.Success<Unit>(default);
-
-        Assert.StrictEqual(expected, actual);
-    }
-
-    [Fact]
     public static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
+        var func = new UserSignInFunc(mockDataverseApi.Object, SomeOption);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Result.Success<Unit>(default);

@@ -19,7 +19,7 @@ partial class ProfileUpdateFuncSource
                     languageCode: ProfileLanguage.English),
                 new (
                     entityPluralName: "gg_telegram_bot_users",
-                    entityData: new ProfileJson()
+                    entityData: new ProfileJson
                     {
                         LanguageCode = "en",
                     },
@@ -39,7 +39,7 @@ partial class ProfileUpdateFuncSource
                     languageCode: ProfileLanguage.Russian),
                 new (
                     entityPluralName: "gg_telegram_bot_users",
-                    entityData: new ProfileJson()
+                    entityData: new ProfileJson
                     {
                         LanguageCode = "ru",
                     },

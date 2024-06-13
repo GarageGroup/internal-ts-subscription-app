@@ -7,7 +7,7 @@ public sealed record class ProfileUpdateIn
 {
     public ProfileUpdateIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] string? languageCode)
+        [JsonBodyIn] [StringExample("en")] string? languageCode)
     {
         SystemUserId = systemUserId;
         LanguageCode = languageCode;

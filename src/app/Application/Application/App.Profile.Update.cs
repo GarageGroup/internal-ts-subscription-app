@@ -7,15 +7,15 @@ namespace GarageGroup.Internal.Timesheet;
 partial class Application
 {
     [EndpointApplicationExtension]
-    internal static Dependency<ProfileGetEndpoint> UseProfileGetEndpoint()
+    internal static Dependency<ProfileUpdateEndpoint> UseProfileUpdateEndpoint()
         =>
         Pipeline.Pipe(
-            UseSqlApi())
+            UseDataverseApi())
         .With(
-            ResolveProfileGetOption)
-        .UseProfileGetEndpoint();
+            ResolveProfileUpdateOption)
+        .UseProfileUpdateEndpoint();
 
-    private static ProfileGetOption ResolveProfileGetOption(IServiceProvider serviceProvider)
+    private static ProfileUpdateOption ResolveProfileUpdateOption(IServiceProvider serviceProvider)
         =>
         new()
         {

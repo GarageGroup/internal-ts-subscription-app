@@ -51,7 +51,7 @@ partial class UserSignOutFuncTest
     }
 
     [Fact]
-    public static async Task InvokeAsync_DataverseResultIsFailureRecordNotFoundFailure_ExpectSuccess()
+    public static async Task InvokeAsync_DataverseResultIsRecordNotFoundFailure_ExpectSuccess()
     {
         var sourceException = new Exception("Some error message");
         var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure message");

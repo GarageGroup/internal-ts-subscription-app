@@ -25,7 +25,7 @@ public sealed record class ProfileLanguage : IOpenApiSchemaProvider
             Type = "string",
             Enum = ProfileLanguages.Select(ToOpenApiString).ToArray(),
             Nullable = nullable,
-            Example = new OpenApiString(English.Code),
+            Example = example ?? new OpenApiString(English.Code),
             Description = description
         };
 
@@ -72,12 +72,12 @@ public sealed record class ProfileLanguage : IOpenApiSchemaProvider
                 return null;
             }
 
-            if (ProfileLanguages.TryGetValue(text, out var notificationTime) is false)
+            if (ProfileLanguages.TryGetValue(text, out var profileLanguage) is false)
             {
-                throw new JsonException($"An unexpected notification time value: {text}");
+                throw new JsonException($"An unexpected language code value: {text}");
             }
 
-            return notificationTime;
+            return profileLanguage;
         }
 
         public override void Write(Utf8JsonWriter writer, ProfileLanguage value, JsonSerializerOptions options)

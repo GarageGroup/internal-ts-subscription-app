@@ -13,7 +13,7 @@ partial class UserSignOutFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            static @in => new UserJson()
+            static @in => new UserJson
             {
                 IsSignedOut = true
             })

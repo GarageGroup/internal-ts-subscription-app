@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\endpoint\Notification.Subscribe\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Profile.Get\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Profile.Update\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.GetLastSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.SearchSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Tag.GetSet\Endpoint\Endpoint.csproj" />

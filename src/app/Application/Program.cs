@@ -24,5 +24,6 @@ static class Program
         .UseProfileGetEndpoint()
         .UseProfileUpdateEndpoint()
         .UseUserSignOutEndpoint()
+        .UseUserSignInEndpoint()
         .RunAsync();
 }

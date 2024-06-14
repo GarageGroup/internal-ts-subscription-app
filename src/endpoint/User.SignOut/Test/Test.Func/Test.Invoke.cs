@@ -2,11 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GarageGroup.Infra;
-using GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
 using Moq;
 using Xunit;
 
-namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.User.SignOut.Test;
+namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
 
 partial class UserSignOutFuncTest
 {

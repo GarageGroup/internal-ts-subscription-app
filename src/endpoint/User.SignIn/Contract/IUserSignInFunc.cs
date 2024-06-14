@@ -9,6 +9,6 @@ namespace GarageGroup.Internal.Timesheet;
 [EndpointTag("Authorization")]
 public interface IUserSignInFunc
 {
-    ValueTask<Result<Unit, Failure<Unit>>> InvokeAsync(
+    ValueTask<Result<Unit, Failure<UserSignInFailureCode>>> InvokeAsync(
         UserSignInIn input, CancellationToken cancellationToken);
 }

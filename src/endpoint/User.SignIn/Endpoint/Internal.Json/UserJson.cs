@@ -8,11 +8,23 @@ internal sealed record class UserJson
 {
     private const string EntityPluralName = "gg_telegram_bot_users";
 
-    internal static DataverseEntityCreateIn<UserJson> BuildDataverseInput(UserJson user)
+    private const string BotIdFieldName = "gg_bot_id";
+
+    private const string SystemUserIdFieldName = "_gg_systemuser_id_value";
+
+    internal static DataverseEntityUpdateIn<UserJson> BuildDataverseInput(Guid systemUserId, long botId, UserJson user)
         =>
         new(
             entityPluralName: EntityPluralName,
-            entityData: user);
+            entityData: user,
+            entityKey: new DataverseAlternateKey(
+                [
+                    new(SystemUserIdFieldName, $"{systemUserId}"),
+                    new(BotIdFieldName, $"'{botId}'")
+                ]))
+        {
+            OperationType = DataverseUpdateOperationType.Upsert
+        };
 
     internal static string BuildUserLookupValue(Guid systemUserId)
         =>

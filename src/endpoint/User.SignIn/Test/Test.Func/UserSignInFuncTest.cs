@@ -21,14 +21,27 @@ public static partial class UserSignInFuncTest
             systemUserId: new("c22c378d-7913-4316-8e61-5a5c35987355"),
             chatId: 12312223123);
 
-    private static Mock<IDataverseEntityCreateSupplier> BuildMockDataverseApi(
-        in Result<Unit, Failure<DataverseFailureCode>> result)
+    private static readonly DataverseEntityGetOut<SystemUserJson> SomeSystemUserResult
+        =
+        new(
+            value: new()
+            {
+                FullName = "Some user name"
+            });
+
+    private static Mock<IDataverseApiClient> BuildMockDataverseApi(
+        in Result<DataverseEntityGetOut<SystemUserJson>, Failure<DataverseFailureCode>> getResult,
+        in Result<Unit, Failure<DataverseFailureCode>> upsertResult)
     {
-        var mock = new Mock<IDataverseEntityCreateSupplier>();
+        var mock = new Mock<IDataverseApiClient>();
 
         _ = mock
-            .Setup(static a => a.CreateEntityAsync(It.IsAny<DataverseEntityCreateIn<UserJson>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(result);
+            .Setup(static a => a.GetEntityAsync<SystemUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(getResult);
+
+        _ = mock
+            .Setup(static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<UserJson>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(upsertResult);
 
         return mock;
     }

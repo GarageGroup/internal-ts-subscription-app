@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal readonly struct SystemUserJson
+internal readonly record struct SystemUserJson
 {
     private const string EntityPluralName = "systemusers";
 

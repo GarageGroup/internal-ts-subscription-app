@@ -30,17 +30,21 @@ internal static partial class IsSuccessMiddleware
 
     private const string ProblemDetailsSchemaName = "ProblemDetails";
 
-    private static readonly OpenApiSchema OpenApiSuccessSchema = new OpenApiSchema()
-    {
-        Type = "boolean",
-        Example = new OpenApiBoolean(true)
-    };
+    private static readonly OpenApiSchema OpenApiSuccessSchema
+        =
+        new()
+        {
+            Type = "boolean",
+            Example = new OpenApiBoolean(true)
+        };
 
-    private static readonly OpenApiSchema OpenApiFailureSchema = new OpenApiSchema()
-    {
-        Type = "boolean",
-        Example = new OpenApiBoolean(false)
-    };
+    private static readonly OpenApiSchema OpenApiFailureSchema
+        =
+        new()
+        {
+            Type = "boolean",
+            Example = new OpenApiBoolean(false)
+        };
 
     private static void InnerConfigureSwagger(OpenApiDocument openApiDocument)
     {

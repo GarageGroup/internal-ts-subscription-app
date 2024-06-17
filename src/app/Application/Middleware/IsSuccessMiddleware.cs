@@ -60,7 +60,7 @@ internal static partial class IsSuccessMiddleware
             foreach (var response in responses)
             {
                 var content = response.Value.Content;
-                if (content.Count != 0)
+                if (content.Count > 0)
                 {
                     content.First().Value.Schema.Properties.Add(IsSuccessField, OpenApiSuccessSchema);
                 }
@@ -71,9 +71,9 @@ internal static partial class IsSuccessMiddleware
                         Schema = new()
                         {
                             Properties = new Dictionary<string, OpenApiSchema>
-                                {
-                                    { IsSuccessField, response.Key == UnauthorizedStatusCode ? OpenApiFailureSchema : OpenApiSuccessSchema }
-                                }
+                            {
+                                [IsSuccessField] = response.Key == UnauthorizedStatusCode ? OpenApiFailureSchema : OpenApiSuccessSchema
+                            }
                         }
                     });
                 }

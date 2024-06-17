@@ -1,6 +1,4 @@
-﻿using GarageGroup.Infra;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using System;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
@@ -25,8 +24,6 @@ internal static partial class IsSuccessMiddleware
     private const string SuccessStatusCode = "200";
 
     private const string NoContentStatusCode = "204";
-
-    private const string UnauthorizedStatusCode = "401";
 
     private const string ProblemDetailsSchemaName = "ProblemDetails";
 
@@ -46,14 +43,26 @@ internal static partial class IsSuccessMiddleware
             Example = new OpenApiBoolean(false)
         };
 
+    private static readonly JsonSerializerOptions SerializerOptions
+        =
+        new()
+        {
+            WriteIndented = true
+        };
+
     private static void InnerConfigureSwagger(OpenApiDocument openApiDocument)
     {
         var paths = openApiDocument.Paths.Values;
 
         foreach (var path in paths)
         {
-            var responses = path.Operations.Values.First().Responses;
+            var operations = path.Operations.Values.FirstOrDefault();
+            if (operations is null)
+            {
+                continue;
+            }
 
+            var responses = operations.Responses;
             var changesToMake = new List<KeyValuePair<string, OpenApiResponse>>();
             var keysToRemove = new List<string>();
 
@@ -62,7 +71,7 @@ internal static partial class IsSuccessMiddleware
                 var content = response.Value.Content;
                 if (content.Count > 0)
                 {
-                    content.First().Value.Schema.Properties.Add(IsSuccessField, OpenApiSuccessSchema);
+                    content.First().Value.Schema.Properties[IsSuccessField] = OpenApiSuccessSchema;
                 }
                 else
                 {
@@ -72,13 +81,13 @@ internal static partial class IsSuccessMiddleware
                         {
                             Properties = new Dictionary<string, OpenApiSchema>
                             {
-                                [IsSuccessField] = response.Key == UnauthorizedStatusCode ? OpenApiFailureSchema : OpenApiSuccessSchema
+                                [IsSuccessField] = response.Key.IsSuccessResponseKey() ? OpenApiSuccessSchema : OpenApiFailureSchema
                             }
                         }
                     });
                 }
 
-                if (response.Key == NoContentStatusCode)
+                if (response.Key.Equals(NoContentStatusCode, StringComparison.InvariantCulture))
                 {
                     response.Value.Description = "Success";
                     changesToMake.Add(new(SuccessStatusCode, response.Value));
@@ -99,16 +108,20 @@ internal static partial class IsSuccessMiddleware
 
         if (openApiDocument.Components.Schemas.TryGetValue(ProblemDetailsSchemaName, out var problemDetails))
         {
-            problemDetails.Properties.Add(IsSuccessField, OpenApiFailureSchema);
+            problemDetails.Properties[IsSuccessField] = OpenApiFailureSchema;
         }
     }
 
-    private static async Task WriteResponseAsync(HttpResponse response, Stream body, string modifiedResponse)
+    private static bool IsSuccessResponseKey(this string responseKey)
+        =>
+        int.TryParse(responseKey, out var key) && key >= 200 && key < 300;
+
+    private static Task WriteResponseAsync(HttpResponse response, Stream body, string modifiedResponse, CancellationToken cancellationToken)
     {
         response.ContentType = ContentType;
         response.ContentLength = null;
         response.Body = body;
-        await response.WriteAsync(modifiedResponse);
+        return response.WriteAsync(modifiedResponse, cancellationToken);
     }
 
     private static async Task AddIsSuccessFieldInResponseBody(HttpContext context, RequestDelegate next)
@@ -117,7 +130,7 @@ internal static partial class IsSuccessMiddleware
         using var newBodyStream = new MemoryStream();
         context.Response.Body = newBodyStream;
 
-        await next(context);
+        await next.Invoke(context);
 
         var isSuccess = context.Response.StatusCode >= 200 && context.Response.StatusCode < 300;
 
@@ -125,27 +138,40 @@ internal static partial class IsSuccessMiddleware
         var responseBody = await new StreamReader(context.Response.Body).ReadToEndAsync(context.RequestAborted);
         context.Response.Body.Seek(0, SeekOrigin.Begin);
 
-        if (!string.IsNullOrEmpty(responseBody))
+        if (string.IsNullOrEmpty(responseBody) is false)
         {
             var originalJson = JsonDocument.Parse(responseBody).RootElement;
 
-            var modifiedJson = new JsonObject();
+            var modifiedJson = new Dictionary<string, JsonElement>();
             modifiedJson.AddProperty(IsSuccessField, isSuccess);
 
             foreach (var property in originalJson.EnumerateObject())
             {
-                modifiedJson.Add(property.Name, property.Value.Clone());
+                modifiedJson[property.Name] = property.Value.Clone();
             }
 
-            var modifiedResponse = modifiedJson.ToString();
-            await WriteResponseAsync(context.Response, originalBodyStream, modifiedResponse);
+            var modifiedResponse = JsonSerializer.Serialize(modifiedJson, SerializerOptions);
+            await WriteResponseAsync(context.Response, originalBodyStream, modifiedResponse, context.RequestAborted);
         }
         else
         {
-            context.Response.StatusCode = isSuccess is true ? 200 : context.Response.StatusCode;
+            context.Response.StatusCode = context.Response.StatusCode is 204 ? 200 : context.Response.StatusCode;
             var modifiedResponse = isSuccess is true ? IsSuccessTrueJson : IsSuccessFalseJson;
-            await WriteResponseAsync(context.Response, originalBodyStream, modifiedResponse);
+            await WriteResponseAsync(context.Response, originalBodyStream, modifiedResponse, context.RequestAborted);
         }
     }
 
+    private static void AddProperty(this Dictionary<string, JsonElement> json, string propertyName, object value)
+    {
+        if (value is null)
+        {
+            json.Add(propertyName, default);
+        }
+        else
+        {
+            var jsonValue = JsonSerializer.SerializeToUtf8Bytes(value);
+            using var document = JsonDocument.Parse(jsonValue);
+            json.Add(propertyName, document.RootElement.Clone());
+        }
+    }
 }

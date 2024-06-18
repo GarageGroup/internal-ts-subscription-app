@@ -56,51 +56,53 @@ internal static partial class IsSuccessMiddleware
 
         foreach (var path in paths)
         {
-            var operations = path.Operations.Values;
-            foreach(var operation in operations)
+            var operations = path.Operations.Values.FirstOrDefault();
+            if (operations is null)
             {
-                var responses = operation.Responses;
-                var changesToMake = new List<KeyValuePair<string, OpenApiResponse>>();
-                var keysToRemove = new List<string>();
+                continue;
+            }
 
-                foreach (var response in responses)
+            var responses = operations.Responses;
+            var changesToMake = new List<KeyValuePair<string, OpenApiResponse>>();
+            var keysToRemove = new List<string>();
+
+            foreach (var response in responses)
+            {
+                var content = response.Value.Content;
+                if (content.Count > 0)
                 {
-                    var content = response.Value.Content;
-                    if (content.Count > 0)
+                    content.First().Value.Schema.Properties[IsSuccessField] = OpenApiSuccessSchema;
+                }
+                else
+                {
+                    content.Add(ContentType, new()
                     {
-                        content.First().Value.Schema.Properties[IsSuccessField] = OpenApiSuccessSchema;
-                    }
-                    else
-                    {
-                        content.Add(ContentType, new()
+                        Schema = new()
                         {
-                            Schema = new()
+                            Properties = new Dictionary<string, OpenApiSchema>
                             {
-                                Properties = new Dictionary<string, OpenApiSchema>
-                                {
-                                    [IsSuccessField] = response.Key.IsSuccessResponseKey() ? OpenApiSuccessSchema : OpenApiFailureSchema
-                                }
+                                [IsSuccessField] = response.Key.IsSuccessResponseKey() ? OpenApiSuccessSchema : OpenApiFailureSchema
                             }
-                        });
-                    }
-
-                    if (response.Key.Equals(NoContentStatusCode, StringComparison.InvariantCulture))
-                    {
-                        response.Value.Description = "Success";
-                        changesToMake.Add(new(SuccessStatusCode, response.Value));
-                        keysToRemove.Add(response.Key);
-                    }
+                        }
+                    });
                 }
 
-                foreach (var change in changesToMake)
+                if (response.Key.Equals(NoContentStatusCode, StringComparison.InvariantCulture))
                 {
-                    responses.Add(change.Key, change.Value);
+                    response.Value.Description = "Success";
+                    changesToMake.Add(new(SuccessStatusCode, response.Value));
+                    keysToRemove.Add(response.Key);
                 }
+            }
 
-                foreach (var key in keysToRemove)
-                {
-                    responses.Remove(key);
-                }
+            foreach (var change in changesToMake)
+            {
+                responses.Add(change.Key, change.Value);
+            }
+
+            foreach (var key in keysToRemove)
+            {
+                responses.Remove(key);
             }
         }
 
@@ -129,11 +131,6 @@ internal static partial class IsSuccessMiddleware
         context.Response.Body = newBodyStream;
 
         await next.Invoke(context);
-
-        if (context.Response.ContentType?.Contains(ContentType) is false)
-        {
-            return;
-        }
 
         var isSuccess = context.Response.StatusCode >= 200 && context.Response.StatusCode < 300;
 

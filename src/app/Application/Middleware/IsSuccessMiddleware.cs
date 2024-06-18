@@ -67,7 +67,7 @@ internal static partial class IsSuccessMiddleware
                     var responseKey = response.GetResponseKey();
 
                     var contents = response.Value.Content;
-                    if (contents.Count == 0)
+                    if (contents.Count is 0)
                     {
                         contents.Add(ContentType, new()
                         {

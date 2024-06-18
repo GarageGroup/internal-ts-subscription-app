@@ -11,6 +11,7 @@ static class Program
         .UseHealthCheck()
         .UseSwagger()
         .UseStandardSwaggerUI()
+        .UseIsSuccessMiddleware()
         .UseJwtReader()
         .UseProjectSetSearchEndpoint()
         .UseLastProjectSetGetEndpoint()

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +25,8 @@ internal static partial class IsSuccessMiddleware
     private const int NoContentStatusCode = 204;
 
     private const string ProblemDetailsSchemaName = "ProblemDetails";
+
+    private const string Json = "json";
 
     private static readonly OpenApiSchema OpenApiSuccessSchema
         =
@@ -55,7 +57,7 @@ internal static partial class IsSuccessMiddleware
 
         foreach (var path in paths)
         {
-            foreach(var operation in path.Operations.Values)
+            foreach (var operation in path.Operations.Values)
             {
                 var changesToMake = new List<KeyValuePair<string, OpenApiResponse>>();
                 var keysToRemove = new List<string>();
@@ -64,14 +66,10 @@ internal static partial class IsSuccessMiddleware
                 {
                     var responseKey = response.GetResponseKey();
 
-                    var content = response.Value.Content;
-                    if (content.Count > 0)
+                    var contents = response.Value.Content;
+                    if (contents.Count == 0)
                     {
-                        content.First().Value.Schema.Properties[IsSuccessField] = OpenApiSuccessSchema;
-                    }
-                    else
-                    {
-                        content.Add(ContentType, new()
+                        contents.Add(ContentType, new()
                         {
                             Schema = new()
                             {
@@ -81,6 +79,16 @@ internal static partial class IsSuccessMiddleware
                                 }
                             }
                         });
+                    }
+                    else
+                    {
+                        foreach (var content in contents)
+                        {
+                            if (content.Key.Contains(Json, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                content.Value.Schema.Properties = content.Value.Schema.Properties.InsertPropertySchema(IsSuccessField, OpenApiSuccessSchema);
+                            }
+                        }
                     }
 
                     if (responseKey is NoContentStatusCode)
@@ -106,11 +114,32 @@ internal static partial class IsSuccessMiddleware
 
         if (openApiDocument.Components.Schemas.TryGetValue(ProblemDetailsSchemaName, out var problemDetails))
         {
-            problemDetails.Properties[IsSuccessField] = OpenApiFailureSchema;
+            problemDetails.Properties = problemDetails.Properties.InsertPropertySchema(IsSuccessField, OpenApiFailureSchema);
         }
     }
 
-    private static async Task AddIsSuccessFieldInResponseBody(HttpContext context, RequestDelegate next)
+    private static IDictionary<string, OpenApiSchema> InsertPropertySchema(
+        this IDictionary<string, OpenApiSchema> properties, string name, OpenApiSchema schema) 
+    {
+        var result = new Dictionary<string, OpenApiSchema>(properties.Count + 1)
+        {
+            { name, schema }
+        };
+
+        foreach (var property in properties)
+        {
+            if (property.Key.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+            {
+                continue;
+            }
+
+            result.Add(property.Key, property.Value);
+        }
+
+        return result;
+    }
+
+    private static async Task AddIsSuccessFieldInResponseBodyAsync(HttpContext context, RequestDelegate next)
     {
         var originalBodyStream = context.Response.Body;
         using var newBodyStream = new MemoryStream();
@@ -118,7 +147,7 @@ internal static partial class IsSuccessMiddleware
 
         await next.Invoke(context);
 
-        if (context.Response.ContentType?.Contains(ContentType) is false)
+        if (context.Response.ContentType?.Contains(Json, StringComparison.InvariantCultureIgnoreCase) is false)
         {
             return;
         }

@@ -7,7 +7,7 @@ partial class IsSuccessMiddleware
 {
     internal static EndpointApplication UseIsSuccessMiddleware(this EndpointApplication builder)
     {
-        builder.Use(AddIsSuccessFieldInResponseBody);
+        builder.Use(AddIsSuccessFieldInResponseBodyAsync);
         ((ISwaggerBuilder)builder).Use(InnerConfigureSwagger);
 
         return builder;

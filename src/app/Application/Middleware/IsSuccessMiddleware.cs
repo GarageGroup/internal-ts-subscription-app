@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,9 +20,9 @@ internal static partial class IsSuccessMiddleware
 
     private const string ContentType = "application/json";
 
-    private const string SuccessStatusCode = "200";
+    private const int SuccessStatusCode = 200;
 
-    private const string NoContentStatusCode = "204";
+    private const int NoContentStatusCode = 204;
 
     private const string ProblemDetailsSchemaName = "ProblemDetails";
 
@@ -62,12 +61,13 @@ internal static partial class IsSuccessMiddleware
                 continue;
             }
 
-            var responses = operations.Responses;
             var changesToMake = new List<KeyValuePair<string, OpenApiResponse>>();
             var keysToRemove = new List<string>();
 
-            foreach (var response in responses)
+            foreach (var response in operations.Responses)
             {
+                var responseKey = response.GetResponseKey();
+
                 var content = response.Value.Content;
                 if (content.Count > 0)
                 {
@@ -81,28 +81,29 @@ internal static partial class IsSuccessMiddleware
                         {
                             Properties = new Dictionary<string, OpenApiSchema>
                             {
-                                [IsSuccessField] = response.Key.IsSuccessResponseKey() ? OpenApiSuccessSchema : OpenApiFailureSchema
+                                [IsSuccessField] = responseKey?.IsSuccessStatusKey() is true ? OpenApiSuccessSchema : OpenApiFailureSchema
                             }
                         }
                     });
                 }
 
-                if (response.Key.Equals(NoContentStatusCode, StringComparison.InvariantCulture))
+                if (responseKey is NoContentStatusCode)
                 {
                     response.Value.Description = "Success";
-                    changesToMake.Add(new(SuccessStatusCode, response.Value));
+
+                    changesToMake.Add(new(SuccessStatusCode.ToString(), response.Value));
                     keysToRemove.Add(response.Key);
                 }
             }
 
             foreach (var change in changesToMake)
             {
-                responses.Add(change.Key, change.Value);
+                operations.Responses.Add(change.Key, change.Value);
             }
 
             foreach (var key in keysToRemove)
             {
-                responses.Remove(key);
+                operations.Responses.Remove(key);
             }
         }
 
@@ -110,18 +111,6 @@ internal static partial class IsSuccessMiddleware
         {
             problemDetails.Properties[IsSuccessField] = OpenApiFailureSchema;
         }
-    }
-
-    private static bool IsSuccessResponseKey(this string responseKey)
-        =>
-        int.TryParse(responseKey, out var key) && key >= 200 && key < 300;
-
-    private static Task WriteResponseAsync(HttpResponse response, Stream body, string modifiedResponse, CancellationToken cancellationToken)
-    {
-        response.ContentType = ContentType;
-        response.ContentLength = null;
-        response.Body = body;
-        return response.WriteAsync(modifiedResponse, cancellationToken);
     }
 
     private static async Task AddIsSuccessFieldInResponseBody(HttpContext context, RequestDelegate next)
@@ -132,7 +121,7 @@ internal static partial class IsSuccessMiddleware
 
         await next.Invoke(context);
 
-        var isSuccess = context.Response.StatusCode >= 200 && context.Response.StatusCode < 300;
+        var isSuccess = context.Response.StatusCode.IsSuccessStatusKey();
 
         context.Response.Body.Seek(0, SeekOrigin.Begin);
         var responseBody = await new StreamReader(context.Response.Body).ReadToEndAsync(context.RequestAborted);
@@ -142,8 +131,10 @@ internal static partial class IsSuccessMiddleware
         {
             var originalJson = JsonDocument.Parse(responseBody).RootElement;
 
-            var modifiedJson = new Dictionary<string, JsonElement>();
-            modifiedJson.AddProperty(IsSuccessField, isSuccess);
+            var modifiedJson = new Dictionary<string, JsonElement>
+            {
+                [IsSuccessField] = JsonSerializer.SerializeToElement(isSuccess)
+            };
 
             foreach (var property in originalJson.EnumerateObject())
             {
@@ -155,23 +146,25 @@ internal static partial class IsSuccessMiddleware
         }
         else
         {
-            context.Response.StatusCode = context.Response.StatusCode is 204 ? 200 : context.Response.StatusCode;
-            var modifiedResponse = isSuccess is true ? IsSuccessTrueJson : IsSuccessFalseJson;
+            context.Response.StatusCode = context.Response.StatusCode is NoContentStatusCode ? SuccessStatusCode : context.Response.StatusCode;
+            var modifiedResponse = isSuccess ? IsSuccessTrueJson : IsSuccessFalseJson;
             await WriteResponseAsync(context.Response, originalBodyStream, modifiedResponse, context.RequestAborted);
         }
     }
 
-    private static void AddProperty(this Dictionary<string, JsonElement> json, string propertyName, object value)
+    private static Task WriteResponseAsync(HttpResponse response, Stream body, string modifiedResponse, CancellationToken cancellationToken)
     {
-        if (value is null)
-        {
-            json.Add(propertyName, default);
-        }
-        else
-        {
-            var jsonValue = JsonSerializer.SerializeToUtf8Bytes(value);
-            using var document = JsonDocument.Parse(jsonValue);
-            json.Add(propertyName, document.RootElement.Clone());
-        }
+        response.ContentType = ContentType;
+        response.ContentLength = null;
+        response.Body = body;
+        return response.WriteAsync(modifiedResponse, cancellationToken);
     }
+
+    private static int? GetResponseKey(this KeyValuePair<string, OpenApiResponse> response)
+        =>
+        int.TryParse(response.Key, out var value) ? value : null;
+
+    private static bool IsSuccessStatusKey(this int key)
+        =>
+        key is >= 200 and < 300;
 }

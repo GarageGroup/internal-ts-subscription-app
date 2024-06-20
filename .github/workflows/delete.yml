@@ -29,7 +29,7 @@ jobs:
         inlineScript: |
           blob_exists=$(az storage blob exists \
             --name ${{ vars.AZURE_ARTIFACT_NAME }}-${{ steps.get_version.outputs.version }}.zip \
-            --container-name 'artifacts' \
+            --container-name ${{ vars.AZURE_ARTIFACT_CONTAINER_NAME }} \
             --account-name ${{ vars.AZURE_ARTIFACT_ACCOUNT_NAME }} \
             --auth-mode login --output tsv --query exists)
 
@@ -37,7 +37,7 @@ jobs:
           then
             az storage blob delete \
               --name ${{ vars.AZURE_ARTIFACT_NAME }}-${{ steps.get_version.outputs.version }}.zip \
-              --container-name 'artifact' \
+              --container-name ${{ vars.AZURE_ARTIFACT_CONTAINER_NAME }} \
               --account-name ${{ vars.AZURE_ARTIFACT_ACCOUNT_NAME }} \
               --auth-mode login
             fi

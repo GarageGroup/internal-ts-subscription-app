@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/getTags", Description = "Get tags")]
+[Endpoint(EndpointMethod.Post, "/getTags", Summary = "Get tags")]
 [EndpointTag("Tag")]
 public interface ITagSetGetFunc
 {

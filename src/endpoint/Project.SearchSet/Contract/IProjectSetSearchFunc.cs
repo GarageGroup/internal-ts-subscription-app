@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/searchProjects", Description = "Search for projects, leads, opportunities and incidents")]
+[Endpoint(EndpointMethod.Post, "/searchProjects", Summary = "Search for projects, leads, opportunities and incidents")]
 [EndpointTag("Project")]
 public interface IProjectSetSearchFunc
 {

@@ -67,7 +67,7 @@ jobs:
         azcliversion: 2.30.0
         inlineScript: |
           az storage blob upload \
-            --container-name 'artifact' \
+            --container-name ${{ vars.AZURE_ARTIFACT_CONTAINER_NAME }} \
             --file ./publish/${{ vars.AZURE_ARTIFACT_NAME }}-${{ steps.get_version.outputs.version }}.zip \
             --account-name ${{ vars.AZURE_ARTIFACT_ACCOUNT_NAME }} \
             --account-key ${{ secrets.AZURE_ACCOUNT_KEY_ARTIFACT }} \
@@ -105,7 +105,7 @@ jobs:
           --name ${{ vars.AZURE_ARTIFACT_NAME }}-${{ steps.get_version.outputs.version }}.zip \
           --file ./publish/${{ vars.AZURE_ARTIFACT_NAME }}-${{ steps.get_version.outputs.version }}.zip \
           --account-name ${{ vars.AZURE_ARTIFACT_ACCOUNT_NAME }} \
-          --container-name 'artifact' \
+          --container-name ${{ vars.AZURE_ARTIFACT_CONTAINER_NAME }} \
           --account-key ${{ secrets.AZURE_ACCOUNT_KEY_ARTIFACT }}
 
     - name: Deploy to Azure webapp

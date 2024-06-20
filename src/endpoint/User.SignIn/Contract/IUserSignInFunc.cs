@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/signIn", Description = "Log in the user")]
+[Endpoint(EndpointMethod.Post, "/signIn", Summary = "Log in the user")]
 [EndpointTag("Authorization")]
 public interface IUserSignInFunc
 {

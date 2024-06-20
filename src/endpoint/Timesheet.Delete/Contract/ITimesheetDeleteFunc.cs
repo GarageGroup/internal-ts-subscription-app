@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/deleteTimesheet", Description = "Delete timesheet")]
+[Endpoint(EndpointMethod.Post, "/deleteTimesheet", Summary = "Delete timesheet")]
 [EndpointTag("Timesheet")]
 public interface ITimesheetDeleteFunc
 {

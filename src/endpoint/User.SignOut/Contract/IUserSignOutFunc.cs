@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/signOut", Description = "Log out the user")]
+[Endpoint(EndpointMethod.Post, "/signOut", Summary = "Log out the user")]
 [EndpointTag("Authorization")]
 public interface IUserSignOutFunc
 {

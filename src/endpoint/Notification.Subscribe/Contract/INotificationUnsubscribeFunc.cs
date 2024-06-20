@@ -5,7 +5,7 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/unsubscribeFromNotification", Description = "Unsubscribe bot user from notification")]
+[Endpoint(EndpointMethod.Post, "/unsubscribeFromNotification", Summary = "Unsubscribe bot user from notification")]
 [EndpointTag("Notification")]
 public interface INotificationUnsubscribeFunc
 {

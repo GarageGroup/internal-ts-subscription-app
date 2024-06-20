@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/updateProfile", Description = "Update profile")]
+[Endpoint(EndpointMethod.Post, "/updateProfile", Summary = "Update profile")]
 [EndpointTag("Profile")]
 public interface IProfileUpdateFunc
 {

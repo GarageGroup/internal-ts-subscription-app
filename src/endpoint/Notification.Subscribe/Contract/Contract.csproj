@@ -6,13 +6,14 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Contract</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GarageGroup.Infra.Endpoint.Core" Version="0.16.0" />
-    <PackageReference Include="GarageGroup.Infra.Endpoint.SchemaProvider" Version="0.2.7" />
+    <PackageReference Include="GarageGroup.Infra.Endpoint.Core" Version="0.16.1" />
+    <PackageReference Include="GarageGroup.Infra.Endpoint.SchemaProvider" Version="0.2.8" />
     <PackageReference Include="PrimeFuncPack.Core.FlatArray" Version="1.4.0" />
   </ItemGroup>
 

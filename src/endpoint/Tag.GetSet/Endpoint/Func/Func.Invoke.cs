@@ -16,21 +16,7 @@ partial class TagSetGetFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .Pipe(
-            static @in => DbTag.QueryAll with
-            {
-                Filter = new DbCombinedFilter(DbLogicalOperator.And)
-                {
-                    Filters =
-                    [
-                        DbTag.BuildOwnerFilter(@in.SystemUserId),
-                        DbTag.BuildProjectFilter(@in.ProjectId),
-                        DescriptionTagFilter,
-                        DbTag.BuildMinDateFilter(@in.MinDate),
-                        DbTag.BuildMaxDateFilter(@in.MaxDate)
-                    ]
-                },
-                Orders = DbTag.DefaultOrders
-            })
+            BuildDbQuery)
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbTag>)
         .MapSuccess(
@@ -38,6 +24,28 @@ partial class TagSetGetFunc
             {
                 Tags = success.AsEnumerable().SelectMany(GetHashTags).Distinct().ToFlatArray()
             });
+
+    private DbSelectQuery BuildDbQuery(TagSetGetIn input)
+    {
+        var maxDate = todayProvider.Today;
+        var minDate = maxDate.AddDays(-option.DaysPeriod);
+
+        return DbTag.QueryAll with
+        {
+            Filter = new DbCombinedFilter(DbLogicalOperator.And)
+            {
+                Filters =
+                [
+                    DbTag.BuildOwnerFilter(input.SystemUserId),
+                    DbTag.BuildProjectFilter(input.ProjectId),
+                    DescriptionTagFilter,
+                    DbTag.BuildMinDateFilter(minDate),
+                    DbTag.BuildMaxDateFilter(maxDate)
+                ]
+            },
+            Orders = DbTag.DefaultOrders
+        };
+    }
 
     private static IEnumerable<string> GetHashTags(DbTag timesheet)
     {

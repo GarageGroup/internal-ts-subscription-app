@@ -2,16 +2,18 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetModifyMetadata;
+
 public enum TimesheetCreateFailureCode
 {
     Unknown,
 
-    [Problem(FailureStatusCode.Forbidden, "This method is forbidden for your account")]
-    Forbidden,
-
-    [Problem(FailureStatusCode.BadRequest, "An unexpected project type")]
+    [Problem(FailureStatusCode.BadRequest, FailureCode.UnexpectedProjectTypeMessage)]
     UnexpectedProjectType,
 
-    [Problem(FailureStatusCode.NotFound, "Project not found")]
+    [Problem(FailureStatusCode.Forbidden, FailureCode.ForbiddenMessage)]
+    Forbidden,
+
+    [Problem(FailureStatusCode.NotFound, FailureCode.ProjectNotFoundMessage)]
     ProjectNotFound
 }

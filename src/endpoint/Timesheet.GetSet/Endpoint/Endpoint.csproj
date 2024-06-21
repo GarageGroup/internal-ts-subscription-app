@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-  	<TargetFramework>net8.0</TargetFramework>
-  	<ImplicitUsings>disable</ImplicitUsings>
-  	<Nullable>enable</Nullable>
-  	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  	<InvariantGlobalization>false</InvariantGlobalization>
-  	<RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
-  	<AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Endpoint</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
+    <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Endpoint</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,5 +23,5 @@
     <PackageReference Include="PrimeFuncPack.Dependency.Core" Version="2.1.0" />
     <PackageReference Include="PrimeFuncPack.Primitives.Pipeline" Version="2.0.3" />
   </ItemGroup>
-	
+
 </Project>

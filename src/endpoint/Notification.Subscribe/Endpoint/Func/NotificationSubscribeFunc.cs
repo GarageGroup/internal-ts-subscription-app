@@ -86,16 +86,6 @@ internal sealed partial class NotificationSubscribeFunc : INotificationSubscribe
             =>
             (int)weekday;
     }
-
-    private static Result<string, Failure<NotificationSubscribeFailureCode>> MapToNotificationTypeKey(NotificationSubscribeIn input)
-        =>
-        MapToNotificationTypeKey(input.SubscriptionData.NotificationType)
-            .MapFailure(static x => x.WithFailureCode(NotificationSubscribeFailureCode.NotificationTypeInvalid));
-
-    private Result<string, Failure<NotificationUnsubscribeFailureCode>> MapToNotificationTypeKey(NotificationUnsubscribeIn input) 
-        => 
-        MapToNotificationTypeKey(input.NotificationType)
-            .MapFailure(static x => x.WithFailureCode(NotificationUnsubscribeFailureCode.NotificationTypeInvalid));
     
     private static Result<string, Failure<Unit>> MapToNotificationTypeKey(NotificationType type)
         =>

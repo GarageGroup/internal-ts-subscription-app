@@ -3,15 +3,17 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static UserSignInMetadata;
+
 public sealed record class UserSignInIn
 {
     public UserSignInIn(
         [ClaimIn] Guid systemUserId,
-        [FormBodyIn] long chatId)
+        [JsonBodyIn, SwaggerDescription(In.ChatIdDescription), IntegerExample(In.ChatIdExample)] long chatId)
     {
         SystemUserId = systemUserId;
         ChatId = chatId;
-    }        
+    }
 
     public Guid SystemUserId { get; }
 

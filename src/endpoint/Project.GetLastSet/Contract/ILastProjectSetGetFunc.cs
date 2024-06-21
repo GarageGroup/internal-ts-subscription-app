@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/getLastProjects", Summary = "Get last user projects, leads, opportunities and incidents")]
-[EndpointTag("Project")]
+using static LastProjectSetGetMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface ILastProjectSetGetFunc
 {
     ValueTask<Result<LastProjectSetGetOut, Failure<Unit>>> InvokeAsync(

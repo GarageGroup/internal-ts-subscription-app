@@ -2,16 +2,18 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetModifyMetadata;
+
 public enum TimesheetUpdateFailureCode
 {
     Unknown,
 
-    [Problem(FailureStatusCode.NotFound, "Timesheet not found")]
-    NotFound,
-
-    [Problem(FailureStatusCode.BadRequest, "An unexpected project type")]
+    [Problem(FailureStatusCode.BadRequest, FailureCode.UnexpectedProjectTypeMessage)]
     UnexpectedProjectType,
 
-    [Problem(FailureStatusCode.NotFound, "Project not found")]
+    [Problem(FailureStatusCode.NotFound, FailureCode.TimesheetNotFoundMessage)]
+    TimesheetNotFound,
+
+    [Problem(FailureStatusCode.NotFound, FailureCode.ProjectNotFoundMessage)]
     ProjectNotFound
 }

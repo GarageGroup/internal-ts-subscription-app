@@ -4,6 +4,8 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static LastProjectSetGetMetadata;
+
 public sealed record class ProjectItem
 {
     public ProjectItem(Guid id, [AllowNull] string name, ProjectType type)
@@ -13,10 +15,15 @@ public sealed record class ProjectItem
         Type = type;
     }
 
+    [SwaggerDescription(Out.IdDescription)]
+    [StringExample(Out.IdExample)]
     public Guid Id { get; }
 
+    [SwaggerDescription(Out.NameDescription)]
+    [StringExample(Out.NameExample)]
     public string Name { get; }
 
-    [StringExample(nameof(ProjectType.Project))]
+    [SwaggerDescription(Out.TypeDescription)]
+    [StringExample(Out.TypeExample)]
     public ProjectType Type { get; }
 }

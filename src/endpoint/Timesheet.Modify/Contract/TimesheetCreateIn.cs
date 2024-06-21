@@ -4,14 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetModifyMetadata;
+
 public sealed record class TimesheetCreateIn
 {
     public TimesheetCreateIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] DateOnly date,
-        [JsonBodyIn] TimesheetProject project,
-        [JsonBodyIn] decimal duration,
-        [JsonBodyIn] [AllowNull] string description)
+        [JsonBodyIn, SwaggerDescription(In.DateDescription)] DateOnly date,
+        [JsonBodyIn, SwaggerDescription(In.ProjectDescription)] TimesheetProject project,
+        [JsonBodyIn, SwaggerDescription(In.DurationDescription), IntegerExample(In.DurationExample)] decimal duration,
+        [JsonBodyIn, SwaggerDescription(In.DescriptionDescription), StringExample(In.DescriptionExample)] [AllowNull] string description)
     {
         SystemUserId = systemUserId;
         Date = date;

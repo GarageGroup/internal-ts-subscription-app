@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Endpoint</AssemblyName>
   </PropertyGroup>

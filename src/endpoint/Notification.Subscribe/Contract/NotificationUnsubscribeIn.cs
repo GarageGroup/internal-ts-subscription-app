@@ -3,11 +3,13 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static NotificationSubscribeMetadata;
+
 public sealed record class NotificationUnsubscribeIn
 {
     public NotificationUnsubscribeIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] NotificationType notificationType)
+        [JsonBodyIn, SwaggerDescription(In.NotificationTypeDesciption)] NotificationType notificationType)
     {
         SystemUserId = systemUserId;
         NotificationType = notificationType;

@@ -3,6 +3,8 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetModifyMetadata;
+
 public sealed record class TimesheetProject
 {
     public TimesheetProject(Guid id, ProjectType type)
@@ -11,8 +13,11 @@ public sealed record class TimesheetProject
         Type = type;
     }
 
+    [SwaggerDescription(In.ProjectIdDescription)]
+    [StringExample(In.ProjectIdExample)]
     public Guid Id { get; }
 
-    [StringExample(nameof(ProjectType.Project))]
+    [SwaggerDescription(In.ProjectTypeDescription)]
+    [StringExample(In.ProjectTypeExample)]
     public ProjectType Type { get; }
 }

@@ -54,7 +54,7 @@ partial class TimesheetModifyFunc
         =>
         failureCode switch
         {
-            DataverseFailureCode.RecordNotFound => TimesheetUpdateFailureCode.NotFound,
+            DataverseFailureCode.RecordNotFound => TimesheetUpdateFailureCode.TimesheetNotFound,
             _ => default
         };
 

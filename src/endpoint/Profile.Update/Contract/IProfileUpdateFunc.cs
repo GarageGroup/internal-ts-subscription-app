@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/updateProfile", Summary = "Update profile")]
-[EndpointTag("Profile")]
+using static ProfileUpdateMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface IProfileUpdateFunc
 {
     ValueTask<Result<Unit, Failure<ProfileUpdateFailureCode>>> InvokeAsync(

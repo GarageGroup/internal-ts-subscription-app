@@ -28,20 +28,13 @@ internal static partial class IsSuccessMiddleware
 
     private const string Json = "json";
 
-    private static readonly OpenApiSchema OpenApiSuccessSchema
-        =
+    private static OpenApiSchema CreateIsSuccessSchema(bool value)
+        =>
         new()
         {
             Type = "boolean",
-            Example = new OpenApiBoolean(true)
-        };
-
-    private static readonly OpenApiSchema OpenApiFailureSchema
-        =
-        new()
-        {
-            Type = "boolean",
-            Example = new OpenApiBoolean(false)
+            Example = new OpenApiBoolean(value),
+            Description = "Indicates whether the operation was successful."
         };
 
     private static readonly JsonSerializerOptions SerializerOptions
@@ -75,7 +68,7 @@ internal static partial class IsSuccessMiddleware
                             {
                                 Properties = new Dictionary<string, OpenApiSchema>
                                 {
-                                    [IsSuccessField] = responseKey?.IsSuccessStatusKey() is true ? OpenApiSuccessSchema : OpenApiFailureSchema
+                                    [IsSuccessField] = CreateIsSuccessSchema(responseKey?.IsSuccessStatusKey() is true)
                                 }
                             }
                         });
@@ -84,10 +77,13 @@ internal static partial class IsSuccessMiddleware
                     {
                         foreach (var content in contents)
                         {
-                            if (content.Key.Contains(Json, StringComparison.InvariantCultureIgnoreCase))
+                            if (content.Key.Contains(Json, StringComparison.InvariantCultureIgnoreCase) is false)
                             {
-                                content.Value.Schema.Properties = content.Value.Schema.Properties.InsertPropertySchema(IsSuccessField, OpenApiSuccessSchema);
+                                continue;
                             }
+
+                            var successSchema = CreateIsSuccessSchema(true);
+                            content.Value.Schema.Properties = content.Value.Schema.Properties.InsertPropertySchema(IsSuccessField, successSchema);
                         }
                     }
 
@@ -114,7 +110,7 @@ internal static partial class IsSuccessMiddleware
 
         if (openApiDocument.Components.Schemas.TryGetValue(ProblemDetailsSchemaName, out var problemDetails))
         {
-            problemDetails.Properties = problemDetails.Properties.InsertPropertySchema(IsSuccessField, OpenApiFailureSchema);
+            problemDetails.Properties = problemDetails.Properties.InsertPropertySchema(IsSuccessField, CreateIsSuccessSchema(false));
         }
     }
 

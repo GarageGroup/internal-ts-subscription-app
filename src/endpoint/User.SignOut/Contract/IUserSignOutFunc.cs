@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/signOut", Summary = "Log out the user")]
-[EndpointTag("Authorization")]
+using static UserSignOutMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface IUserSignOutFunc
 {
     ValueTask<Result<Unit, Failure<Unit>>> InvokeAsync(

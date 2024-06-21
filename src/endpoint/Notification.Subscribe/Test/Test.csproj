@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
-    <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test</AssemblyName>
   </PropertyGroup>

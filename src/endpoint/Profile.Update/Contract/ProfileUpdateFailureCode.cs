@@ -2,10 +2,12 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static ProfileUpdateMetadata;
+
 public enum ProfileUpdateFailureCode
 {
     Unknown,
 
-    [Problem(FailureStatusCode.NotFound, "Profile not found")]
-    NotFound,
+    [Problem(FailureStatusCode.NotFound, FailureCode.NotFoundMessage)]
+    NotFound
 }

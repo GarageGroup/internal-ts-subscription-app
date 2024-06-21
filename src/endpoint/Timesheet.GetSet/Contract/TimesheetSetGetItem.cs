@@ -4,46 +4,64 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetSetGetMetadata;
+
 public sealed record class TimesheetSetGetItem
 {
     public TimesheetSetGetItem(
-        decimal duration,
+        Guid id,
         Guid projectId,
         ProjectType projectType,
         [AllowNull] string projectName,
+        decimal duration,
         [AllowNull] string description,
-        Guid id,
         [AllowNull] StateCode? incidentStateCode,
         StateCode timesheetStateCode,
         DateOnly date)
     { 
+        Id = id;
         ProjectId = projectId;
         ProjectType = projectType;
         ProjectName = projectName.OrEmpty();
         Duration = duration;
         Description = description.OrEmpty();
-        Id = id;
         IncidentStateCode = incidentStateCode;
         TimesheetStateCode = timesheetStateCode;
         Date = date;
     }
 
-    public Guid ProjectId { get; }
-
-    [StringExample(nameof(ProjectType.Project))]
-    public ProjectType ProjectType { get; }
-
-    public string ProjectName { get; }
-
-    public decimal Duration { get; }
-
-    public string Description { get; }
-
+    [SwaggerDescription(Out.IdDescription)]
+    [StringExample(Out.IdExample)]
     public Guid Id { get; }
 
+    [SwaggerDescription(Out.ProjectIdDescription)]
+    [StringExample(Out.ProjectIdExample)]
+    public Guid ProjectId { get; }
+
+    [SwaggerDescription(Out.ProjectTypeDescription)]
+    [StringExample(Out.ProjectTypeExample)]
+    public ProjectType ProjectType { get; }
+
+    [SwaggerDescription(Out.ProjectNameDescription)]
+    [StringExample(Out.ProjectNameExample)]
+    public string ProjectName { get; }
+
+    [SwaggerDescription(Out.DurationDescription)]
+    [IntegerExample(Out.DurationExample)]
+    public decimal Duration { get; }
+
+    [SwaggerDescription(Out.DescriptionDescription)]
+    [StringExample(Out.DescriptionExample)]
+    public string Description { get; }
+
+    [SwaggerDescription(Out.IncidentStateCodeDescription)]
+    [StringExample(Out.IncidentStateCodeExample)]
     public StateCode? IncidentStateCode { get; }
 
+    [SwaggerDescription(Out.TimesheetStateCodeDescription)]
+    [StringExample(Out.TimesheetStateCodeExample)]
     public StateCode TimesheetStateCode { get; }
 
+    [SwaggerDescription(Out.DateDescription)]
     public DateOnly Date { get; }
 }

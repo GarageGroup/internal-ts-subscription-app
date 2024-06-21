@@ -5,6 +5,8 @@ using GarageGroup.Infra.Endpoint;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static NotificationSubscribeMetadata;
+
 [MediaTypeMetadata(TypeName = "DailyNotificationMetadata")]
 public sealed record class DailyNotificationSubscriptionData : BaseSubscriptionData
 {
@@ -23,8 +25,10 @@ public sealed record class DailyNotificationSubscriptionData : BaseSubscriptionD
         => 
         UserPreference = userPreference;
 
+    [SwaggerDescription(In.NotificationTypeDesciption)]
     [StringExample(nameof(NotificationType.DailyNotification))]
     public override NotificationType NotificationType { get; } = NotificationType.DailyNotification;
 
+    [SwaggerDescription(In.DailyNotificationUserPreferenceDesciption)]
     public override DailyNotificationUserPreference? UserPreference { get; }
 }

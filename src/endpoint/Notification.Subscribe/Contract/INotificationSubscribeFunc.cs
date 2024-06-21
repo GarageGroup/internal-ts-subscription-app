@@ -5,8 +5,10 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/subscribeToNotification", Summary = "Subscribe bot user to notification")]
-[EndpointTag("Notification")]
+using static NotificationSubscribeMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.RouteSubscribe, Summary = Func.SummarySubscribe, Description = Func.DescriptionSubscribe)]
+[EndpointTag(Func.Tag)]
 public interface INotificationSubscribeFunc
 {
     ValueTask<Result<Unit, Failure<NotificationSubscribeFailureCode>>> InvokeAsync(

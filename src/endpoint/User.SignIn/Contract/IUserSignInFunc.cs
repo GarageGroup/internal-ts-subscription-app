@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/signIn", Summary = "Log in the user")]
-[EndpointTag("Authorization")]
+using static UserSignInMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface IUserSignInFunc
 {
     ValueTask<Result<Unit, Failure<UserSignInFailureCode>>> InvokeAsync(

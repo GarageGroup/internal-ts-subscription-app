@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/deleteTimesheet", Summary = "Delete timesheet")]
-[EndpointTag("Timesheet")]
+using static TimesheetDeleteMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface ITimesheetDeleteFunc
 {
     ValueTask<Result<Unit, Failure<Unit>>> InvokeAsync(

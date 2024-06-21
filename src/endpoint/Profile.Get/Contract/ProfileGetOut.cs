@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static ProfileGetMetadata;
+
 public sealed record class ProfileGetOut
 {
     public ProfileGetOut(
@@ -15,8 +17,12 @@ public sealed record class ProfileGetOut
     }
 
     [JsonBodyOut]
+    [SwaggerDescription(Out.UserNameDescription)]
+    [StringExample(Out.UserNameExample)]
     public string UserName { get; }
 
     [JsonBodyOut]
+    [SwaggerDescription(Out.LanguageCodeDescription)]
+    [StringExample(Out.LanguageCodeExample)]
     public string LanguageCode { get; }
 }

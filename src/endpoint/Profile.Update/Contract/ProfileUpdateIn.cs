@@ -3,11 +3,13 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static ProfileUpdateMetadata;
+
 public sealed record class ProfileUpdateIn
 {
     public ProfileUpdateIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] ProfileLanguage? languageCode)
+        [JsonBodyIn, SwaggerDescription(In.LanguageCodeDescription), StringExample(In.LanguageCodeExample)] ProfileLanguage? languageCode)
     {
         SystemUserId = systemUserId;
         LanguageCode = languageCode;

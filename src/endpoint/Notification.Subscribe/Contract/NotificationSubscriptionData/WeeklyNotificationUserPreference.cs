@@ -4,6 +4,8 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static NotificationSubscribeMetadata;
+
 public sealed record class WeeklyNotificationUserPreference : INotificationUserPreference
 {
     public WeeklyNotificationUserPreference(FlatArray<Weekday> weekday, int workedHours, [AllowNull] NotificationTime notificationTime)
@@ -13,11 +15,14 @@ public sealed record class WeeklyNotificationUserPreference : INotificationUserP
         NotificationTime = notificationTime ?? NotificationTime.Msk18;
     }
 
-    [StringExample(nameof(Timesheet.Weekday.Friday))]
+    [SwaggerDescription(In.WeeklyNotificationWeekdayDescription)]
+    [StringExample(In.WeeklyNotificationWeekdayExample)]
     public FlatArray<Weekday> Weekday { get; }
 
-    [IntegerExample(40)]
+    [SwaggerDescription(In.WeeklyNotificationWorkedHoursDescription)]
+    [IntegerExample(In.WeeklyNotificationWorkedHoursExample)]
     public int WorkedHours { get; }
 
+    [SwaggerDescription(In.NotificationTimeDescription)]
     public NotificationTime NotificationTime { get; }
 }

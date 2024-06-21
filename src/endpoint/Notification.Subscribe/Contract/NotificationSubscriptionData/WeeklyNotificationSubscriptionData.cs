@@ -5,6 +5,8 @@ using GarageGroup.Infra.Endpoint;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static NotificationSubscribeMetadata;
+
 [MediaTypeMetadata(TypeName = "WeeklyNotificationMetadata")]
 public sealed record class WeeklyNotificationSubscriptionData : BaseSubscriptionData
 {
@@ -23,8 +25,10 @@ public sealed record class WeeklyNotificationSubscriptionData : BaseSubscription
         => 
         UserPreference = userPreference;
 
+    [SwaggerDescription(In.NotificationTypeDesciption)]
     [StringExample(nameof(NotificationType.WeeklyNotification))]
     public override NotificationType NotificationType { get; } = NotificationType.WeeklyNotification;
 
+    [SwaggerDescription(In.WeeklyNotificationUserPreferenceDesciption)]
     public override WeeklyNotificationUserPreference? UserPreference { get; }
 }

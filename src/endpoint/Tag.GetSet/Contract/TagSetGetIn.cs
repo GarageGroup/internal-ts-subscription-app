@@ -3,25 +3,19 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TagSetGetMetadata;
+
 public sealed record class TagSetGetIn
 {
     public TagSetGetIn(
-        [ClaimIn] Guid systemUserId, 
-        [JsonBodyIn] Guid projectId, 
-        [JsonBodyIn] DateOnly minDate, 
-        [JsonBodyIn] DateOnly maxDate)
+        [ClaimIn] Guid systemUserId,
+        [JsonBodyIn, SwaggerDescription(In.ProjectIdDescription), StringExample(In.ProjectIdExample)] Guid projectId)
     {
         SystemUserId = systemUserId;
         ProjectId = projectId;
-        MinDate = minDate;
-        MaxDate = maxDate;
     }
 
     public Guid SystemUserId { get; }
 
     public Guid ProjectId { get; }
-
-    public DateOnly MinDate { get; }
-
-    public DateOnly MaxDate { get; }
 }

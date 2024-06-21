@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/updateTimesheet", Summary = "Update timesheet")]
-[EndpointTag("Timesheet")]
+using static TimesheetModifyMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.RouteUpdate, Summary = Func.SummaryUpdate, Description = Func.DescriptionUpdate)]
+[EndpointTag(Func.Tag)]
 public interface ITimesheetUpdateFunc
 {
     ValueTask<Result<Unit, Failure<TimesheetUpdateFailureCode>>> InvokeAsync(

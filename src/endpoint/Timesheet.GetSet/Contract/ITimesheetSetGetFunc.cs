@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/getTimesheets", Summary = "Get timesheets")]
-[EndpointTag("Timesheet")]
+using static TimesheetSetGetMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface ITimesheetSetGetFunc
 {
     ValueTask<Result<TimesheetSetGetOut, Failure<Unit>>> InvokeAsync(

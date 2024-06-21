@@ -238,7 +238,7 @@ partial class TimesheetModifyFuncTest
     [Theory]
     [InlineData(DataverseFailureCode.Unknown, TimesheetUpdateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.Unauthorized, TimesheetUpdateFailureCode.Unknown)]
-    [InlineData(DataverseFailureCode.RecordNotFound, TimesheetUpdateFailureCode.NotFound)]
+    [InlineData(DataverseFailureCode.RecordNotFound, TimesheetUpdateFailureCode.TimesheetNotFound)]
     [InlineData(DataverseFailureCode.PicklistValueOutOfRange, TimesheetUpdateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.Throttling, TimesheetUpdateFailureCode.Unknown)]
     [InlineData(DataverseFailureCode.SearchableEntityNotFound, TimesheetUpdateFailureCode.Unknown)]

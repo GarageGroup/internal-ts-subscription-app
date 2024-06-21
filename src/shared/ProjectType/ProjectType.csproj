@@ -5,7 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <InvariantGlobalization>true</InvariantGlobalization>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Shared.ProjectType</AssemblyName>
   </PropertyGroup>

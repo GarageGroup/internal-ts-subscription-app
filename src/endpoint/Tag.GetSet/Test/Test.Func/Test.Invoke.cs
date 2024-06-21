@@ -13,13 +13,16 @@ partial class TagSetGetFuncTest
     public static async Task InvokeAsync_ExpectSqlApiCalledOnce()
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbTimesheetTagSet);
-        var func = new TagSetGetFunc(mockSqlApi.Object);
+
+        var date = new DateOnly(2024, 03, 21);
+        var todayProvider = BuildTodayProvider(date);
+
+        var option = new TagSetGetOption(5);
+        var func = new TagSetGetFunc(mockSqlApi.Object, todayProvider, option);
 
         var input = new TagSetGetIn(
             systemUserId: new("82ee3d26-17f1-4e2f-adb2-eeea5119a512"),
-            projectId: new("58482d23-ca3e-4499-8294-cc9b588cce73"),
-            minDate: new(2023, 06, 15),
-            maxDate: new(2023, 11, 03));
+            projectId: new("58482d23-ca3e-4499-8294-cc9b588cce73"));
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -38,9 +41,9 @@ partial class TagSetGetFuncTest
                     new DbLikeFilter(
                         "t.gg_description", "%#%", "description"),
                     new DbParameterFilter(
-                        "t.gg_date", DbFilterOperator.GreaterOrEqual, "2023-06-15", "minDate"),
+                        "t.gg_date", DbFilterOperator.GreaterOrEqual, "2024-03-16", "minDate"),
                     new DbParameterFilter(
-                        "t.gg_date", DbFilterOperator.LessOrEqual, "2023-11-03", "maxDate")
+                        "t.gg_date", DbFilterOperator.LessOrEqual, "2024-03-21", "maxDate")
                 ]
             },
             Orders =
@@ -60,7 +63,9 @@ partial class TagSetGetFuncTest
         var dbFailure = sourceException.ToFailure("Some failure text");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new TagSetGetFunc(mockSqlApi.Object);
+        var todayProvider = BuildTodayProvider(SomeDate);
+
+        var func = new TagSetGetFunc(mockSqlApi.Object, todayProvider, SomeOption);
 
         var actual = await func.InvokeAsync(SomeTimesheetTagSetGetInput, default);
         var expected = Failure.Create("Some failure text", sourceException);
@@ -74,7 +79,9 @@ partial class TagSetGetFuncTest
         FlatArray<DbTag> dbTimesheetTags, TagSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbTimesheetTags);
-        var func = new TagSetGetFunc(mockSqlApi.Object);
+        var todayProvider = BuildTodayProvider(SomeDate);
+
+        var func = new TagSetGetFunc(mockSqlApi.Object, todayProvider, SomeOption);
 
         var actual = await func.InvokeAsync(SomeTimesheetTagSetGetInput, default);
         Assert.StrictEqual(expected, actual);

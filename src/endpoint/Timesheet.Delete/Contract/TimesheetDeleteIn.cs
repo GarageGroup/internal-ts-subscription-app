@@ -3,9 +3,12 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static TimesheetDeleteMetadata;
+
 public readonly record struct TimesheetDeleteIn
 {
-    public TimesheetDeleteIn([JsonBodyIn] Guid timesheetId)
+    public TimesheetDeleteIn(
+        [JsonBodyIn, SwaggerDescription(In.IdDescription), StringExample(In.IdExample)] Guid timesheetId)
         =>
         TimesheetId = timesheetId;
 

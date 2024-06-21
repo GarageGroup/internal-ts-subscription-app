@@ -2,10 +2,12 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static ProjectSetSearchMetadata;
+
 public enum ProjectSetSearchFailureCode
 {
     Unknown,
 
-    [Problem(FailureStatusCode.Forbidden, "This method is forbidden for your account")]
+    [Problem(FailureStatusCode.Forbidden, FailureCode.ForbiddenMessage)]
     Forbidden
 }

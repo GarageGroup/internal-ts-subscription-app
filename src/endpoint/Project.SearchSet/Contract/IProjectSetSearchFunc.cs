@@ -5,8 +5,10 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Post, "/searchProjects", Summary = "Search for projects, leads, opportunities and incidents")]
-[EndpointTag("Project")]
+using static ProjectSetSearchMetadata;
+
+[Endpoint(EndpointMethod.Post, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface IProjectSetSearchFunc
 {
     ValueTask<Result<ProjectSetSearchOut, Failure<ProjectSetSearchFailureCode>>> InvokeAsync(

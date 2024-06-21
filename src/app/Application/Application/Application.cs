@@ -25,7 +25,7 @@ internal static partial class Application
         =>
         serviceProvider.GetRequiredService<IConfiguration>();
     
-    private static NotificationSubscribeOption ResolveNotificationSubscribeOption(IServiceProvider serviceProvider) 
+    private static NotificationSubscribeOption ResolveNotificationSubscribeOption(IServiceProvider serviceProvider)
         =>
         new()
         {

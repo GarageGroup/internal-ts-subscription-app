@@ -3,12 +3,14 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public readonly record struct TimesheetSetGetIn
+using static TimesheetSetGetMetadata;
+
+public sealed record class TimesheetSetGetIn
 {
     public TimesheetSetGetIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] DateOnly dateFrom,
-        [JsonBodyIn] DateOnly dateTo)
+        [JsonBodyIn, SwaggerDescription(In.DateFromDescription)] DateOnly dateFrom,
+        [JsonBodyIn, SwaggerDescription(In.DateToDescription)] DateOnly dateTo)
     {
         SystemUserId = systemUserId;
         DateFrom = dateFrom;

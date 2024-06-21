@@ -2,10 +2,12 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static UserSignInMetadata;
+
 public enum UserSignInFailureCode
 {
     Unknown,
 
-    [Problem(FailureStatusCode.NotFound, "System user not found")]
+    [Problem(FailureStatusCode.NotFound, FailureCode.SystemUserNotFoundMessage)]
     SystemUserNotFound
 }

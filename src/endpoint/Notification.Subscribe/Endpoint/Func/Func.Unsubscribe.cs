@@ -35,11 +35,12 @@ internal sealed partial class NotificationSubscribeFunc
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 
         AsyncPipeline.Pipe(
-            input, cancellationToken)
+            input.NotificationType, cancellationToken)
         .Pipe(
             MapToNotificationTypeKey)
-        .MapSuccess(
-            NotificationTypeJson.BuildGetInput)
+        .Map(
+            NotificationTypeJson.BuildGetInput,
+            static failure => failure.WithFailureCode(NotificationUnsubscribeFailureCode.NotificationTypeInvalid))
         .ForwardValue(
             dataverseApi.GetEntityAsync<NotificationTypeJson>,
             static failure => failure.MapFailureCode(MapFailureCodeWhenFindingUnsubscribeNotificationType))

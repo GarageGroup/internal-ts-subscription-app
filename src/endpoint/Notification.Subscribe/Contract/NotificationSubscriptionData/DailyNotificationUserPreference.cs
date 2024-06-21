@@ -3,6 +3,8 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static NotificationSubscribeMetadata;
+
 public sealed record class DailyNotificationUserPreference : INotificationUserPreference
 {
     public DailyNotificationUserPreference(int workedHours, [AllowNull] NotificationTime notificationTime)
@@ -11,8 +13,10 @@ public sealed record class DailyNotificationUserPreference : INotificationUserPr
         NotificationTime = notificationTime ?? NotificationTime.Msk18;
     }
 
-    [IntegerExample(8)]
+    [SwaggerDescription(In.DailyNotificationWorkedHoursDescription)]
+    [IntegerExample(In.DailyNotificationWorkedHoursExample)]
     public int WorkedHours { get; }
 
+    [SwaggerDescription(In.NotificationTimeDescription)]
     public NotificationTime NotificationTime { get; }
 }

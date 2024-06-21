@@ -4,22 +4,25 @@ using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Tag.GetSet.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace GarageGroup.Internal.Timesheet;
 
 public static class TagSetGetFuncDependency
 {
     public static Dependency<TagSetGetEndpoint> UseTagGetSetEndpoint<TSqlApi>(
-        this Dependency<TSqlApi> dependency)
+        this Dependency<TSqlApi, TagSetGetOption> dependency)
         where TSqlApi : ISqlQueryEntitySetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
-        return dependency.Map(CreateFunc).Map(TagSetGetEndpoint.Resolve);
+        return dependency.Fold(CreateFunc).Map(TagSetGetEndpoint.Resolve);
 
-        static TagSetGetFunc CreateFunc(TSqlApi sqlApi)
+        static TagSetGetFunc CreateFunc(TSqlApi sqlApi, TagSetGetOption option)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
-            return new(sqlApi);
+            ArgumentNullException.ThrowIfNull(option);
+
+            return new(sqlApi, TodayProvider.Instance, option);
         }
     }
 }

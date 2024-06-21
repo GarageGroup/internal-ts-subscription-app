@@ -4,12 +4,14 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
+using static ProjectSetSearchMetadata;
+
 public sealed record class ProjectSetSearchIn
 {
     public ProjectSetSearchIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn] [AllowNull] string searchText,
-        [JsonBodyIn, IntegerExample(50)] int? top)
+        [JsonBodyIn, SwaggerDescription(In.SearchTextDescription), StringExample(In.SearchTextExample)] [AllowNull] string searchText,
+        [JsonBodyIn, SwaggerDescription(In.TopDescription), IntegerExample(In.TopExample)] int? top)
     {
         SystemUserId = systemUserId;
         SearchText = searchText.OrEmpty();

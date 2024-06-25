@@ -1,8 +1,10 @@
 using System;
-using GarageGroup.Internal.Timesheet;
+using System.Runtime.CompilerServices;
 using GarageGroup.Infra;
 using GarageGroup.Internal.Timesheet.Option;
 using PrimeFuncPack;
+
+[assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Subscription.GetSet.Test")]
 
 namespace GarageGroup.Internal.Timesheet;
 

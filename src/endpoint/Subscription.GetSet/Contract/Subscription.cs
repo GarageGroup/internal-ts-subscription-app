@@ -10,5 +10,5 @@ public sealed record class Subscription
 
     public INotificationUserPreference? UserPreference { get; init; }
 
-    public bool IsActive { get; init; }
+    public bool IsDisabled { get; init; }
 }

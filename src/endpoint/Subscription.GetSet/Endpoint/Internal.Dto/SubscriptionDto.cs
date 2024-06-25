@@ -10,5 +10,5 @@ internal sealed record class SubscriptionDto
     
     public INotificationUserPreferenceDto? UserPreference { get; init; }
     
-    public bool IsActive { get; init; }
+    public bool IsDisabled { get; init; }
 }

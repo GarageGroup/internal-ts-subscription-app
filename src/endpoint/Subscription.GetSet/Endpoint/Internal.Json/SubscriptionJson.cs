@@ -16,15 +16,15 @@ internal sealed record class SubscriptionJson
 
     private const string NotificationPreferencesFieldName = "gg_notification_preferences";
 
-    private const string IsActiveFieldName = "gg_is_disabled";
+    private const string IsDisabledFieldName = "gg_is_disabled";
 
     private static readonly FlatArray<string> SelectedFields 
         = 
-        [ IdFieldName, NotificationPreferencesFieldName, IsActiveFieldName ];
+        [IdFieldName, NotificationPreferencesFieldName, IsDisabledFieldName];
     
     private static readonly FlatArray<DataverseExpandedField> ExpandFields 
         = 
-        [ new DataverseExpandedField(NotificationTypeLookup, [ NotificationTypeJson.KeyFieldName ]) ];
+        [new DataverseExpandedField(NotificationTypeLookup, [NotificationTypeJson.KeyFieldName])];
     
     public static DataverseEntitySetGetIn BuildGetInput(Guid botUserId) 
         => 
@@ -43,6 +43,6 @@ internal sealed record class SubscriptionJson
     [JsonPropertyName(NotificationPreferencesFieldName)]
     public string? UserPreference { get; init; }
     
-    [JsonPropertyName(IsActiveFieldName)]
-    public bool IsActive { get; init; }
+    [JsonPropertyName(IsDisabledFieldName)]
+    public bool IsDisabled { get; init; }
 }

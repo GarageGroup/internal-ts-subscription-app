@@ -47,7 +47,7 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         {
             Id = subscription.Id, 
             NotificationType = NotificationType.DailyNotification, 
-            IsActive = subscription.IsActive, 
+            IsDisabled = subscription.IsDisabled, 
             UserPreference = string.IsNullOrEmpty(subscription.UserPreference) is false
                 ? JsonSerializer.Deserialize<DailyNotificationUserPreferenceDto>(subscription.UserPreference, SerializerOptions)
                 : null
@@ -59,7 +59,7 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         { 
             Id = subscription.Id, 
             NotificationType = NotificationType.WeeklyNotification, 
-            IsActive = subscription.IsActive, 
+            IsDisabled = subscription.IsDisabled, 
             UserPreference = string.IsNullOrEmpty(subscription.UserPreference) is false 
                 ? JsonSerializer.Deserialize<WeeklyNotificationUserPreferenceDtoDto>(subscription.UserPreference, SerializerOptions)
                 : null
@@ -71,7 +71,7 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         { 
             Id = subscription.Id, 
             NotificationType = subscription.NotificationType, 
-            IsActive = subscription.IsActive, 
+            IsDisabled = subscription.IsDisabled, 
             UserPreference = Map(subscription.UserPreference)
         };
 

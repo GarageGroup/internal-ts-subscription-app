@@ -5,8 +5,10 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-[Endpoint(EndpointMethod.Get, "getSubscriptions")]
-[EndpointTag("Notification")]
+using static SubscriptionSetGetMetadata;
+
+[Endpoint(EndpointMethod.Get, Func.Route, Summary = Func.Summary, Description = Func.Description)]
+[EndpointTag(Func.Tag)]
 public interface ISubscriptionSetGetFunc
 {
     ValueTask<Result<SubscriptionSetGetOut, Failure<SubscriptionSetGetFailureCode>>> InvokeAsync(SubscriptionSetGetIn input,

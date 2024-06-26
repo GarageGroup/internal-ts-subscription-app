@@ -9,6 +9,4 @@ public sealed record class Subscription
     public NotificationType NotificationType { get; init; }
 
     public INotificationUserPreference? UserPreference { get; init; }
-
-    public bool IsDisabled { get; init; }
 }

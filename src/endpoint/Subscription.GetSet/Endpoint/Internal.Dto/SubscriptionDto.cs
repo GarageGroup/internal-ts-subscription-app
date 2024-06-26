@@ -9,6 +9,4 @@ internal sealed record class SubscriptionDto
     public NotificationType NotificationType { get; init; }
     
     public INotificationUserPreferenceDto? UserPreference { get; init; }
-    
-    public bool IsDisabled { get; init; }
 }

@@ -30,16 +30,13 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         };
 
     private static SubscriptionDto MapToSubscriptionDto(SubscriptionJson subscription)
-    {
-        ArgumentNullException.ThrowIfNull(subscription.NotificationType);
-
-        return subscription.NotificationType.Key switch
+        => 
+        subscription.NotificationType.Key switch
         {
             "dailyTimesheetNotification" => MapToDailySubscriptionDto(subscription),
             "weeklyTimesheetNotification" => MapWeeklySubscriptionDto(subscription),
             _ => throw new NotSupportedException("Not supported notification type key")
         };
-    }
 
     private static SubscriptionDto MapToDailySubscriptionDto(SubscriptionJson subscription)
         => 
@@ -47,7 +44,6 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         {
             Id = subscription.Id, 
             NotificationType = NotificationType.DailyNotification, 
-            IsDisabled = subscription.IsDisabled, 
             UserPreference = string.IsNullOrEmpty(subscription.UserPreference) is false
                 ? JsonSerializer.Deserialize<DailyNotificationUserPreferenceDto>(subscription.UserPreference, SerializerOptions)
                 : null
@@ -59,7 +55,6 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         { 
             Id = subscription.Id, 
             NotificationType = NotificationType.WeeklyNotification, 
-            IsDisabled = subscription.IsDisabled, 
             UserPreference = string.IsNullOrEmpty(subscription.UserPreference) is false 
                 ? JsonSerializer.Deserialize<WeeklyNotificationUserPreferenceDtoDto>(subscription.UserPreference, SerializerOptions)
                 : null
@@ -71,7 +66,6 @@ public sealed partial class SubscriptionSetGetFunc : ISubscriptionSetGetFunc
         { 
             Id = subscription.Id, 
             NotificationType = subscription.NotificationType, 
-            IsDisabled = subscription.IsDisabled, 
             UserPreference = Map(subscription.UserPreference)
         };
 

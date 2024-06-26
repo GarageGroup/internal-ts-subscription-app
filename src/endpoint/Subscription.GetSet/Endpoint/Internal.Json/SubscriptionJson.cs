@@ -32,17 +32,14 @@ internal sealed record class SubscriptionJson
             entityPluralName: EntityPluralName,
             selectFields: SelectedFields,
             expandFields: ExpandFields,
-            filter: $"{BotUserFieldName} eq '{botUserId}'");
+            filter: $"{BotUserFieldName} eq '{botUserId}' and {IsDisabledFieldName} eq false");
     
     [JsonPropertyName(IdFieldName)]
     public Guid Id { get; init; }
     
     [JsonPropertyName(NotificationTypeLookup)]
-    public NotificationTypeJson? NotificationType { get; init; }
+    public required NotificationTypeJson NotificationType { get; init; }
     
     [JsonPropertyName(NotificationPreferencesFieldName)]
     public string? UserPreference { get; init; }
-    
-    [JsonPropertyName(IsDisabledFieldName)]
-    public bool IsDisabled { get; init; }
 }

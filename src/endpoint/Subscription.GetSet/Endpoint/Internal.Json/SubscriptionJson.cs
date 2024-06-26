@@ -20,7 +20,7 @@ internal sealed record class SubscriptionJson
 
     private static readonly FlatArray<string> SelectedFields 
         = 
-        [IdFieldName, NotificationPreferencesFieldName, IsDisabledFieldName];
+        [IdFieldName, NotificationPreferencesFieldName];
     
     private static readonly FlatArray<DataverseExpandedField> ExpandFields 
         = 

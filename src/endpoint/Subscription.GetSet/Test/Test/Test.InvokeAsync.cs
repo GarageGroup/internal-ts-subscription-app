@@ -85,9 +85,9 @@ partial class SubscriptionSetGetFuncTest
 
         var expected = new DataverseEntitySetGetIn(
             entityPluralName: "gg_bot_user_subscriptions",
-            selectFields: ["gg_bot_user_subscriptionid", "gg_notification_preferences", "gg_is_disabled"],
+            selectFields: ["gg_bot_user_subscriptionid", "gg_notification_preferences"],
             expandFields: [ new DataverseExpandedField("gg_notification_type_id", ["gg_key"])],
-            filter: $"_gg_bot_user_id_value eq '5a0aa34a-b64a-4258-bed3-5e62946db8b4'");
+            filter: $"_gg_bot_user_id_value eq '5a0aa34a-b64a-4258-bed3-5e62946db8b4' and gg_is_disabled eq false");
         
         mockDataverseApi.Verify(x => x.GetEntitySetAsync<SubscriptionJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
     }

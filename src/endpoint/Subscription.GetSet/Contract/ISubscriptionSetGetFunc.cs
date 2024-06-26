@@ -11,6 +11,6 @@ using static SubscriptionSetGetMetadata;
 [EndpointTag(Func.Tag)]
 public interface ISubscriptionSetGetFunc
 {
-    ValueTask<Result<SubscriptionSetGetOut, Failure<SubscriptionSetGetFailureCode>>> InvokeAsync(SubscriptionSetGetIn input,
-        CancellationToken cancellationToken);
+    ValueTask<Result<SubscriptionSetGetOut, Failure<SubscriptionSetGetFailureCode>>> InvokeAsync(
+        SubscriptionSetGetIn input, CancellationToken cancellationToken);
 }

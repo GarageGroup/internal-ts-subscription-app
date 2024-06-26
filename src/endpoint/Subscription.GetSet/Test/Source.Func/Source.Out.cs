@@ -38,8 +38,7 @@ partial class SubscriptionSetGetFuncSource
                         NotificationType = new NotificationTypeJson
                         {
                             Key = "dailyTimesheetNotification"
-                        },
-                        IsDisabled = true
+                        }
                     },
                     new()
                     {
@@ -47,8 +46,7 @@ partial class SubscriptionSetGetFuncSource
                         NotificationType = new NotificationTypeJson
                         {
                             Key = "weeklyTimesheetNotification"
-                        },
-                        IsDisabled = true
+                        }
                     },
                     new()
                     {
@@ -75,8 +73,7 @@ partial class SubscriptionSetGetFuncSource
                         {
                             Key = "dailyTimesheetNotification"
                         },
-                        UserPreference = """{"workedHours":4,"flowRuntime":"19:00"}""",
-                        IsDisabled = true
+                        UserPreference = """{"workedHours":4,"flowRuntime":"19:00"}"""
                     },
                     new()
                     {
@@ -85,8 +82,7 @@ partial class SubscriptionSetGetFuncSource
                         {
                             Key = "weeklyTimesheetNotification"
                         },
-                        UserPreference = """{"weekday":"5","workedHours":20,"flowRuntime":"18:00"}""",
-                        IsDisabled = true
+                        UserPreference = """{"weekday":"5","workedHours":20,"flowRuntime":"18:00"}"""
                     }
                 ],
                 [
@@ -103,14 +99,12 @@ partial class SubscriptionSetGetFuncSource
                     new()
                     {
                         Id = Guid.Parse("1ad594b1-0fe4-4f15-b74d-ad6a0a6cde4b"),
-                        NotificationType = NotificationType.DailyNotification,
-                        IsDisabled = true
+                        NotificationType = NotificationType.DailyNotification
                     },
                     new()
                     {
                         Id = Guid.Parse("a60c2236-885a-4230-a678-16f79b2783ef"),
-                        NotificationType = NotificationType.WeeklyNotification,
-                        IsDisabled = true
+                        NotificationType = NotificationType.WeeklyNotification
                     },
                     new()
                     {
@@ -141,8 +135,7 @@ partial class SubscriptionSetGetFuncSource
                         {
                             WorkedHours = 4,
                             NotificationTime = new TimeOnly(19, 0),
-                        },
-                        IsDisabled = true
+                        }
                     },
                     new()
                     {
@@ -153,8 +146,7 @@ partial class SubscriptionSetGetFuncSource
                             Weekday = [Weekday.Friday],
                             NotificationTime = new TimeOnly(18, 0),
                             WorkedHours = 20
-                        },
-                        IsDisabled = true
+                        }
                     },
                 ]
             }

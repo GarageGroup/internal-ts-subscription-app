@@ -5,7 +5,7 @@ namespace GarageGroup.Internal.Timesheet;
 
 public sealed record class SubscriptionSetGetIn
 {
-    public SubscriptionSetGetIn([ClaimIn]Guid systemUserId)
+    public SubscriptionSetGetIn([ClaimIn] Guid systemUserId)
         => 
         SystemUserId = systemUserId;
     

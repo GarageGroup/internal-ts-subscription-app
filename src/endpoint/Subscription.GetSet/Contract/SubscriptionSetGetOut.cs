@@ -3,8 +3,10 @@ using GarageGroup.Infra;
 
 namespace GarageGroup.Internal.Timesheet;
 
-public sealed record class SubscriptionSetGetOut
+using static SubscriptionSetGetMetadata;
+
+public readonly record struct SubscriptionSetGetOut
 {
-    [JsonBodyOut]
-    public FlatArray<Subscription> Subscriptions { get; init; }
+    [JsonBodyOut, SwaggerDescription(Out.SubscriptionsDescription)]
+    public FlatArray<SubscriptionBase> Subscriptions { get; init; }
 }

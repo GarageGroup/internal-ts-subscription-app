@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using GarageGroup.Infra;
 using Microsoft.OpenApi.Any;
 
@@ -8,17 +9,23 @@ using static SubscriptionSetGetMetadata;
 
 public sealed record class DailyNotificationUserPreference : INotificationUserPreference
 {
-    public static OpenApiObject GetExample() 
-        =>
+    internal static OpenApiObject Example { get; }
+        =
         new()
         {
-            {nameof(WorkedHours), new OpenApiInteger(8)},
-            {nameof(NotificationTime), new OpenApiString("18:00:00")},
+            [NamingPolicy.ConvertName(nameof(WorkedHours))] = new OpenApiInteger(In.DailyNotificationWorkedHoursExample),
+            [NamingPolicy.ConvertName(nameof(NotificationTime))] = new OpenApiString(In.NotificationTimeExample)
         };
-    
-    [SwaggerDescription(DailyUserPreference.WorkedHoursDescription)]
-    public int WorkedHours { get; init; }
 
-    [SwaggerDescription(DailyUserPreference.NotificationTimeDescription)]
-    public TimeOnly NotificationTime { get; init; }
+    public DailyNotificationUserPreference(decimal workedHours, [AllowNull] string notificationTime)
+    {
+        WorkedHours = workedHours;
+        NotificationTime = notificationTime.OrEmpty();
+    }
+
+    [SwaggerDescription(In.DailyNotificationWorkedHoursDescription)]
+    public decimal WorkedHours { get; }
+
+    [SwaggerDescription(In.NotificationTimeDescription)]
+    public string NotificationTime { get; }
 }

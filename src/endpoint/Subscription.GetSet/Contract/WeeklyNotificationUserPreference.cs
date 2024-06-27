@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using GarageGroup.Infra;
 using Microsoft.OpenApi.Any;
 
@@ -9,27 +9,36 @@ using static SubscriptionSetGetMetadata;
 
 public sealed record class WeeklyNotificationUserPreference : INotificationUserPreference
 {
-    public static OpenApiObject GetExample()
-    {
-        var weekdayExample = new OpenApiArray();
-        weekdayExample.Add(new OpenApiString(Timesheet.Weekday.Friday.ToString()));
-        weekdayExample.Add(new OpenApiString(Timesheet.Weekday.Saturday.ToString()));
-        weekdayExample.Add(new OpenApiString(Timesheet.Weekday.Sunday.ToString()));
-        
-        return new()
+    internal static OpenApiObject Example { get; }
+        =
+        new()
         {
-            {nameof(WorkedHours), new OpenApiInteger(40)},
-            {nameof(NotificationTime), new OpenApiString("18:00:00")},
-            {nameof(Weekday), weekdayExample}
+            [NamingPolicy.ConvertName(nameof(WorkedHours))] = new OpenApiInteger(In.WeeklyNotificationWorkedHoursExample),
+            [NamingPolicy.ConvertName(nameof(NotificationTime))] = new OpenApiString(In.NotificationTimeExample),
+            [NamingPolicy.ConvertName(nameof(Weekday))] = new OpenApiArray
+            {
+                new OpenApiString(Timesheet.Weekday.Friday.ToString()),
+                new OpenApiString(Timesheet.Weekday.Saturday.ToString()),
+                new OpenApiString(Timesheet.Weekday.Sunday.ToString())
+            }
         };
+
+    public WeeklyNotificationUserPreference(
+        FlatArray<Weekday> weekday,
+        decimal workedHours,
+        [AllowNull] string notificationTime)
+    {
+        Weekday = weekday;
+        WorkedHours = workedHours;
+        NotificationTime = notificationTime.OrEmpty();
     }
-    
-    [SwaggerDescription(WeeklyUserPreference.WeekdaysTimeDescription)]
-    public FlatArray<Weekday> Weekday { get; init; }
 
-    [SwaggerDescription(WeeklyUserPreference.WorkedHoursDescription)]
-    public int WorkedHours { get; init; }
+    [SwaggerDescription(In.WeeklyNotificationWeekdayDescription)]
+    public FlatArray<Weekday> Weekday { get; }
 
-    [SwaggerDescription(WeeklyUserPreference.NotificationTimeDescription)]
-    public TimeOnly NotificationTime { get; init; }
+    [SwaggerDescription(In.WeeklyNotificationWorkedHoursDescription)]
+    public decimal WorkedHours { get; }
+
+    [SwaggerDescription(In.NotificationTimeDescription)]
+    public string NotificationTime { get; }
 }

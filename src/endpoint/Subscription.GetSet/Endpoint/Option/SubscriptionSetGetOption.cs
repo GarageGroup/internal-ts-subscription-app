@@ -1,4 +1,4 @@
-namespace GarageGroup.Internal.Timesheet.Option;
+namespace GarageGroup.Internal.Timesheet;
 
 public class SubscriptionSetGetOption
 {

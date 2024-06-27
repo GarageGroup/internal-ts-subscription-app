@@ -1,3 +1,0 @@
-namespace GarageGroup.Internal.Timesheet;
-
-internal interface INotificationUserPreferenceDto;

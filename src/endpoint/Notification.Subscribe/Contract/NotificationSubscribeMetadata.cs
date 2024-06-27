@@ -35,7 +35,7 @@ internal static class NotificationSubscribeMetadata
 
         public const string NotificationTimeDescription
             =
-            "preferred notification time in the Moscow timezone (UTC+3)";
+            "Preferred notification time in the Moscow timezone (UTC+3)";
 
         public const string DailyNotificationUserPreferenceDesciption
             =

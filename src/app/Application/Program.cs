@@ -22,6 +22,7 @@ static class Program
         .UseTagSetGetEndpoint()
         .UseNotificationSubscribeEndpoint()
         .UseNotificationUnsubscribeEndpoint()
+        .UseSubscriptionSetGetEndpoint()
         .UseProfileGetEndpoint()
         .UseProfileUpdateEndpoint()
         .UseUserSignOutEndpoint()

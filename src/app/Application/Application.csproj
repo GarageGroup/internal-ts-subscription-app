@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
+    <NoWarn>$(NoWarn);IDE0130</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Service.Application</AssemblyName>
   </PropertyGroup>
@@ -16,6 +17,7 @@
     <ProjectReference Include="..\..\endpoint\Profile.Update\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.GetLastSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Project.SearchSet\Endpoint\Endpoint.csproj" />
+    <ProjectReference Include="..\..\endpoint\Subscription.GetSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Tag.GetSet\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Timesheet.Delete\Endpoint\Endpoint.csproj" />
     <ProjectReference Include="..\..\endpoint\Timesheet.GetSet\Endpoint\Endpoint.csproj" />

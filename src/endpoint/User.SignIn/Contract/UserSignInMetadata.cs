@@ -33,5 +33,9 @@ internal static class UserSignInMetadata
         public const string SystemUserNotFoundMessage
             =
             "System user was not found";
+
+        public const string InvalidTelegramDataMessage
+            =
+            "Telegram data is invalid";
     }
 }

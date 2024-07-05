@@ -9,5 +9,8 @@ public enum UserSignInFailureCode
     Unknown,
 
     [Problem(FailureStatusCode.NotFound, FailureCode.SystemUserNotFoundMessage)]
-    SystemUserNotFound
+    SystemUserNotFound,
+
+    [Problem(FailureStatusCode.BadRequest, FailureCode.InvalidTelegramDataMessage)]
+    InvalidTelegramData
 }

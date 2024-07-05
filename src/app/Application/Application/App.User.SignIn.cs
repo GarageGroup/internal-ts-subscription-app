@@ -22,6 +22,7 @@ partial class Application
         new()
         {
             BotId = serviceProvider.ResolveBotId(),
-            BotName = (serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TelegramBot:Name")).OrEmpty()
+            BotName = (serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TelegramBot:Name")).OrEmpty(),
+            BotToken = (serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TelegramBot:Token")).OrEmpty()
         };
 }

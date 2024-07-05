@@ -8,14 +8,26 @@ internal sealed partial class UserSignInFunc(IDataverseApiClient dataverseApi, U
 {
     private const string DefaultLanguageCode = "en";
 
-    private const string RegexPattern = @"""id"":(\d+)";
-
     private const string TelegramWebAppData = "WebAppData";
 
     private const string HashParameterName = "hash=";
 
-    [GeneratedRegex(RegexPattern)]
-    private static partial Regex Regex();
+    [GeneratedRegex(@"""id"":(\d+)")]
+    private static partial Regex CreateUserIdRegex();
+
+    private static readonly Regex UserIdRegex;
+
+    static UserSignInFunc()
+        =>
+        UserIdRegex = CreateUserIdRegex();
+
+    private static UserSignInFailureCode ToUserSignInFailureCode(DataverseFailureCode failureCode)
+        =>
+        failureCode switch
+        {
+            DataverseFailureCode.RecordNotFound => UserSignInFailureCode.SystemUserNotFound,
+            _ => default
+        };
 
     private sealed record class UserChatId
     {

@@ -10,7 +10,7 @@ public sealed record class UserSignInIn
         [JsonBodyIn] string telegramData)
     {
         SystemUserId = systemUserId;
-        TelegramData = telegramData;
+        TelegramData = telegramData.OrEmpty();
     }
 
     public Guid SystemUserId { get; }

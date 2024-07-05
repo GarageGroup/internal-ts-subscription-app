@@ -1,5 +1,4 @@
-﻿using GarageGroup.Infra;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -50,8 +49,8 @@ partial class UserSignInFunc
     {
         var dataArray = Uri.UnescapeDataString(input.TelegramData).Split('&');
         var hash = string.Empty;
-        var filteredData = new List<string>();
 
+        var filteredData = new List<string>(dataArray.Length);
         foreach (var data in dataArray)
         {
             if (data.StartsWith(HashParameterName, StringComparison.InvariantCultureIgnoreCase))
@@ -71,36 +70,28 @@ partial class UserSignInFunc
 
         filteredData.Sort();
 
-        using var hashAlgorithmWebAppData = new HMACSHA256(Encoding.UTF8.GetBytes("WebAppData"));
+        using var hashAlgorithmWebAppData = new HMACSHA256(Encoding.UTF8.GetBytes(TelegramWebAppData));
         var secretKey = hashAlgorithmWebAppData.ComputeHash(Encoding.UTF8.GetBytes(option.BotToken));
 
         using var hashAlgorithmSecretKey = new HMACSHA256(secretKey);
-        var expectedHash = BitConverter.ToString(hashAlgorithmSecretKey.ComputeHash(
-            Encoding.UTF8.GetBytes(string.Join("\n", filteredData)))).Replace("-", "").ToLower();
+        var dataBytes = Encoding.UTF8.GetBytes(string.Join("\n", filteredData));
 
+        var expectedHash = BitConverter.ToString(hashAlgorithmSecretKey.ComputeHash(dataBytes)).Replace("-", string.Empty).ToLowerInvariant();
         if (string.Equals(expectedHash, hash, StringComparison.Ordinal) is false)
         {
             return Failure.Create(UserSignInFailureCode.InvalidTelegramData, "Invalid hash");
         }
 
-        var match = Regex().Match(filteredData[^1]);
+        var match = UserIdRegex.Match(filteredData[^1]);
         if (match.Success is false || long.TryParse(match.Groups[1].Value, out var chatId) is false)
         {
             return Failure.Create(UserSignInFailureCode.InvalidTelegramData, "Invalid id");
         }
 
-        return new UserChatId()
+        return new UserChatId
         {
             ChatId = chatId,
             SystemUserId = input.SystemUserId
         };
     }
-
-    private static UserSignInFailureCode ToUserSignInFailureCode(DataverseFailureCode failureCode)
-        =>
-        failureCode switch
-        {
-            DataverseFailureCode.RecordNotFound => UserSignInFailureCode.SystemUserNotFound,
-            _ => default
-        };
 }

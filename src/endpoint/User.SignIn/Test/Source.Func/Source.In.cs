@@ -10,12 +10,10 @@ partial class UserSignInFuncSource
         new()
         {
             {
-                new()
-                {
-                    BotId = 111222,
-                    BotName = "Some bot name",
-                    BotToken = "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"
-                },
+                new(
+                    botId: 111222,
+                    botName: "Some bot name",
+                    botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"),
                 new(
                     systemUserId: new("2e159d1a-42ac-4c9f-af70-b094ba32a786"),
                     telegramData: "query_id=AAGmGqACAASCAKYaoAKgWTfQ&user=%7B%22id%22%3A123123%2C%22" +
@@ -30,10 +28,11 @@ partial class UserSignInFuncSource
                 new(
                     entityPluralName: "gg_telegram_bot_users",
                     entityKey: new DataverseAlternateKey(
-                    [
-                        new("_gg_systemuser_id_value", "2e159d1a-42ac-4c9f-af70-b094ba32a786"),
-                        new("gg_bot_id", "'111222'")
-                    ]),
+                        idArguments:
+                        [
+                            new("_gg_systemuser_id_value", "2e159d1a-42ac-4c9f-af70-b094ba32a786"),
+                            new("gg_bot_id", "'111222'")
+                        ]),
                     entityData: new UserJson
                     {
                         BotId = 111222,

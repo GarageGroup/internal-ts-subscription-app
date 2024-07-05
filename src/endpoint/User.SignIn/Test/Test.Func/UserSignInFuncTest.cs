@@ -9,12 +9,10 @@ public static partial class UserSignInFuncTest
 {
     private static readonly UserSignInOption SomeOption
         =
-        new()
-        {
-            BotId = 123123,
-            BotName = "Some bot name",
-            BotToken = "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"
-        };
+        new(
+            botId: 123123,
+            botName: "Some bot name",
+            botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR");
 
     private static readonly UserSignInIn SomeInput
         =

@@ -1,5 +1,4 @@
-﻿using GarageGroup.Infra;
-using System;
+﻿using System;
 using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignIn.Test;

@@ -3,8 +3,6 @@ using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
-using static UserSignInMetadata;
-
 public sealed record class UserSignInIn
 {
     public UserSignInIn(

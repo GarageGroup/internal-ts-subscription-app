@@ -34,5 +34,9 @@ internal static partial class Application
 
     private static long ResolveBotId(this IServiceProvider serviceProvider)
         =>
-        serviceProvider.GetRequiredService<IConfiguration>().GetValue<long>("TelegramBot:Id");
+        serviceProvider.GetRequiredService<IConfiguration>().GetBotId();
+
+    private static long GetBotId(this IConfiguration configuration)
+        =>
+        configuration.GetValue<long>("TelegramBot:Id");
 }

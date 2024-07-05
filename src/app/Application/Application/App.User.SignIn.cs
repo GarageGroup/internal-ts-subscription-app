@@ -18,10 +18,12 @@ partial class Application
         .UseUserSignInEndpoint();
 
     private static UserSignInOption ResolveUserSignInOption(IServiceProvider serviceProvider)
-        =>
-        new()
-        {
-            BotId = serviceProvider.ResolveBotId(),
-            BotName = (serviceProvider.GetRequiredService<IConfiguration>().GetValue<string>("TelegramBot:Name")).OrEmpty()
-        };
+    {
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+        return new(
+            botId: configuration.GetBotId(),
+            botName: configuration["TelegramBot:Name"],
+            botToken: configuration["TelegramBot:Token"].OrEmpty());
+    }
 }

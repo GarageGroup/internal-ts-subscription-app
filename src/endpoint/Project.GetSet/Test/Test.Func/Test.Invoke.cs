@@ -10,7 +10,7 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Project.SetGet.Test;
 partial class ProjectSetGetFuncTest
 {
     [Fact]
-    public static async Task InvokeAsync_ExpectMockSqlApiCalledOnce()
+    public static async Task InvokeAsync_ExpectMockSqlApiProjectCalledOnce()
     {
         var mockSqlApi = BuildMockSqlApi(SomeDbIncidentOutput, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
         var func = new ProjectSetGetFunc(mockSqlApi.Object);
@@ -23,12 +23,34 @@ partial class ProjectSetGetFuncTest
                 "p.gg_projectid AS ProjectId",
                 "p.gg_name AS ProjectName")
         };
+        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbProject>(expectedProjectQuery, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_ExpectMockSqlApiOpportunityCalledOnce()
+    {
+        var mockSqlApi = BuildMockSqlApi(SomeDbIncidentOutput, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
+        var func = new ProjectSetGetFunc(mockSqlApi.Object);
+
+        _ = await func.InvokeAsync(default, default);
+
         var expectedOpportunityQuery = new DbSelectQuery("opportunity", "o")
         {
             SelectedFields = new(
                 "o.opportunityid AS ProjectId",
                 "o.name AS ProjectName"),
         };
+        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbOpportunity>(expectedOpportunityQuery, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_ExpectMockSqlApiLeadCalledOnce()
+    {
+        var mockSqlApi = BuildMockSqlApi(SomeDbIncidentOutput, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
+        var func = new ProjectSetGetFunc(mockSqlApi.Object);
+
+        _ = await func.InvokeAsync(default, default);
+
         var expectedLeadQuery = new DbSelectQuery("lead", "l")
         {
             SelectedFields = new(
@@ -36,6 +58,17 @@ partial class ProjectSetGetFuncTest
                 "l.companyname AS CompanyName",
                 "l.subject AS Subject"),
         };
+        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbLead>(expectedLeadQuery, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_ExpectMockSqlApiIncidentCalledOnce()
+    {
+        var mockSqlApi = BuildMockSqlApi(SomeDbIncidentOutput, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
+        var func = new ProjectSetGetFunc(mockSqlApi.Object);
+
+        _ = await func.InvokeAsync(default, default);
+
         var expectedIncidentQuery = new DbSelectQuery("incident", "i")
         {
             SelectedFields = new(
@@ -43,26 +76,7 @@ partial class ProjectSetGetFuncTest
                 "i.title AS ProjectName"),
             Filter = new DbRawFilter("i.statecode = 0")
         };
-
-        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbProject>(expectedProjectQuery, It.IsAny<CancellationToken>()), Times.Once);
-        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbOpportunity>(expectedOpportunityQuery, It.IsAny<CancellationToken>()), Times.Once);
-        mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbLead>(expectedLeadQuery, It.IsAny<CancellationToken>()), Times.Once);
         mockSqlApi.Verify(a => a.QueryEntitySetOrFailureAsync<DbIncident>(expectedIncidentQuery, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
-    public static async Task InvokeAsync_DbIncidentResultIsFailure_ExpectFailure()
-    {
-        var sourceException = new Exception("Some error message");
-        var dbFailure = sourceException.ToFailure("Some Failure message");
-
-        var mockSqlApi = BuildMockSqlApi(dbFailure, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
-        var func = new ProjectSetGetFunc(mockSqlApi.Object);
-
-        var actual = await func.InvokeAsync(default, default);
-        var expected = Failure.Create(Unit.Value ,"Some Failure message", sourceException);
-
-        Assert.StrictEqual(expected, actual);
     }
 
     [Fact]
@@ -102,6 +116,21 @@ partial class ProjectSetGetFuncTest
         var dbFailure = sourceException.ToFailure("Some Failure message");
 
         var mockSqlApi = BuildMockSqlApi(SomeDbIncidentOutput, SomeDbProjectOutput, SomeDbOpportunityOutput, dbFailure);
+        var func = new ProjectSetGetFunc(mockSqlApi.Object);
+
+        var actual = await func.InvokeAsync(default, default);
+        var expected = Failure.Create(Unit.Value, "Some Failure message", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_DbIncidentResultIsFailure_ExpectFailure()
+    {
+        var sourceException = new Exception("Some error message");
+        var dbFailure = sourceException.ToFailure("Some Failure message");
+
+        var mockSqlApi = BuildMockSqlApi(dbFailure, SomeDbProjectOutput, SomeDbOpportunityOutput, SomeDbLeadOutput);
         var func = new ProjectSetGetFunc(mockSqlApi.Object);
 
         var actual = await func.InvokeAsync(default, default);

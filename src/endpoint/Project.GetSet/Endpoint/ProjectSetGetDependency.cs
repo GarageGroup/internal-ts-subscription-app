@@ -19,7 +19,6 @@ public static class ProjectSetGetDependency
         static ProjectSetGetFunc CreateFunc(TSqlApi sqlApi)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
-
             return new(sqlApi);
         }
     }

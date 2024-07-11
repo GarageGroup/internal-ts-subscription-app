@@ -113,7 +113,11 @@ partial class ProjectSetGetFuncTest
     [Theory]
     [MemberData(nameof(ProjectSetGetFuncSource.OutputGetTestData), MemberType = typeof(ProjectSetGetFuncSource))]
     internal static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess(
-        FlatArray<DbIncident> dbIncidents, FlatArray<DbProject> dbProjects, FlatArray<DbOpportunity> dbOpportunities, FlatArray<DbLead> dbLeads, ProjectSetGetOut expected)
+        FlatArray<DbIncident> dbIncidents,
+        FlatArray<DbProject> dbProjects,
+        FlatArray<DbOpportunity> dbOpportunities,
+        FlatArray<DbLead> dbLeads,
+        ProjectSetGetOut expected)
     {
         var mockSqlApi = BuildMockSqlApi(dbIncidents, dbProjects, dbOpportunities, dbLeads);
         var func = new ProjectSetGetFunc(mockSqlApi.Object);

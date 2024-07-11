@@ -27,6 +27,11 @@ partial class ProjectSetGetFuncSource
                     {
                         ProjectId = new("41bdefb5-52f6-4954-922e-dbc233b9e26d"),
                         ProjectName = "Second incident name"
+                    },
+                    new()
+                    {
+                        ProjectId = new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
+                        ProjectName = "Third Incident"
                     }
                 ],
                 [
@@ -113,7 +118,10 @@ partial class ProjectSetGetFuncSource
                             id: new("61313de5-91ca-4216-9077-09701382cacc"),
                             name: "Subject (Company name)",
                             type: ProjectType.Lead),
-
+                        new(
+                            id: new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
+                            name: "Third Incident",
+                            type: ProjectType.Incident)
                     ]
                 }
             }

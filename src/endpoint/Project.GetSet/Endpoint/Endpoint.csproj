@@ -16,7 +16,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="EarlyFuncPack.Core.AsyncPipeline" Version="0.3.0" />
     <PackageReference Include="GarageGroup.Core.AsyncPipeline.Extensions" Version="0.2.2" />
     <PackageReference Include="GarageGroup.Infra.Sql.Api.Abstractions.QueryEntitySet" Version="2.2.0" />
     <PackageReference Include="GarageGroup.Infra.Sql.Api.Core.DbRequest" Version="2.4.0" />

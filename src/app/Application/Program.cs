@@ -14,6 +14,7 @@ static class Program
         .UseIsSuccessMiddleware()
         .UseJwtReader()
         .UseProjectSetSearchEndpoint()
+        .UseProjectSetGetEndpoint()
         .UseLastProjectSetGetEndpoint()
         .UseTimesheetSetGetEndpoint()
         .UseTimesheetCreateEndpoint()

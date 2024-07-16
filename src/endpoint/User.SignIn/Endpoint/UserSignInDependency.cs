@@ -9,18 +9,20 @@ namespace GarageGroup.Internal.Timesheet;
 
 public static class UserSignInDependency
 {
-    public static Dependency<UserSignInEndpoint> UseUserSignInEndpoint(
-        this Dependency<IDataverseApiClient, UserSignInOption> dependency)
+    public static Dependency<UserSignInEndpoint> UseUserSignInEndpoint<TBotApi>(
+        this Dependency<IDataverseApiClient, TBotApi, UserSignInOption> dependency)
+        where TBotApi : IBotInfoGetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
         return dependency.Fold(CreateFunc).Map(UserSignInEndpoint.Resolve);
 
-        static UserSignInFunc CreateFunc(IDataverseApiClient dataverseApi, UserSignInOption option)
+        static UserSignInFunc CreateFunc(IDataverseApiClient dataverseApi, TBotApi botApi, UserSignInOption option)
         {
             ArgumentNullException.ThrowIfNull(dataverseApi);
+            ArgumentNullException.ThrowIfNull(botApi);
             ArgumentNullException.ThrowIfNull(option);
 
-            return new(dataverseApi, option);
+            return new(dataverseApi, botApi, option);
         }
     }
 }

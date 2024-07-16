@@ -9,13 +9,32 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
 
 partial class UserSignOutFuncTest
 {
-    [Theory]
-    [MemberData(nameof(UserSignOutFuncSource.InputTestData), MemberType = typeof(UserSignOutFuncSource))]
-    internal static async Task InvokeAsync_ExpectDataverseUpdateCalledOnce(
-        UserSignOutOption option, UserSignOutIn input, DataverseEntityUpdateIn<UserJson> expectedInput)
+    [Fact]
+    public static async Task InvokeAsync_BotInfoGetResultIsFailure_ExpectFailure()
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new UserSignOutFunc(mockDataverseApi.Object, option);
+
+        var sourceException = new Exception("Some Exception");
+        var botInfoFailure = sourceException.ToFailure("Some error message");
+
+        var mockBotApi = BuildMockBotApi(botInfoFailure);
+        var func = new UserSignOutFunc(mockDataverseApi.Object, mockBotApi.Object);
+
+        var actual = await func.InvokeAsync(SomeInput, default);
+        var expected = Failure.Create("Some error message", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(UserSignOutFuncSource.InputTestData), MemberType = typeof(UserSignOutFuncSource))]
+    internal static async Task InvokeAsync_BotInfoGetResultIsSuccess_ExpectDataverseUpdateCalledOnce(
+        BotInfoGetOut botInfo, UserSignOutIn input, DataverseEntityUpdateIn<UserJson> expectedInput)
+    {
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var mockBotApi = BuildMockBotApi(botInfo);
+
+        var func = new UserSignOutFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -41,7 +60,9 @@ partial class UserSignOutFuncTest
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
         var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new UserSignOutFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Failure.Create("Some failure message", sourceException);
@@ -56,7 +77,9 @@ partial class UserSignOutFuncTest
         var dataverseFailure = sourceException.ToFailure(DataverseFailureCode.RecordNotFound, "Some failure message");
 
         var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new UserSignOutFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Result.Success<Unit>(default);
@@ -68,7 +91,9 @@ partial class UserSignOutFuncTest
     public static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new UserSignOutFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new UserSignOutFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Result.Success<Unit>(default);

@@ -10,16 +10,31 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Subscription.GetSet.Test;
 partial class SubscriptionSetGetFuncTest
 {
     [Fact]
-    public static async Task InvokeAsync_ExpectDataverseGetSetCalledOnce()
+    public static async Task InvokeAsync_BotInfoGetResultIsFailure_ExpectUnknownFailure()
     {
         var mockDataverseApi = BuildMockDataverseApi(SomeDataverseSubscriptionsOut);
 
-        var option = new SubscriptionSetGetOption
-        {
-            BotId = 5674427344
-        };
+        var sourceException = new Exception("Some exception");
+        var botInfoFailure = sourceException.ToFailure("Some failure");
 
-        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, option);
+        var mockBotApi = BuildMockBotApi(botInfoFailure);
+        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, mockBotApi.Object);
+
+        var actual = await func.InvokeAsync(SomeInput, default);
+        var expected = Failure.Create(SubscriptionSetGetFailureCode.Unknown, "Some failure", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_BotInfoGetResultIsSuccess_ExpectDataverseGetSetCalledOnce()
+    {
+        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseSubscriptionsOut);
+
+        var botInfo = new BotInfoGetOut(5674427344, "SomeName");
+        var mockBotApi = BuildMockBotApi(botInfo);
+
+        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var input = new SubscriptionSetGetIn(
             systemUserId: new("5a0aa34a-b64a-4258-bed3-5e62946db8b4"));
@@ -58,7 +73,9 @@ partial class SubscriptionSetGetFuncTest
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
 
         var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Failure.Create(SubscriptionSetGetFailureCode.Unknown, "Some failure text", sourceException);
@@ -74,9 +91,10 @@ partial class SubscriptionSetGetFuncTest
         var dataverseSubscriptionsOut = new DataverseEntitySetGetOut<SubscriptionJson>(jsonSubscriptions);
         var mockDataverseApi = BuildMockDataverseApi(dataverseSubscriptionsOut);
 
-        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, SomeOption);
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(TestAsync);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, mockBotApi.Object);
 
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(TestAsync);
         Assert.Equal(expectedErrorMessage, ex.Message);
 
         async Task TestAsync()
@@ -92,7 +110,9 @@ partial class SubscriptionSetGetFuncTest
         var dataverseSubscriptionsOut = new DataverseEntitySetGetOut<SubscriptionJson>(jsonSubscriptions);
         var mockDataverseApi = BuildMockDataverseApi(dataverseSubscriptionsOut);
 
-        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new SubscriptionSetGetFunc(mockDataverseApi.Object, mockBotApi.Object);
+
         var actual = await func.InvokeAsync(SomeInput, default);
 
         Assert.StrictEqual(expected, actual);

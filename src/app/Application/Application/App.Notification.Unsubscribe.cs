@@ -1,3 +1,4 @@
+using System;
 using GarageGroup.Infra;
 using PrimeFuncPack;
 
@@ -8,5 +9,9 @@ partial class Application
     [EndpointApplicationExtension]
     internal static Dependency<NotificationUnsubscribeEndpoint> UseNotificationUnsubscribeEndpoint()
         =>
-        UseDataverseApi().With(ResolveNotificationSubscribeOption).UseNotificationUnsubscribe();
+        Pipeline.Pipe(
+            UseDataverseApi())
+        .With(
+            UseBotApi())
+        .UseNotificationUnsubscribe();
 }

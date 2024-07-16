@@ -10,18 +10,21 @@ partial class SubscriptionSetGetFunc
     public ValueTask<Result<SubscriptionSetGetOut, Failure<SubscriptionSetGetFailureCode>>> InvokeAsync(
         SubscriptionSetGetIn input, CancellationToken cancellationToken)
         => 
-        AsyncPipeline.Pipe(
-            input, cancellationToken)
-        .Pipe(
-            @in => SubscriptionJson.BuildGetInput(@in.SystemUserId, option.BotId))
+        AsyncPipeline.Pipe<Unit>(
+            default, cancellationToken)
         .PipeValue(
-            dataverseApi.GetEntitySetAsync<SubscriptionJson>)
+            botApi.GetBotInfoAsync)
         .Map(
+            bot => SubscriptionJson.BuildGetInput(input.SystemUserId, bot.Id),
+            static failure => failure.WithFailureCode(SubscriptionSetGetFailureCode.Unknown))
+        .ForwardValue(
+            dataverseApi.GetEntitySetAsync<SubscriptionJson>,
+            static failure => failure.WithFailureCode(SubscriptionSetGetFailureCode.Unknown))
+        .MapSuccess(
             static @out  => new SubscriptionSetGetOut
             {
                 Subscriptions = @out.Value.Map(MapSubscription)
-            },
-            static failure => failure.WithFailureCode(SubscriptionSetGetFailureCode.Unknown));
+            });
 
     private static SubscriptionBase MapSubscription(SubscriptionJson subscription)
     {

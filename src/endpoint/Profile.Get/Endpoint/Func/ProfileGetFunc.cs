@@ -2,6 +2,6 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class ProfileGetFunc(ISqlQueryEntitySupplier sqlApi, ProfileGetOption option) : IProfileGetFunc
+internal sealed partial class ProfileGetFunc(ISqlQueryEntitySupplier sqlApi, IBotInfoGetSupplier botApi) : IProfileGetFunc
 {
 }

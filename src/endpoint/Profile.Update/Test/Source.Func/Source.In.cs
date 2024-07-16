@@ -5,15 +5,12 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.Update.Test;
 
 partial class ProfileUpdateFuncSource
 {
-    public static TheoryData<ProfileUpdateOption, ProfileUpdateIn, DataverseEntityUpdateIn<ProfileJson>> InputTestData
+    public static TheoryData<BotInfoGetOut, ProfileUpdateIn, DataverseEntityUpdateIn<ProfileJson>> InputTestData
         =>
         new()
         {
             {
-                new()
-                {
-                    BotId = 123123,
-                },
+                new(123123, string.Empty),
                 new(
                     systemUserId: new("2e159d1a-42ac-4c9f-af70-b094ba32a786"),
                     languageCode: ProfileLanguage.English),
@@ -30,10 +27,7 @@ partial class ProfileUpdateFuncSource
                     ]))
             },
             {
-                new()
-                {
-                    BotId = 1222333,
-                },
+                new(1222333, "SomeBotName"),
                 new(
                     systemUserId: new("93dba5ba-2506-4337-a040-be612612a161"),
                     languageCode: ProfileLanguage.Russian),

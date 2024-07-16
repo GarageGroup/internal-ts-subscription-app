@@ -3,17 +3,21 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignIn.Test;
 
+using DataverseUserOut = DataverseEntityGetOut<SystemUserJson>;
+using DataverseUserIn = DataverseEntityUpdateIn<UserJson>;
+
 partial class UserSignInFuncSource
 {
-    public static TheoryData<UserSignInOption, UserSignInIn, DataverseEntityGetOut<SystemUserJson>, DataverseEntityUpdateIn<UserJson>> InputTestData
+    public static TheoryData<UserSignInOption, BotInfoGetOut, UserSignInIn, DataverseUserOut, DataverseUserIn> InputTestData
         =>
         new()
         {
             {
                 new(
-                    botId: 111222,
-                    botName: "Some bot name",
                     botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"),
+                new(
+                    id: 111222,
+                    username: "Some bot name"),
                 new(
                     systemUserId: new("2e159d1a-42ac-4c9f-af70-b094ba32a786"),
                     telegramData: "query_id=AAGmGqACAASCAKYaoAKgWTfQ&user=%7B%22id%22%3A123123%2C%22" +
@@ -33,7 +37,7 @@ partial class UserSignInFuncSource
                             new("_gg_systemuser_id_value", "2e159d1a-42ac-4c9f-af70-b094ba32a786"),
                             new("gg_bot_id", "'111222'")
                         ]),
-                    entityData: new UserJson
+                    entityData: new()
                     {
                         BotId = 111222,
                         BotName = "Some bot name - Some user name",

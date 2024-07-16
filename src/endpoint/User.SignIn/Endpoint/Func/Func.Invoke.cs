@@ -23,26 +23,48 @@ partial class UserSignInFunc
         UserChatId input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
+            input, cancellationToken)
+        .PipeParallelValue(
+            GetSystemUserAsync,
+            GetBotInfoAsync)
+        .MapSuccess(
+            @out => UserJson.BuildDataverseInput(
+                systemUserId: input.SystemUserId,
+                botId: @out.Item2.Id,
+                user: new()
+                {
+                    BotId = @out.Item2.Id,
+                    BotName = $"{@out.Item2.Username} - {@out.Item1.FullName}",
+                    ChatId = input.ChatId,
+                    LanguageCode = DefaultLanguageCode,
+                    UserLookupValue = UserJson.BuildUserLookupValue(input.SystemUserId),
+                    IsSignedOut = false
+                }))
+        .ForwardValue(
+            dataverseApi.UpdateEntityAsync,
+            static failure => failure.WithFailureCode(UserSignInFailureCode.Unknown));
+
+    private ValueTask<Result<SystemUserJson, Failure<UserSignInFailureCode>>> GetSystemUserAsync(
+        UserChatId input, CancellationToken cancellationToken)
+        =>
+        AsyncPipeline.Pipe(
             input.SystemUserId, cancellationToken)
         .Pipe(
             SystemUserJson.BuildDataverseInput)
         .PipeValue(
             dataverseApi.GetEntityAsync<SystemUserJson>)
         .Map(
-            user => new UserJson
-            {
-                BotId = option.BotId,
-                BotName = $"{option.BotName} - {user.Value.FullName}",
-                ChatId = input.ChatId,
-                LanguageCode = DefaultLanguageCode,
-                UserLookupValue = UserJson.BuildUserLookupValue(input.SystemUserId),
-                IsSignedOut = false
-            },
-            static failure => failure.MapFailureCode(ToUserSignInFailureCode))
-        .MapSuccess(
-            user => UserJson.BuildDataverseInput(input.SystemUserId, option.BotId, user))
-        .ForwardValue(
-            dataverseApi.UpdateEntityAsync,
+            static success => success.Value,
+            static failure => failure.MapFailureCode(ToUserSignInFailureCode));
+
+    private ValueTask<Result<BotInfoGetOut, Failure<UserSignInFailureCode>>> GetBotInfoAsync(
+        UserChatId _, CancellationToken cancellationToken)
+        =>
+        AsyncPipeline.Pipe<Unit>(
+            default, cancellationToken)
+        .PipeValue(
+            botApi.GetBotInfoAsync)
+        .MapFailure(
             static failure => failure.WithFailureCode(UserSignInFailureCode.Unknown));
 
     private Result<UserChatId, Failure<UserSignInFailureCode>> ParseTelegramDataOrFailure(UserSignInIn input)

@@ -9,13 +9,32 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.Update.Test.Test;
 
 partial class ProfileUpdateFuncTest
 {
-    [Theory]
-    [MemberData(nameof(ProfileUpdateFuncSource.InputTestData), MemberType = typeof(ProfileUpdateFuncSource))]
-    internal static async Task InvokeAsync_ExpectDataverseUpdateCalledOnce(
-        ProfileUpdateOption option, ProfileUpdateIn input, DataverseEntityUpdateIn<ProfileJson> expectedInput)
+    [Fact]
+    public static async Task InvokeAsync_BotInfoGetResultIsFailure_ExpectUnknownFailure()
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new ProfileUpdateFunc(mockDataverseApi.Object, option);
+
+        var sourceException = new Exception("Some error");
+        var botInfoFailure = sourceException.ToFailure("Some failure message");
+
+        var mockBotApi = BuildMockBotApi(botInfoFailure);
+        var func = new ProfileUpdateFunc(mockDataverseApi.Object, mockBotApi.Object);
+
+        var actual = await func.InvokeAsync(SomeInput, default);
+        var expected = Failure.Create(ProfileUpdateFailureCode.Unknown, "Some failure message", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(ProfileUpdateFuncSource.InputTestData), MemberType = typeof(ProfileUpdateFuncSource))]
+    internal static async Task InvokeAsync_BotInfoGetResultIsSuccess_ExpectDataverseUpdateCalledOnce(
+        BotInfoGetOut botInfo, ProfileUpdateIn input, DataverseEntityUpdateIn<ProfileJson> expectedInput)
+    {
+        var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
+        var mockBotApi = BuildMockBotApi(botInfo);
+
+        var func = new ProfileUpdateFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var cancellationToken = new CancellationToken(false);
         _ = await func.InvokeAsync(input, cancellationToken);
@@ -42,7 +61,9 @@ partial class ProfileUpdateFuncTest
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
         var mockDataverseApi = BuildMockDataverseApi(dataverseFailure);
-        var func = new ProfileUpdateFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new ProfileUpdateFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure message", sourceException);
@@ -54,7 +75,9 @@ partial class ProfileUpdateFuncTest
     public static async Task InvokeAsync_DataverseResultIsSuccess_ExpectSuccess()
     {
         var mockDataverseApi = BuildMockDataverseApi(Result.Success<Unit>(default));
-        var func = new ProfileUpdateFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new ProfileUpdateFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Result.Success<Unit>(default);

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class UserSignInFunc(IDataverseApiClient dataverseApi, UserSignInOption option) : IUserSignInFunc
+internal sealed partial class UserSignInFunc : IUserSignInFunc
 {
     private const string DefaultLanguageCode = "en";
 
@@ -21,6 +21,19 @@ internal sealed partial class UserSignInFunc(IDataverseApiClient dataverseApi, U
         =>
         UserIdRegex = CreateUserIdRegex();
 
+    private readonly IDataverseApiClient dataverseApi;
+
+    private readonly IBotInfoGetSupplier botApi;
+
+    private readonly UserSignInOption option;
+
+    internal UserSignInFunc(IDataverseApiClient dataverseApi, IBotInfoGetSupplier botApi, UserSignInOption option)
+    {
+        this.dataverseApi = dataverseApi;
+        this.botApi = botApi;
+        this.option = option;
+    }
+
     private static UserSignInFailureCode ToUserSignInFailureCode(DataverseFailureCode failureCode)
         =>
         failureCode switch
@@ -31,8 +44,8 @@ internal sealed partial class UserSignInFunc(IDataverseApiClient dataverseApi, U
 
     private sealed record class UserChatId
     {
-        public Guid SystemUserId { get; init; }
+        public required Guid SystemUserId { get; init; }
 
-        public long ChatId { get; init; }
+        public required long ChatId { get; init; }
     }
 }

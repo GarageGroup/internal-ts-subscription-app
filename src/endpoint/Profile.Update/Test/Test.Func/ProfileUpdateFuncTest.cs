@@ -1,18 +1,15 @@
-﻿using GarageGroup.Infra;
-using Moq;
-using System;
+﻿using System;
 using System.Threading;
+using GarageGroup.Infra;
+using Moq;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.Update.Test.Test;
 
 public static partial class ProfileUpdateFuncTest
 {
-    private static readonly ProfileUpdateOption SomeOption
+    private static readonly BotInfoGetOut SomeBotInfo
         =
-        new()
-        {
-            BotId = 123123
-        };
+        new(178924712, "some_name");
 
     private static readonly ProfileUpdateIn SomeInput
         =
@@ -25,9 +22,21 @@ public static partial class ProfileUpdateFuncTest
     {
         var mock = new Mock<IDataverseEntityUpdateSupplier>();
 
-        _ = mock
-            .Setup(static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<ProfileJson>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(result);
+        _ = mock.Setup(
+            static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<ProfileJson>>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
+
+        return mock;
+    }
+
+    private static Mock<IBotInfoGetSupplier> BuildMockBotApi(
+        in Result<BotInfoGetOut, Failure<Unit>> result)
+    {
+        var mock = new Mock<IBotInfoGetSupplier>();
+
+        _ = mock.Setup(
+            static a => a.GetBotInfoAsync(It.IsAny<Unit>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
 
         return mock;
     }

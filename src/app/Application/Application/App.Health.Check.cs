@@ -9,6 +9,7 @@ partial class Application
     internal static Dependency<IHealthCheckHandler> UseHealthCheck()
         =>
         HealthCheck.UseServices(
+            UseBotApi().UseServiceHealthCheckApi("BotApi"),
             UseDataverseApi().UseServiceHealthCheckApi("DataverseApi"),
             UseSqlApi().UseServiceHealthCheckApi("SqlApi"))
         .UseHealthCheckHandler();

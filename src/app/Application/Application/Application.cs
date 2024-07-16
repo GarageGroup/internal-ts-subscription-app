@@ -1,4 +1,5 @@
 ﻿using GarageGroup.Infra;
+using GarageGroup.Infra.Telegram.Bot;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PrimeFuncPack;
@@ -21,22 +22,37 @@ internal static partial class Application
         DataverseDbProvider.Configure("Dataverse")
         .UseSqlApi();
 
-    private static IConfiguration GetConfiguration(this IServiceProvider serviceProvider)
+    private static Dependency<IBotApi> UseBotApi()
         =>
-        serviceProvider.GetRequiredService<IConfiguration>();
-    
-    private static NotificationSubscribeOption ResolveNotificationSubscribeOption(IServiceProvider serviceProvider)
+        PrimaryHandler.UseStandardSocketsHttpHandler()
+        .UseLogging(
+            "BotApi")
+        .UsePollyStandard()
+        .UseHttpApi(
+            ResolveHttpBotApiOption)
+        .UseTelegramBotApi()
+        .UseBotApi();
+
+    private static HttpApiOption ResolveHttpBotApiOption(IServiceProvider serviceProvider)
         =>
         new()
         {
-            BotId = serviceProvider.ResolveBotId()
+            BaseAddress = new($"https://api.telegram.org/bot{serviceProvider.GetConfiguration().GetBotTokenOrThrow()}/")
         };
 
-    private static long ResolveBotId(this IServiceProvider serviceProvider)
+    private static IConfiguration GetConfiguration(this IServiceProvider serviceProvider)
         =>
-        serviceProvider.GetRequiredService<IConfiguration>().GetBotId();
+        serviceProvider.GetRequiredService<IConfiguration>();
 
-    private static long GetBotId(this IConfiguration configuration)
-        =>
-        configuration.GetValue<long>("TelegramBot:Id");
+    private static string GetBotTokenOrThrow(this IConfiguration configuration)
+    {
+        var token = configuration["TelegramBot:Token"];
+
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            throw new InvalidOperationException("Bot token must be specified");
+        }
+
+        return token;
+    }
 }

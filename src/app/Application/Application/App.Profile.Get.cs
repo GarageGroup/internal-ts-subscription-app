@@ -1,6 +1,6 @@
-﻿using GarageGroup.Infra;
+﻿using System;
+using GarageGroup.Infra;
 using PrimeFuncPack;
-using System;
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -12,13 +12,6 @@ partial class Application
         Pipeline.Pipe(
             UseSqlApi())
         .With(
-            ResolveProfileGetOption)
+            UseBotApi())
         .UseProfileGetEndpoint();
-
-    private static ProfileGetOption ResolveProfileGetOption(IServiceProvider serviceProvider)
-        =>
-        new()
-        {
-            BotId = serviceProvider.ResolveBotId()
-        };
 }

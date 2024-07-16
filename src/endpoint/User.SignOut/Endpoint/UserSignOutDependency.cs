@@ -9,19 +9,20 @@ namespace GarageGroup.Internal.Timesheet;
 
 public static class UserSignOutDependency
 {
-    public static Dependency<UserSignOutEndpoint> UseUserSignOutEndpoint<TDataverseApi>(
-        this Dependency<TDataverseApi, UserSignOutOption> dependency)
+    public static Dependency<UserSignOutEndpoint> UseUserSignOutEndpoint<TDataverseApi, TBotApi>(
+        this Dependency<TDataverseApi, TBotApi> dependency)
         where TDataverseApi : IDataverseEntityUpdateSupplier
+        where TBotApi : IBotInfoGetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
         return dependency.Fold(CreateFunc).Map(UserSignOutEndpoint.Resolve);
 
-        static UserSignOutFunc CreateFunc(TDataverseApi dataverseApi, UserSignOutOption option)
+        static UserSignOutFunc CreateFunc(TDataverseApi dataverseApi, TBotApi botApi)
         {
             ArgumentNullException.ThrowIfNull(dataverseApi);
-            ArgumentNullException.ThrowIfNull(option);
+            ArgumentNullException.ThrowIfNull(botApi);
 
-            return new(dataverseApi, option);
+            return new(dataverseApi, botApi);
         }
     }
 }

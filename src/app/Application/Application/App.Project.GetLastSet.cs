@@ -1,7 +1,7 @@
-﻿using GarageGroup.Infra;
+﻿using System;
+using GarageGroup.Infra;
 using Microsoft.Extensions.Configuration;
 using PrimeFuncPack;
-using System;
 
 namespace GarageGroup.Internal.Timesheet;
 

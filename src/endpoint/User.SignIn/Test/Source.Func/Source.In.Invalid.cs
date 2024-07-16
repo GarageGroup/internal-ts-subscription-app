@@ -11,8 +11,6 @@ partial class UserSignInFuncSource
         {
             {
                 new(
-                    botId: 123123,
-                    botName: "Some bot name",
                     botToken: "Some token"),
                 new(
                     systemUserId: new("bdcef53b-609b-475b-9758-58b06d46fdcf"),
@@ -21,8 +19,6 @@ partial class UserSignInFuncSource
             },
             {
                 new(
-                    botId: 123123,
-                    botName: "Some bot name",
                     botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"),
                 new(
                     systemUserId: new("c22c378d-7913-4316-8e61-5a5c35987355"),
@@ -34,8 +30,6 @@ partial class UserSignInFuncSource
             },
             {
                 new(
-                    botId: 123123,
-                    botName: "Some bot name",
                     botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR"),
                 new(
                     systemUserId: new("c22c378d-7913-4316-8e61-5a5c35987355"),

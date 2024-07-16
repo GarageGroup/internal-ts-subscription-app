@@ -12,7 +12,7 @@ public static partial class ProfileGetFuncTest
         new(
             systemUserId: new("45b6e085-4d6e-4b2d-a26c-eb8c1c5a2e5e"));
 
-    private static readonly DbProfile SomeDbOutput
+    private static readonly DbProfile SomeDbProfile
         =
         new()
         {
@@ -20,12 +20,9 @@ public static partial class ProfileGetFuncTest
             LanguageCode = "en"
         };
 
-    private static readonly ProfileGetOption SomeOption
+    private static readonly BotInfoGetOut SomeBotInfo
         =
-        new() 
-        { 
-            BotId = 123123 
-        };
+        new(918248127, "SomeBot");
 
     private static Mock<ISqlQueryEntitySupplier> BuildMockSqlApi(
         in Result<DbProfile, Failure<EntityQueryFailureCode>> result)
@@ -35,6 +32,18 @@ public static partial class ProfileGetFuncTest
         _ = mock
             .Setup(static a => a.QueryEntityOrFailureAsync<DbProfile>(It.IsAny<IDbQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(result);
+
+        return mock;
+    }
+
+    private static Mock<IBotInfoGetSupplier> BuildMockBotApi(
+        in Result<BotInfoGetOut, Failure<Unit>> result)
+    {
+        var mock = new Mock<IBotInfoGetSupplier>();
+
+        _ = mock.Setup(
+            static a => a.GetBotInfoAsync(It.IsAny<Unit>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
 
         return mock;
     }

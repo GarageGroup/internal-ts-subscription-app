@@ -10,20 +10,38 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test.Te
 partial class NotificationSubscribeFuncTest
 {
     [Fact]
-    public static async Task SubscribeAsync_ExpectSearchForUserCalledOnce()
+    public static async Task SubscribeAsync_BotInfoGetResultIsFailure_ExpectUnknownFailure()
     {
-        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+        var mockDataverseApi = BuildMockDataverseApi(
+            SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
 
-        var option = new NotificationSubscribeOption
-        {
-            BotId = 10
-        };
+        var sourceException = new Exception("Some exception");
+        var botInfoFailure = sourceException.ToFailure("Some failure");
+
+        var mockBotApi = BuildMockBotApi(botInfoFailure);
+
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
+
+        var actual = await func.InvokeAsync(SomeSubscribeInput, default);
+        var expected = Failure.Create(NotificationSubscribeFailureCode.Unknown, "Some failure", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Fact]
+    public static async Task SubscribeAsync_BotInfoGetResultIsSuccess_ExpectSearchForUserCalledOnce()
+    {
+        var mockDataverseApi = BuildMockDataverseApi(
+            SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+
+        var botInfo = new BotInfoGetOut(10, "SomeUserName");
+        var mockBotApi = BuildMockBotApi(botInfo);
 
         var input = new NotificationSubscribeIn(
             Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
             new DailyNotificationSubscriptionData(null));
 
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, option);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
         _ = await func.InvokeAsync(input, default);
 
         var expected = new DataverseEntityGetIn(
@@ -35,7 +53,7 @@ partial class NotificationSubscribeFuncTest
                 new("gg_bot_id", "'10'"),
             ]));
 
-        mockDataverseApi.Verify(x => x.GetEntityAsync<TelegramBotUserJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
+        mockDataverseApi.Verify(a => a.GetEntityAsync<TelegramBotUserJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Theory]
@@ -56,8 +74,11 @@ partial class NotificationSubscribeFuncTest
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
 
-        var mockDataverseApi = BuildMockDataverseApi(dataverseFailure, SomeDataverseNotificationType, Result.Success<Unit>(default));
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockDataverseApi = BuildMockDataverseApi(
+            dataverseFailure, SomeDataverseNotificationType, Result.Success<Unit>(default));
+
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeSubscribeInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure text", sourceException);
@@ -68,13 +89,16 @@ partial class NotificationSubscribeFuncTest
     [Fact]
     public static async Task SubscribeAsync_ExpectFindDailyNotificationTypeCalledOnce()
     {
-        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+        var mockDataverseApi = BuildMockDataverseApi(
+            SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var input = new NotificationSubscribeIn(
             Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
             new DailyNotificationSubscriptionData(null));
 
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
         _ = await func.InvokeAsync(input, default);
 
         var expected = new DataverseEntityGetIn(
@@ -82,7 +106,7 @@ partial class NotificationSubscribeFuncTest
             selectFields: ["gg_bot_notification_typeid"],
             entityKey: new DataverseAlternateKey("gg_key", "'dailyTimesheetNotification'"));
 
-        mockDataverseApi.Verify(x => x.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
+        mockDataverseApi.Verify(a => a.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -90,12 +114,14 @@ partial class NotificationSubscribeFuncTest
     {
         var mockDataverseApi = BuildMockDataverseApi(
             SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
  
         var input = new NotificationSubscribeIn(
             Guid.Parse("8235b18a-04e8-4092-985b-c280b5810ff0"), 
             new WeeklyNotificationSubscriptionData(null));
 
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
         _ = await func.InvokeAsync(input, default);
 
         var expected = new DataverseEntityGetIn(
@@ -103,7 +129,7 @@ partial class NotificationSubscribeFuncTest
             selectFields: ["gg_bot_notification_typeid"],
             entityKey: new DataverseAlternateKey("gg_key", "'weeklyTimesheetNotification'"));
 
-        mockDataverseApi.Verify(x => x.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
+        mockDataverseApi.Verify(a => a.GetEntityAsync<NotificationTypeJson>(expected, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Theory]
@@ -124,8 +150,11 @@ partial class NotificationSubscribeFuncTest
         var sourceException = new Exception("Some exception message");
         var dataverseFailure = sourceException.ToFailure(sourceFailureCode, "Some failure text");
 
-        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, dataverseFailure, Result.Success<Unit>(default));
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockDataverseApi = BuildMockDataverseApi(
+            SomeDataverseTelegramBotUser, dataverseFailure, Result.Success<Unit>(default));
+
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeSubscribeInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure text", sourceException);
@@ -143,7 +172,9 @@ partial class NotificationSubscribeFuncTest
             notificationTypeGetResult:SomeDataverseNotificationType,
             subscriptionUpdateResult: Result.Success<Unit>(default));
 
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
+
         var actual = await func.InvokeAsync(input, default);
 
         Assert.StrictEqual(expected, actual);
@@ -169,7 +200,9 @@ partial class NotificationSubscribeFuncTest
             notificationTypeGetResult: new DataverseEntityGetOut<NotificationTypeJson>(notificationType),
             subscriptionUpdateResult: Result.Success<Unit>(default));
 
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
+
         _ = await func.InvokeAsync(input, default);
 
         var expected = new DataverseEntityUpdateIn<NotificationSubscriptionJson>(
@@ -184,7 +217,7 @@ partial class NotificationSubscribeFuncTest
             OperationType = DataverseUpdateOperationType.Upsert
         };
 
-        mockDataverseApi.Verify(x => x.UpdateEntityAsync(expected, It.IsAny<CancellationToken>()), Times.Once);
+        mockDataverseApi.Verify(a => a.UpdateEntityAsync(expected, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Theory]
@@ -206,7 +239,9 @@ partial class NotificationSubscribeFuncTest
         var dataverseFailure = sourceException.ToFailure(dataverseFailureCode, "Some failure message");
 
         var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, dataverseFailure);
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeSubscribeInput, default);
         var expected = Failure.Create(NotificationSubscribeFailureCode.Unknown, "Some failure message", sourceException);
@@ -217,8 +252,11 @@ partial class NotificationSubscribeFuncTest
     [Fact]
     public static async Task SubscribeAsync_AllResultsAreSuccesses_ExpectSuccess()
     {
-        var mockDataverseApi = BuildMockDataverseApi(SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
-        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, SomeOption);
+        var mockDataverseApi = BuildMockDataverseApi(
+            SomeDataverseTelegramBotUser, SomeDataverseNotificationType, Result.Success<Unit>(default));
+
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+        var func = new NotificationSubscribeFunc(mockDataverseApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeSubscribeInput, default);
         var expected = Result.Success<Unit>(default);

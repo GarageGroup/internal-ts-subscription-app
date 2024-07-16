@@ -7,16 +7,14 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Subscription.GetSet.Test;
 
 public static partial class SubscriptionSetGetFuncTest
 {
-    private static readonly SubscriptionSetGetOption SomeOption
+    private static readonly BotInfoGetOut SomeBotInfo
         =
-        new()
-        {
-            BotId = 10
-        };
+        new(3181349813, "SomeBot");
 
     private static readonly SubscriptionSetGetIn SomeInput
         =
-        new(Guid.Parse("f80f4725-c646-4d98-9994-5ee5a392a90b"));
+        new(
+            systemUserId: new("f80f4725-c646-4d98-9994-5ee5a392a90b"));
 
     private static readonly DataverseEntitySetGetOut<SubscriptionJson> SomeDataverseSubscriptionsOut
         =
@@ -42,12 +40,24 @@ public static partial class SubscriptionSetGetFuncTest
     private static Mock<IDataverseEntitySetGetSupplier> BuildMockDataverseApi(
         in Result<DataverseEntitySetGetOut<SubscriptionJson>, Failure<DataverseFailureCode>> result)
     {
-        var mockDataverseApi = new Mock<IDataverseEntitySetGetSupplier>();
+        var mock = new Mock<IDataverseEntitySetGetSupplier>();
         
-        _ = mockDataverseApi
-            .Setup(static x => x.GetEntitySetAsync<SubscriptionJson>(It.IsAny<DataverseEntitySetGetIn>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(result);
+        _ = mock.Setup(
+            static x => x.GetEntitySetAsync<SubscriptionJson>(It.IsAny<DataverseEntitySetGetIn>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
         
-        return mockDataverseApi;
+        return mock;
+    }
+
+    private static Mock<IBotInfoGetSupplier> BuildMockBotApi(
+        in Result<BotInfoGetOut, Failure<Unit>> result)
+    {
+        var mock = new Mock<IBotInfoGetSupplier>();
+
+        _ = mock.Setup(
+            static a => a.GetBotInfoAsync(It.IsAny<Unit>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
+
+        return mock;
     }
 }

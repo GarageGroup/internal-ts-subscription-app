@@ -21,15 +21,18 @@ internal sealed partial class NotificationSubscribeFunc
     private Task<Result<Guid, Failure<NotificationUnsubscribeFailureCode>>> FindBotUserIdAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)
         => 
-        AsyncPipeline.Pipe(
-            input, cancellationToken)
-        .Pipe(
-            input => TelegramBotUserJson.BuildGetInput(input.SystemUserId, option.BotId))
+        AsyncPipeline.Pipe<Unit>(
+            default, cancellationToken)
         .PipeValue(
-            dataverseApi.GetEntityAsync<TelegramBotUserJson>)
+            botApi.GetBotInfoAsync)
         .Map(
-            static response => response.Value.Id,
-            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingUnsubscribeUser));
+            bot => TelegramBotUserJson.BuildGetInput(input.SystemUserId, bot.Id),
+            static failure => failure.WithFailureCode<NotificationUnsubscribeFailureCode>(default))
+        .ForwardValue(
+            dataverseApi.GetEntityAsync<TelegramBotUserJson>,
+            static failure => failure.MapFailureCode(MapFailureCodeWhenFindingUnsubscribeUser))
+        .MapSuccess(
+            static response => response.Value.Id);
 
     private Task<Result<Guid, Failure<NotificationUnsubscribeFailureCode>>> FindNotificationTypeIdAsync(
         NotificationUnsubscribeIn input, CancellationToken cancellationToken)

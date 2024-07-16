@@ -9,19 +9,20 @@ namespace GarageGroup.Internal.Timesheet;
 
 public static class ProfileUpdateDependency
 {
-    public static Dependency<ProfileUpdateEndpoint> UseProfileUpdateEndpoint<TDataverseApi>(
-        this Dependency<TDataverseApi, ProfileUpdateOption> dependency)
+    public static Dependency<ProfileUpdateEndpoint> UseProfileUpdateEndpoint<TDataverseApi, TBotApi>(
+        this Dependency<TDataverseApi, TBotApi> dependency)
         where TDataverseApi : IDataverseEntityUpdateSupplier
+        where TBotApi : IBotInfoGetSupplier
     {
         ArgumentNullException.ThrowIfNull(dependency);
         return dependency.Fold(CreateFunc).Map(ProfileUpdateEndpoint.Resolve);
 
-        static ProfileUpdateFunc CreateFunc(TDataverseApi dataverseApi, ProfileUpdateOption option)
+        static ProfileUpdateFunc CreateFunc(TDataverseApi dataverseApi, TBotApi botApi)
         {
             ArgumentNullException.ThrowIfNull(dataverseApi);
-            ArgumentNullException.ThrowIfNull(option);
+            ArgumentNullException.ThrowIfNull(botApi);
 
-            return new(dataverseApi, option);
+            return new(dataverseApi, botApi);
         }
     }
 }

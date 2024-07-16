@@ -14,7 +14,7 @@ internal static class ProfileGetMetadata
 
         public const string Description
             =
-            "Retrieves the profile information of the authorized user.";
+            "Retrieves profile information of the authorized user.";
     }
 
     public static class Out

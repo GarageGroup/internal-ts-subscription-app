@@ -7,13 +7,6 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Notification.Subscribe.Test.Te
 
 public static partial class NotificationSubscribeFuncTest
 {
-    private static readonly NotificationSubscribeOption SomeOption
-        =
-        new()
-        {
-            BotId = 8912380915
-        };
-
     private static readonly NotificationSubscribeIn SomeSubscribeInput
         =
         new(
@@ -42,6 +35,12 @@ public static partial class NotificationSubscribeFuncTest
                 Id = Guid.Parse("fcaa0b1e-1265-4c17-ac9d-ed5e6e8c63f2")
             });
 
+    private static readonly BotInfoGetOut SomeBotInfo
+        =
+        new(
+            id: 8912380915,
+            username: "SomeName");
+
     private static Mock<IDataverseApiClient> BuildMockDataverseApi(
         in Result<DataverseEntityGetOut<TelegramBotUserJson>, Failure<DataverseFailureCode>> botUserGetResult,
         in Result<DataverseEntityGetOut<NotificationTypeJson>, Failure<DataverseFailureCode>> notificationTypeGetResult,
@@ -50,16 +49,28 @@ public static partial class NotificationSubscribeFuncTest
         var mock = new Mock<IDataverseApiClient>();
 
         _ = mock.Setup(
-            static x => x.GetEntityAsync<TelegramBotUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
+            static a => a.GetEntityAsync<TelegramBotUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(botUserGetResult);
 
         _ = mock.Setup(
-            static x => x.GetEntityAsync<NotificationTypeJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
+            static a => a.GetEntityAsync<NotificationTypeJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(notificationTypeGetResult);
 
         _ = mock.Setup(
-            static x => x.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<NotificationSubscriptionJson>>(), It.IsAny<CancellationToken>()))
+            static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<NotificationSubscriptionJson>>(), It.IsAny<CancellationToken>()))
         .ReturnsAsync(subscriptionUpdateResult);
+
+        return mock;
+    }
+
+    private static Mock<IBotInfoGetSupplier> BuildMockBotApi(
+        in Result<BotInfoGetOut, Failure<Unit>> result)
+    {
+        var mock = new Mock<IBotInfoGetSupplier>();
+
+        _ = mock.Setup(
+            static a => a.GetBotInfoAsync(It.IsAny<Unit>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
 
         return mock;
     }

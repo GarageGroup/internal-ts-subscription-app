@@ -5,15 +5,14 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.User.SignOut.Test;
 
 partial class UserSignOutFuncSource
 {
-    public static TheoryData<UserSignOutOption, UserSignOutIn, DataverseEntityUpdateIn<UserJson>> InputTestData
+    public static TheoryData<BotInfoGetOut, UserSignOutIn, DataverseEntityUpdateIn<UserJson>> InputTestData
         =>
         new()
         {
             {
-                new()
-                {
-                    BotId = 123123,
-                },
+                new(
+                    id: 12409812904,
+                    username: "SomeBot"),
                 new(
                     systemUserId: new("2e159d1a-42ac-4c9f-af70-b094ba32a786")),
                 new (
@@ -25,7 +24,7 @@ partial class UserSignOutFuncSource
                     entityKey: new DataverseAlternateKey(
                     [
                         new("_gg_systemuser_id_value", "2e159d1a-42ac-4c9f-af70-b094ba32a786"),
-                        new("gg_bot_id", "'123123'")
+                        new("gg_bot_id", "'12409812904'")
                     ]))
             }
         };

@@ -10,21 +10,37 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Profile.Get.Test;
 partial class ProfileGetFuncTest
 {
     [Fact]
-    public static async Task InvokeAsync_ExpectMockSqlApiCalledOnce()
+    public static async Task InvokeAsync_BotInfoGetResultIsFailure_ExpectUnknownFailure()
     {
-        var mockSqlApi = BuildMockSqlApi(SomeDbOutput);
+        var mockSqlApi = BuildMockSqlApi(SomeDbProfile);
+
+        var sourceException = new Exception("Some error message");
+        var botInfoFailure = sourceException.ToFailure("Some Failure");
+
+        var mockBotApi = BuildMockBotApi(botInfoFailure);
+        var func = new ProfileGetFunc(mockSqlApi.Object, mockBotApi.Object);
+
+        var actual = await func.InvokeAsync(SomeInput, default);
+        var expected = Failure.Create(ProfileGetFailureCode.Unknown, "Some Failure", sourceException);
+
+        Assert.StrictEqual(expected, actual);
+    }
+
+    [Fact]
+    public static async Task InvokeAsync_BotInfoGetResultIsSuccess_ExpectMockSqlApiCalledOnce()
+    {
+        var mockSqlApi = BuildMockSqlApi(SomeDbProfile);
 
         const long botId = 123123;
-        var option = new ProfileGetOption()
-        {
-            BotId = botId
-        };
+        var botInfo = new BotInfoGetOut(botId, "SomeName");
 
-        var func = new ProfileGetFunc(mockSqlApi.Object, option);
+        var mockBotApi = BuildMockBotApi(botInfo);
+        var func = new ProfileGetFunc(mockSqlApi.Object, mockBotApi.Object);
+
+        var input = new ProfileGetIn(
+            systemUserId: new("bef33be0-99f5-4018-ba80-3366ec9ec1fd"));
 
         var cancellationToken = new CancellationToken(false);
-        var input = new ProfileGetIn(new("bef33be0-99f5-4018-ba80-3366ec9ec1fd"));
-
         _ = await func.InvokeAsync(input, cancellationToken);
 
         var expectedQuery = new DbSelectQuery("gg_telegram_bot_user", "p")
@@ -66,7 +82,9 @@ partial class ProfileGetFuncTest
         var dbFailure = sourceException.ToFailure(sourceFailureCode, "Some failure message");
 
         var mockSqlApi = BuildMockSqlApi(dbFailure);
-        var func = new ProfileGetFunc(mockSqlApi.Object, SomeOption);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new ProfileGetFunc(mockSqlApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
         var expected = Failure.Create(expectedFailureCode, "Some failure message", sourceException);
@@ -75,20 +93,23 @@ partial class ProfileGetFuncTest
     }
 
     [Fact]
-    internal static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess()
+    public static async Task InvokeAsync_DbResultIsSuccess_ExpectSuccess()
     {
-        var dbOut = new DbProfile
+        var dbProfile = new DbProfile
         {
             UserName = "test",
             LanguageCode = "ru"
         };
 
-        var mockSqlApi = BuildMockSqlApi(dbOut);
-        var func = new ProfileGetFunc(mockSqlApi.Object, SomeOption);
+        var mockSqlApi = BuildMockSqlApi(dbProfile);
+        var mockBotApi = BuildMockBotApi(SomeBotInfo);
+
+        var func = new ProfileGetFunc(mockSqlApi.Object, mockBotApi.Object);
 
         var actual = await func.InvokeAsync(SomeInput, default);
+
         var expected = new ProfileGetOut(
-            userName: "test", 
+            userName: "test",
             languageCode: "ru");
 
         Assert.StrictEqual(expected, actual);

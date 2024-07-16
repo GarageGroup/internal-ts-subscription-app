@@ -12,13 +12,6 @@ partial class Application
         Pipeline.Pipe(
             UseDataverseApi())
         .With(
-            ResolveUserSignOutOption)
+            UseBotApi())
         .UseUserSignOutEndpoint();
-
-    private static UserSignOutOption ResolveUserSignOutOption(IServiceProvider serviceProvider)
-        =>
-        new()
-        {
-            BotId = serviceProvider.ResolveBotId()
-        };
 }

@@ -12,13 +12,6 @@ partial class Application
         Pipeline.Pipe(
             UseDataverseApi())
         .With(
-            ResolveSubscriptionSetGetOption)
+            UseBotApi())
         .UseSubscriptionSetGetEndpoint();
-
-    private static SubscriptionSetGetOption ResolveSubscriptionSetGetOption(IServiceProvider serviceProvider)
-        =>
-        new()
-        {
-            BotId = serviceProvider.ResolveBotId()
-        };
 }

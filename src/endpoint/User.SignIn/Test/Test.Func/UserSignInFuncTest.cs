@@ -10,8 +10,6 @@ public static partial class UserSignInFuncTest
     private static readonly UserSignInOption SomeOption
         =
         new(
-            botId: 123123,
-            botName: "Some bot name",
             botToken: "1234567890:QWG2gaQTcv14ttw1wqrEgqw1wQqTQx5QWeR");
 
     private static readonly UserSignInIn SomeInput
@@ -31,19 +29,35 @@ public static partial class UserSignInFuncTest
                 FullName = "Some user name"
             });
 
+    private static readonly BotInfoGetOut SomeBotInfo
+        =
+        new(79237382, "SomeBotName");
+
     private static Mock<IDataverseApiClient> BuildMockDataverseApi(
         in Result<DataverseEntityGetOut<SystemUserJson>, Failure<DataverseFailureCode>> getResult,
         in Result<Unit, Failure<DataverseFailureCode>> upsertResult)
     {
         var mock = new Mock<IDataverseApiClient>();
 
-        _ = mock
-            .Setup(static a => a.GetEntityAsync<SystemUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(getResult);
+        _ = mock.Setup(
+            static a => a.GetEntityAsync<SystemUserJson>(It.IsAny<DataverseEntityGetIn>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(getResult);
 
-        _ = mock
-            .Setup(static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<UserJson>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(upsertResult);
+        _ = mock.Setup(
+            static a => a.UpdateEntityAsync(It.IsAny<DataverseEntityUpdateIn<UserJson>>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(upsertResult);
+
+        return mock;
+    }
+
+    private static Mock<IBotInfoGetSupplier> BuildMockBotApi(
+        in Result<BotInfoGetOut, Failure<Unit>> result)
+    {
+        var mock = new Mock<IBotInfoGetSupplier>();
+
+        _ = mock.Setup(
+            static a => a.GetBotInfoAsync(It.IsAny<Unit>(), It.IsAny<CancellationToken>()))
+        .ReturnsAsync(result);
 
         return mock;
     }

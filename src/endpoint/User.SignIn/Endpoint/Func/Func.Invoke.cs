@@ -36,7 +36,6 @@ partial class UserSignInFunc
                     BotId = @out.Item2.Id,
                     BotName = $"{@out.Item2.Username} - {@out.Item1.FullName}",
                     ChatId = input.ChatId,
-                    LanguageCode = DefaultLanguageCode,
                     UserLookupValue = UserJson.BuildUserLookupValue(input.SystemUserId),
                     IsSignedOut = false
                 }))

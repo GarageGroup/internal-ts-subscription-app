@@ -6,8 +6,6 @@ namespace GarageGroup.Internal.Timesheet;
 
 internal sealed partial class UserSignInFunc : IUserSignInFunc
 {
-    private const string DefaultLanguageCode = "en";
-
     private const string TelegramWebAppData = "WebAppData";
 
     private const string HashParameterName = "hash=";

@@ -42,7 +42,6 @@ partial class UserSignInFuncSource
                         BotId = 111222,
                         BotName = "Some bot name - Some user name",
                         ChatId = 123123,
-                        LanguageCode = "en",
                         UserLookupValue = $"/systemusers(2e159d1a-42ac-4c9f-af70-b094ba32a786)",
                         IsSignedOut = false,
                     })

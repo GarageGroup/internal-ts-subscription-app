@@ -46,7 +46,4 @@ internal sealed record class UserJson
 
     [JsonPropertyName("gg_name")]
     public string? BotName { get; init; }
-
-    [JsonPropertyName("gg_language_code")]
-    public string? LanguageCode { get; init; }
 }

@@ -145,7 +145,7 @@ jobs:
     - name: Login to Azure
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS_WEB_APP }}
+        creds: ${{ secrets.TEST_AZURE_CREDENTIALS }}
 
     - name: Update API Management Specification
       run: |
@@ -158,7 +158,7 @@ jobs:
           --subscription-required false \
           --specification-url https://${{ vars.TEST_APIM_DNS }}/swagger/${{ vars.APIM_SWAGGER_NAME }}/swagger.json?subscription-key=${{ secrets.TEST_APIM_SUBKEY }}
       env:
-        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS_WEB_APP }}
+        AZURE_CREDENTIALS: ${{ secrets.TEST_AZURE_CREDENTIALS }}
 
     - name: Azure Logout
       uses: azure/CLI@v1

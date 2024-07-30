@@ -41,7 +41,7 @@
     <PackageReference Include="GarageGroup.Infra.Sql.Api.Provider.Dataverse" Version="0.1.0" />
     <PackageReference Include="GarageGroup.Infra.Swagger.Builder" Version="3.5.2" />
     <PackageReference Include="GarageGroup.Infra.Swagger.UI" Version="2.6.0" />
-    <PackageReference Include="GarageGroup.Infra.Telegram.Bot.Api" Version="0.1.0" />
+    <PackageReference Include="GarageGroup.Infra.Telegram.Bot.Api" Version="0.2.0" />
   </ItemGroup>
 
 </Project>

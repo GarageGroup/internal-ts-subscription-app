@@ -24,7 +24,10 @@ partial class LastProjectSetGetFuncSource
                         "t.regardingobjectid AS ProjectId",
                         "t.regardingobjecttypecode AS ProjectTypeCode",
                         "MAX(t.regardingobjectidname) AS ProjectName",
-                        "MAX(t.subject) AS Subject",
+                        "(SELECT TOP 1 sub.subject " +
+                        "FROM gg_timesheetactivity sub " +
+                        "WHERE sub.regardingobjectid = t.regardingobjectid " +
+                        "ORDER BY sub.createdon DESC) AS Subject",
                         "MAX(t.gg_date) AS MaxDate",
                         "MAX(t.createdon) AS MaxCreatedOn"
                     ],

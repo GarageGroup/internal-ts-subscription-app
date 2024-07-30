@@ -10,11 +10,11 @@ internal static class ProjectSetGetMetadata
 
         public const string Summary
             =
-            "Get user projects, leads, opportunities and incidents";
+            "Get projects, leads, opportunities and incidents";
 
         public const string Description
             =
-            "Retrieves projects, leads, opportunities, and incidents associated with the user.";
+            "Retrieves all projects, leads, opportunities, and incidents.";
     }
 
     public static class Out

@@ -17,7 +17,7 @@ partial record class DbTimesheet
     [DbSelect(All, AliasName, $"{AliasName}.regardingobjectidname")]
     public string? ProjectName { get; init; }
 
-    [DbSelect(All, AliasName, $"{AliasName}.subject")]
+    [DbSelect(All, AliasName, SelectLastSubjectSql)]
     public string? Subject { get; init; }
 
     [DbSelect(All, AliasName, $"{AliasName}.gg_description")]

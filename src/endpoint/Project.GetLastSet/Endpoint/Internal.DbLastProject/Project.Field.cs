@@ -14,7 +14,7 @@ partial record class DbLastProject
     [DbSelect(All, AliasName, $"MAX({AliasName}.regardingobjectidname)")]
     public string? ProjectName { get; init; }
 
-    [DbSelect(All, AliasName, $"MAX({AliasName}.subject)")]
+    [DbSelect(All, AliasName, SelectLastSubjectSql)]
     public string? Subject { get; init; }
 
     [DbSelect(All, AliasName, $"MAX({AliasName}.gg_date)")]

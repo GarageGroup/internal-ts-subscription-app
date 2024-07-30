@@ -13,4 +13,9 @@ internal sealed partial record class DbTimesheet : IDbEntity<DbTimesheet>
     private const string IncidentAlias = "i";
 
     private const string DateFormat = "yyyy-MM-dd";
+
+    private const string SelectLastSubjectSql = "(SELECT TOP 1 sub.subject " +
+                                                "FROM gg_timesheetactivity sub " +
+                                                "WHERE sub.regardingobjectid = t.regardingobjectid " +
+                                                "ORDER BY sub.createdon DESC)";
 }

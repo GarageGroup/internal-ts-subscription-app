@@ -31,7 +31,10 @@ partial class TimesheetSetGetFuncTest
                 "t.regardingobjectid AS ProjectId",
                 "t.regardingobjecttypecode AS ProjectTypeCode",
                 "t.regardingobjectidname AS ProjectName",
-                "t.subject AS Subject",
+                "(SELECT TOP 1 sub.subject " +
+                "FROM gg_timesheetactivity sub " +
+                "WHERE sub.regardingobjectid = t.regardingobjectid " +
+                "ORDER BY sub.createdon DESC) AS Subject",
                 "t.gg_description AS Description",
                 "t.activityid AS Id",
                 "i.statecode AS IncidentStateCode",

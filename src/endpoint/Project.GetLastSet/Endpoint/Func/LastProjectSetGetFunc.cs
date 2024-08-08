@@ -8,10 +8,19 @@ internal sealed partial class LastProjectSetGetFunc : ILastProjectSetGetFunc
 
     private static readonly DbRawFilter IncidentStateCodeFilter;
 
+    private static readonly DbRawFilter LeadStateCodeFilter;
+
+    private static readonly DbRawFilter OpportunityStateCodeFilter;
+
+    private static readonly DbRawFilter ProjectStateCodeFilter;
+
     static LastProjectSetGetFunc()
     {
         AllowedProjectTypeSetFilter = DbLastProject.BuildAllowedProjectTypeSetFilter();
         IncidentStateCodeFilter = DbLastProject.BuildIncidentStateCodeFilter();
+        LeadStateCodeFilter = DbLastProject.BuildLeadStateCodeFilter();
+        OpportunityStateCodeFilter = DbLastProject.BuildOpportunityStateCodeFilter();
+        ProjectStateCodeFilter = DbLastProject.BuildProjectStateCodeFilter();
     }
 
     private readonly ISqlQueryEntitySetSupplier sqlApi;

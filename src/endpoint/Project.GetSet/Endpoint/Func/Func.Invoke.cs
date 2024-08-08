@@ -25,7 +25,7 @@ partial class ProjectSetGetFunc
         Unit input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
-            DbProject.QueryAll, cancellationToken)
+            DbProjectQueryAll, cancellationToken)
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbProject>);
 
@@ -33,7 +33,7 @@ partial class ProjectSetGetFunc
         Unit input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
-            DbOpportunity.QueryAll, cancellationToken)
+            DbOpportunityQueryAll, cancellationToken)
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbOpportunity>);
 
@@ -41,7 +41,7 @@ partial class ProjectSetGetFunc
         Unit input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
-            DbLead.QueryAll, cancellationToken)
+            DbLeadQueryAll, cancellationToken)
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbLead>);
 

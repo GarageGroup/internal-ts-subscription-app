@@ -10,4 +10,25 @@ internal sealed partial class ProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlAp
         {
             Filter = DbIncident.IsActiveFilter
         };
+
+    private static readonly DbSelectQuery DbLeadQueryAll
+        =
+        DbLead.QueryAll with
+        {
+            Filter = DbLead.IsActiveFilter
+        };
+
+    private static readonly DbSelectQuery DbOpportunityQueryAll
+        =
+        DbOpportunity.QueryAll with
+        {
+            Filter = DbOpportunity.IsActiveFilter
+        };
+
+    private static readonly DbSelectQuery DbProjectQueryAll
+        =
+        DbProject.QueryAll with
+        {
+            Filter = DbProject.IsActiveFilter
+        };
 }

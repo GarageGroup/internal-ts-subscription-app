@@ -23,7 +23,16 @@ partial class LastProjectSetGetFunc
                         DbLastProject.BuildOwnerFilter(@in.SystemUserId),
                         DbLastProject.BuildMinDateFilter(GetLastDaysPeriod()),
                         AllowedProjectTypeSetFilter,
-                        IncidentStateCodeFilter
+                        new DbCombinedFilter(DbLogicalOperator.Or)
+                        {
+                            Filters = 
+                            [
+                                IncidentStateCodeFilter,
+                                LeadStateCodeFilter,
+                                OpportunityStateCodeFilter,
+                                ProjectStateCodeFilter
+                            ]
+                        }
                     ]
                 },
                 Orders = DbLastProject.DefaultOrders

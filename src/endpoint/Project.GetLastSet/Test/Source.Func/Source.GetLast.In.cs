@@ -50,8 +50,20 @@ partial class LastProjectSetGetFuncSource
                                 @operator: DbArrayFilterOperator.In,
                                 fieldValues: new(3, 4, 112, 10912),
                                 parameterPrefix: "projectTypeCode"),
-                            new DbRawFilter("(t.regardingobjecttypecode <> 112 " +
-                                "OR EXISTS (SELECT TOP 1 1 FROM incident AS i WHERE t.regardingobjectid = i.incidentid AND i.statecode = 0))")
+                            new DbCombinedFilter(DbLogicalOperator.Or)
+                            {
+                                Filters =
+                                [
+                                    new DbRawFilter("(t.regardingobjecttypecode = 112 " +
+                                        "AND EXISTS (SELECT TOP 1 1 FROM incident AS i WHERE t.regardingobjectid = i.incidentid AND i.statecode = 0))"),
+                                    new DbRawFilter("(t.regardingobjecttypecode = 4 " +
+                                        "AND EXISTS (SELECT TOP 1 1 FROM lead AS l WHERE t.regardingobjectid = l.leadid AND l.statecode = 0))"),
+                                    new DbRawFilter("(t.regardingobjecttypecode = 3 " +
+                                        "AND EXISTS (SELECT TOP 1 1 FROM opportunity AS o WHERE t.regardingobjectid = o.opportunityid AND o.statecode = 0))"),
+                                    new DbRawFilter("(t.regardingobjecttypecode = 10912 " +
+                                        "AND EXISTS (SELECT TOP 1 1 FROM gg_project AS p WHERE t.regardingobjectid = p.gg_projectid AND p.statecode = 0))")
+                                ] 
+                            }
                         ]
                     },
                     GroupByFields =

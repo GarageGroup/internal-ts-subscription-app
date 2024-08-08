@@ -17,7 +17,7 @@ internal static partial class ProjectSetSearchFuncSource
                 new("**")
                 {
                     Entities = new("gg_project", "lead", "opportunity", "incident"),
-                    Filter = "objecttypecode ne 112 or statecode eq 0",
+                    Filter = "statecode eq 0",
                     Top = 3
                 }
             },
@@ -29,7 +29,7 @@ internal static partial class ProjectSetSearchFuncSource
                 new("**")
                 {
                     Entities = new("gg_project", "lead", "opportunity", "incident"),
-                    Filter = "objecttypecode ne 112 or statecode eq 0",
+                    Filter = "statecode eq 0",
                     Top = -2
                 }
             },
@@ -41,7 +41,7 @@ internal static partial class ProjectSetSearchFuncSource
                 new("*Some text*")
                 {
                     Entities = new("gg_project", "lead", "opportunity", "incident"),
-                    Filter = "objecttypecode ne 112 or statecode eq 0",
+                    Filter = "statecode eq 0",
                     Top = null
                 }
             }

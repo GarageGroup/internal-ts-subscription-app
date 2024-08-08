@@ -21,7 +21,8 @@ partial class ProjectSetGetFuncTest
         {
             SelectedFields = new(
                 "p.gg_projectid AS ProjectId",
-                "p.gg_name AS ProjectName")
+                "p.gg_name AS ProjectName"),
+            Filter = new DbRawFilter("p.statecode = 0")
         };
 
         mockSqlApi.Verify(
@@ -56,6 +57,7 @@ partial class ProjectSetGetFuncTest
             SelectedFields = new(
                 "o.opportunityid AS ProjectId",
                 "o.name AS ProjectName"),
+            Filter = new DbRawFilter("o.statecode = 0")
         };
 
         mockSqlApi.Verify(
@@ -91,6 +93,7 @@ partial class ProjectSetGetFuncTest
                 "l.leadid AS ProjectId",
                 "l.companyname AS CompanyName",
                 "l.subject AS Subject"),
+            Filter = new DbRawFilter("l.statecode = 0")
         };
 
         mockSqlApi.Verify(

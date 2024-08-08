@@ -19,9 +19,9 @@ internal sealed partial class ProjectSetSearchFunc(IDataverseImpersonateSupplier
         =
         [ProjectEntityName, LeadEntityName, OpportunityEntityName, IncidentEntityName];
 
-    private static readonly string ActiveIncidentFilter
+    private static readonly string IsActiveFilter
         = 
-        $"objecttypecode ne {ProjectType.Incident:D} or statecode eq 0";
+        $"statecode eq 0";
 
     private static ProjectType? GetProjectType(DataverseSearchItem item)
         =>

@@ -18,7 +18,7 @@ partial class ProjectSetSearchFunc
             {
                 Top = @in.Top,
                 Entities = EntityNames,
-                Filter = ActiveIncidentFilter
+                Filter = IsActiveFilter
             })
         .PipeValue(
             dataverseApi.Impersonate(input.SystemUserId).SearchAsync)

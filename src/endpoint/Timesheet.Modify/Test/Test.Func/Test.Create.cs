@@ -26,7 +26,7 @@ partial class TimesheetModifyFuncTest
             description: string.Empty);
 
         var actual = await func.InvokeAsync(input, cancellationToken);
-        var expected = Failure.Create(TimesheetCreateFailureCode.DescriptionIsEmpty, "Description is empty");
+        var expected = Failure.Create(TimesheetCreateFailureCode.EmptyDescription, "Description is empty");
 
         Assert.StrictEqual(expected, actual);
     }

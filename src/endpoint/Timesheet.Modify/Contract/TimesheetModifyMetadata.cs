@@ -88,7 +88,7 @@ internal static class TimesheetModifyMetadata
             =
             "Timesheet was not found";
 
-        public const string DescriptionIsEmptyMessage
+        public const string EmptyDescriptionMessage
             =
             "Description is empty";
     }

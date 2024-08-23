@@ -37,7 +37,7 @@ partial class TimesheetModifyFunc
     {
         if (string.IsNullOrWhiteSpace(input.Description))
         {
-            return Failure.Create(TimesheetCreateFailureCode.DescriptionIsEmpty, "Description is empty");
+            return Failure.Create(TimesheetCreateFailureCode.EmptyDescription, "Description is empty");
         }
 
         return input;

@@ -48,7 +48,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("8829deda-5249-4412-9be5-ef5728fb928d"),
                         type: ProjectType.Lead),
                     duration: 3,
-                    description: null),
+                    description: "Some message!"),
                 new(
                     new()
                     {
@@ -61,7 +61,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2023, 01, 12),
-                        Description = null,
+                        Description = "Some message!",
                         Duration = 3,
                         ChannelCode = 140120000,
                         Subject = "Some subject",
@@ -79,7 +79,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("8829deda-5249-4412-9be5-ef5728fb928d"),
                         type: ProjectType.Lead),
                     duration: 3,
-                    description: null),
+                    description: "Some message!"),
                 new(
                     new()
                     {
@@ -92,7 +92,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2023, 01, 12),
-                        Description = null,
+                        Description = "Some message!",
                         Duration = 3,
                         ChannelCode = 140120000,
                         Subject = "(Some company name)",

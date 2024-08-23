@@ -18,7 +18,7 @@ public sealed record class TimesheetUpdateIn
         Date = date;
         Project = project;
         Duration = duration;
-        Description = description;
+        Description = description.OrNullIfWhiteSpace();
     }
 
     public Guid TimesheetId { get; }

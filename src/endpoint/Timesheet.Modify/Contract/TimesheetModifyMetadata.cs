@@ -87,5 +87,9 @@ internal static class TimesheetModifyMetadata
         public const string TimesheetNotFoundMessage
             =
             "Timesheet was not found";
+
+        public const string EmptyDescriptionMessage
+            =
+            "Description must be specified";
     }
 }

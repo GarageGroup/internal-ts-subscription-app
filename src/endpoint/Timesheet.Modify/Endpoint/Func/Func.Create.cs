@@ -11,23 +11,37 @@ partial class TimesheetModifyFunc
         TimesheetCreateIn input, CancellationToken cancellationToken)
         =>
         AsyncPipeline.Pipe(
-            input.Project, cancellationToken)
-        .PipeValue(
-            GetProjectAsync)
-        .Map(
+            input, cancellationToken)
+        .Pipe(
+            ValidateDescription)
+        .MapSuccess(
+            static @in => @in.Project)
+        .ForwardValue(
+            GetProjectAsync,
+            static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode))
+        .MapSuccess(
             project => new TimesheetJson(project)
             {
                 Date = input.Date,
                 Description = input.Description.OrNullIfEmpty(),
                 Duration = input.Duration,
                 ChannelCode = TelegramChannelCode
-            },
-            static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode))
+            })
         .MapSuccess(
             TimesheetJson.BuildDataverseCreateInput)
         .ForwardValue(
             dataverseApi.Impersonate(input.SystemUserId).CreateEntityAsync,
             static failure => failure.MapFailureCode(ToTimesheetCreateFailureCode));
+
+    private static Result<TimesheetCreateIn, Failure<TimesheetCreateFailureCode>> ValidateDescription(TimesheetCreateIn input)
+    {
+        if (string.IsNullOrWhiteSpace(input.Description))
+        {
+            return Failure.Create(TimesheetCreateFailureCode.EmptyDescription, "Description is empty");
+        }
+
+        return input;
+    }
 
     private static TimesheetCreateFailureCode ToTimesheetCreateFailureCode(DataverseFailureCode failureCode)
         =>

@@ -49,7 +49,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
                         type: ProjectType.Opportunity),
                     duration: 8,
-                    description: "Some message!"),
+                    description: string.Empty),
                 new(
                     new()
                     {
@@ -62,7 +62,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = null,
-                        Description = "Some message!",
+                        Description = null,
                         Duration = 8,
                         Subject = null,
                         ExtensionData = new()
@@ -79,7 +79,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("7583b4e6-23f5-eb11-94ef-00224884a588"),
                         type: ProjectType.Opportunity),
                     duration: 8,
-                    description: null),
+                    description: "\n\r"),
                 new(
                     new()
                     {

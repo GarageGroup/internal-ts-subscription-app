@@ -9,8 +9,11 @@ namespace GarageGroup.Internal.Timesheet.Endpoint.Timesheet.Modify.Test;
 
 partial class TimesheetModifyFuncTest 
 {
-    [Fact]
-    public static async Task InvokeAsync_Create_InputDescriptionIsEmpty_ExpectFailure()
+    [Theory]
+    [InlineData("")]
+    [InlineData("\n\r")]
+    [InlineData(null)]
+    internal static async Task InvokeAsync_Create_InputDescriptionIsEmpty_ExpectFailure(string? description)
     {
         var mockDataverseApi = BuildMockDataverseApi<ProjectJson>(Result.Success<Unit>(default), SomeProjectJsonOut);
         var func = new TimesheetModifyFunc(mockDataverseApi.Object);
@@ -23,7 +26,7 @@ partial class TimesheetModifyFuncTest
                 id: new("190fd90c-64be-4d6e-8764-44c567b40ef9"),
                 type: ProjectType.Project),
             duration: 2,
-            description: string.Empty);
+            description: description);
 
         var actual = await func.InvokeAsync(input, cancellationToken);
         var expected = Failure.Create(TimesheetCreateFailureCode.EmptyDescription, "Description is empty");

@@ -90,6 +90,6 @@ internal static class TimesheetModifyMetadata
 
         public const string EmptyDescriptionMessage
             =
-            "Description is empty";
+            "Description must be specified";
     }
 }

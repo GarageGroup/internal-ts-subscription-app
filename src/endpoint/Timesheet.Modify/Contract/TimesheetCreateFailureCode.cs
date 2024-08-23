@@ -15,5 +15,8 @@ public enum TimesheetCreateFailureCode
     Forbidden,
 
     [Problem(FailureStatusCode.NotFound, FailureCode.ProjectNotFoundMessage)]
-    ProjectNotFound
+    ProjectNotFound,
+
+    [Problem(FailureStatusCode.BadRequest, FailureCode.DescriptionIsEmptyMessage)]
+    DescriptionIsEmpty,
 }

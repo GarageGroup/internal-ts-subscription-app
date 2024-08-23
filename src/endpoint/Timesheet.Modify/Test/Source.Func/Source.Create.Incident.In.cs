@@ -49,7 +49,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("8829deda-5249-4412-9be5-ef5728fb928d"),
                         type: ProjectType.Incident),
                     duration: 3,
-                    description: null),
+                    description: "Some message!"),
                 new(
                     new()
                     {
@@ -61,7 +61,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2023, 01, 12),
-                        Description = null,
+                        Description = "Some message!",
                         Duration = 3,
                         ChannelCode = 140120000,
                         Subject = null,
@@ -79,7 +79,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("13f0cb5c-b251-494c-9cae-1b0708471c10"),
                         type: ProjectType.Incident),
                     duration: 15,
-                    description: string.Empty),
+                    description: "Some message!"),
                 new(
                     new()
                     {
@@ -91,7 +91,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2023, 11, 03),
-                        Description = null,
+                        Description = "Some message!",
                         Duration = 15,
                         ChannelCode = 140120000,
                         Subject = string.Empty,
@@ -109,7 +109,7 @@ internal static partial class TimesheetModifyFuncSource
                         id: new("ca012870-a0f9-4945-a314-a14ebf690574"),
                         type: ProjectType.Incident),
                     duration: -3,
-                    description: "\n\r"),
+                    description: "Some message!"),
                 new(
                     new()
                     {
@@ -121,7 +121,7 @@ internal static partial class TimesheetModifyFuncSource
                     entityData: new()
                     {
                         Date = new(2022, 12, 25),
-                        Description = "\n\r",
+                        Description = "Some message!",
                         Duration = -3,
                         ChannelCode = 140120000,
                         Subject = "\r\n",

@@ -26,4 +26,8 @@ public sealed record class ProjectItem
     [SwaggerDescription(Out.TypeDescription)]
     [StringExample(Out.TypeExample)]
     public ProjectType Type { get; }
+
+    [SwaggerDescription(Out.CommentDescription)]
+    [StringExample(Out.CommentExample)]
+    public string? Comment { get; init; }
 }

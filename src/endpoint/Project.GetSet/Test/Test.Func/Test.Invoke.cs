@@ -21,7 +21,8 @@ partial class ProjectSetGetFuncTest
         {
             SelectedFields = new(
                 "p.gg_projectid AS ProjectId",
-                "p.gg_name AS ProjectName"),
+                "p.gg_name AS ProjectName",
+                "p.gg_comment AS ProjectComment"),
             Filter = new DbRawFilter("p.statecode = 0")
         };
 

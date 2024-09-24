@@ -27,10 +27,10 @@ partial class LastProjectSetGetFunc
                         {
                             Filters = 
                             [
+                                ProjectStateCodeFilter,
                                 IncidentStateCodeFilter,
                                 LeadStateCodeFilter,
-                                OpportunityStateCodeFilter,
-                                ProjectStateCodeFilter
+                                OpportunityStateCodeFilter
                             ]
                         }
                     ]
@@ -50,7 +50,10 @@ partial class LastProjectSetGetFunc
         new(
             id: dbTimesheetProject.ProjectId,
             name: dbTimesheetProject.Subject.OrNullIfEmpty() ?? dbTimesheetProject.ProjectName,
-            type: (ProjectType)dbTimesheetProject.ProjectTypeCode);
+            type: (ProjectType)dbTimesheetProject.ProjectTypeCode)
+        {
+            Comment = dbTimesheetProject.ProjectComment.OrNullIfWhiteSpace()
+        };
 
     private DateOnly GetLastDaysPeriod()
         =>

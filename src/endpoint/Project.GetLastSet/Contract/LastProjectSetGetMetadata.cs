@@ -49,5 +49,11 @@ internal static class LastProjectSetGetMetadata
             "Type of the project";
 
         public const string TypeExample = nameof(ProjectType.Project);
+
+        public const string CommentDescription
+            =
+            "Description of the project.";
+
+        public const string CommentExample = "All internal activities.";
     }
 }

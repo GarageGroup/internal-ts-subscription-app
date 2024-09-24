@@ -8,23 +8,25 @@ partial record class DbLastProject
 {
     internal static DbRawFilter BuildIncidentStateCodeFilter()
         =>
-        new($"({AliasName}.regardingobjecttypecode = {ProjectType.Incident:D} " +
+        new(
+            $"({AliasName}.regardingobjecttypecode = {ProjectType.Incident:D} " +
             $"AND EXISTS (SELECT TOP 1 1 FROM incident AS i WHERE {AliasName}.regardingobjectid = i.incidentid AND i.statecode = 0))");
 
     internal static DbRawFilter BuildLeadStateCodeFilter()
         =>
-        new($"({AliasName}.regardingobjecttypecode = {ProjectType.Lead:D} " +
+        new(
+            $"({AliasName}.regardingobjecttypecode = {ProjectType.Lead:D} " +
             $"AND EXISTS (SELECT TOP 1 1 FROM lead AS l WHERE {AliasName}.regardingobjectid = l.leadid AND l.statecode = 0))");
 
     internal static DbRawFilter BuildOpportunityStateCodeFilter()
         =>
-        new($"({AliasName}.regardingobjecttypecode = {ProjectType.Opportunity:D} " +
+        new(
+            $"({AliasName}.regardingobjecttypecode = {ProjectType.Opportunity:D} " +
             $"AND EXISTS (SELECT TOP 1 1 FROM opportunity AS o WHERE {AliasName}.regardingobjectid = o.opportunityid AND o.statecode = 0))");
 
     internal static DbRawFilter BuildProjectStateCodeFilter()
         =>
-        new($"({AliasName}.regardingobjecttypecode = {ProjectType.Project:D} " +
-            $"AND EXISTS (SELECT TOP 1 1 FROM gg_project AS p WHERE {AliasName}.regardingobjectid = p.gg_projectid AND p.statecode = 0))");
+        new($"({ProjectAlias}.statecode = 0)");
 
     internal static DbParameterArrayFilter BuildAllowedProjectTypeSetFilter()
     {

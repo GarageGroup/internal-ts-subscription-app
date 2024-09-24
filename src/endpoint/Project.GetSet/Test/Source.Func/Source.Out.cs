@@ -3,9 +3,14 @@ using Xunit;
 
 namespace GarageGroup.Internal.Timesheet.Endpoint.Project.SetGet.Test;
 
+using DbIncidentArray = FlatArray<DbIncident>;
+using DbProjectArray = FlatArray<DbProject>;
+using DbOpportunityArray = FlatArray<DbOpportunity>;
+using DbLeadArray = FlatArray<DbLead>;
+
 partial class ProjectSetGetFuncSource
 {
-    public static TheoryData<FlatArray<DbIncident>, FlatArray<DbProject>, FlatArray<DbOpportunity>, FlatArray<DbLead>, ProjectSetGetOut> OutputGetTestData
+    public static TheoryData<DbIncidentArray, DbProjectArray, DbOpportunityArray, DbLeadArray, ProjectSetGetOut> OutputGetTestData
         =>
         new()
         {
@@ -27,23 +32,26 @@ partial class ProjectSetGetFuncSource
                     {
                         ProjectId = new("41bdefb5-52f6-4954-922e-dbc233b9e26d"),
                         ProjectName = "Second incident name"
-                    },
-                    new()
-                    {
-                        ProjectId = new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
-                        ProjectName = "Third Incident"
                     }
                 ],
                 [
                     new()
                     {
                         ProjectId = new("cf5ffdf3-a045-4eb5-a0e6-67593af34711"),
-                        ProjectName = "First project name"
+                        ProjectName = "First project name",
+                        ProjectComment = null,
                     },
                     new()
                     {
                         ProjectId = new("3411f4c8-3de5-4cac-9b69-0b7f39214bbe"),
-                        ProjectName = "Second project name"
+                        ProjectName = "Second project name",
+                        ProjectComment = "\n\r"
+                    },
+                    new()
+                    {
+                        ProjectId = new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
+                        ProjectName = "Third project",
+                        ProjectComment = "Some project comment"
                     }
                 ],
                 [
@@ -120,8 +128,11 @@ partial class ProjectSetGetFuncSource
                             type: ProjectType.Lead),
                         new(
                             id: new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
-                            name: "Third Incident",
-                            type: ProjectType.Incident)
+                            name: "Third project",
+                            type: ProjectType.Project)
+                        {
+                            Comment = "Some project comment"
+                        }
                     ]
                 }
             }

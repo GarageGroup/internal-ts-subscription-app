@@ -80,7 +80,10 @@ partial class ProjectSetGetFunc
             new(
                 id: dbProject.ProjectId,
                 name: dbProject.ProjectName,
-                type: ProjectType.Project);
+                type: ProjectType.Project)
+            {
+                Comment = dbProject.ProjectComment.OrNullIfWhiteSpace()
+            };
 
         static ProjectItem MapOpportunity(DbOpportunity dbOpportunity)
             =>

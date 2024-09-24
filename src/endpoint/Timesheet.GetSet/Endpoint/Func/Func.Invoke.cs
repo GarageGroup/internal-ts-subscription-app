@@ -29,9 +29,9 @@ partial class TimesheetSetGetFunc
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbTimesheet>)
         .MapSuccess(
-            static success => new TimesheetSetGetOut
+            static @out => new TimesheetSetGetOut
             {
-                Timesheets = success.Map(MapTimesheet)
+                Timesheets = @out.Map(MapTimesheet)
             });
 
     private static TimesheetSetGetItem MapTimesheet(DbTimesheet dbTimesheet)
@@ -43,7 +43,9 @@ partial class TimesheetSetGetFunc
             projectName: dbTimesheet.Subject.OrNullIfEmpty() ?? dbTimesheet.ProjectName,
             description: dbTimesheet.Description,
             id: dbTimesheet.Id,
-            incidentStateCode: dbTimesheet.IncidentStateCode,
             timesheetStateCode: dbTimesheet.TimesheetStateCode,
-            date: DateOnly.FromDateTime(dbTimesheet.Date));
+            date: DateOnly.FromDateTime(dbTimesheet.Date))
+        {
+            ProjectComment = dbTimesheet.ProjectComment.OrNullIfWhiteSpace()
+        };
 }

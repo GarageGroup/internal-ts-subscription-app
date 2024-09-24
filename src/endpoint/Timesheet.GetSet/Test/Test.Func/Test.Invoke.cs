@@ -31,19 +31,19 @@ partial class TimesheetSetGetFuncTest
                 "t.regardingobjectid AS ProjectId",
                 "t.regardingobjecttypecode AS ProjectTypeCode",
                 "t.regardingobjectidname AS ProjectName",
+                "p.gg_comment AS ProjectComment",
                 "(SELECT TOP 1 sub.subject " +
                 "FROM gg_timesheetactivity sub " +
                 "WHERE sub.regardingobjectid = t.regardingobjectid " +
                 "ORDER BY sub.createdon DESC) AS Subject",
                 "t.gg_description AS Description",
                 "t.activityid AS Id",
-                "i.statecode AS IncidentStateCode",
                 "t.statecode AS TimesheetStateCode",
                 "t.gg_date AS Date"
             ],
             JoinedTables =
             [
-                new (DbJoinType.Left, "incident", "i", "t.regardingobjectid = i.incidentid")
+                new(DbJoinType.Left,  "gg_project", "p", "t.regardingobjecttypecode = 10912 AND t.regardingobjectid = p.gg_projectid")
             ],
             Filter = new DbCombinedFilter(DbLogicalOperator.And)
             {

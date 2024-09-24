@@ -56,6 +56,12 @@ internal static class TimesheetSetGetMetadata
             =
             "Type of the project";
 
+        public const string ProjectCommentDescription
+            =
+            "Description of the project.";
+
+        public const string ProjectCommentExample = "All internal activities.";
+
         public const string ProjectTypeExample = nameof(ProjectType.Project);
 
         public const string DurationDescription
@@ -71,12 +77,6 @@ internal static class TimesheetSetGetMetadata
         public const string DescriptionExample
             =
             "#Task8137_NewApiMethod. Implement new API method";
-
-        public const string IncidentStateCodeDescription
-            =
-            "State code of the associated incident.";
-
-        public const string IncidentStateCodeExample = nameof(StateCode.Active);
 
         public const string TimesheetStateCodeDescription
             =

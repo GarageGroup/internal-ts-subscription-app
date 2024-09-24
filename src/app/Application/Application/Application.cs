@@ -12,7 +12,7 @@ internal static partial class Application
     private static Dependency<IDataverseApiClient> UseDataverseApi()
         =>
         PrimaryHandler.UseStandardSocketsHttpHandler()
-        .UseLogging("DataverseApi")
+        .UseLogging("DataverseApi", HttpLoggerType.RequestHeaders | HttpLoggerType.RequestBody)
         .UseTokenCredentialStandard()
         .UsePollyStandard()
         .UseDataverseApiClient("Dataverse");

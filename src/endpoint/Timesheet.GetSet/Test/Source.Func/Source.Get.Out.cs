@@ -21,10 +21,10 @@ partial class TimesheetSetGetFuncSource
                         ProjectId = Guid.Parse("148e2a2e-2485-468d-9d58-90f348fd2398"),
                         ProjectTypeCode = 112,
                         ProjectName = "SomeFirstProjectName",
+                        ProjectComment = "Some comment",
                         Subject = null,
                         Description = "Some description",
                         Id = Guid.Parse("c19387fa-7bbd-45ae-bc5f-8b2003c764af"),
-                        IncidentStateCode = null,
                         TimesheetStateCode = 0,
                         Date = new(2024, 02, 01, 16, 30, 23)
                     },
@@ -37,7 +37,6 @@ partial class TimesheetSetGetFuncSource
                         Subject = "Some Lead Name",
                         Description = null,
                         Id = Guid.Parse("64aa110f-258a-4771-8a6b-21e8fb9fed5d"),
-                        IncidentStateCode = StateCode.Active,
                         TimesheetStateCode = StateCode.Active,
                         Date = new(2024, 12, 21, 11, 10, 21)
                     },
@@ -50,9 +49,9 @@ partial class TimesheetSetGetFuncSource
                         Subject = "\n\r",
                         Description = string.Empty,
                         Id = Guid.Parse("a4db6d8e-a632-4f9c-ad8c-1c49261b6d85"),
-                        IncidentStateCode = StateCode.Canceled,
                         TimesheetStateCode = StateCode.Canceled,
-                        Date = new(2024, 03, 02, 12, 10, 24)
+                        Date = new(2024, 03, 02, 12, 10, 24),
+                        ProjectComment = "\t\t\t"
                     },
                     new()
                     {
@@ -63,7 +62,6 @@ partial class TimesheetSetGetFuncSource
                         Subject = string.Empty,
                         Description = "Some lead description",
                         Id = Guid.Parse("6f565e16-024a-4012-ad9d-150e32216125"),
-                        IncidentStateCode = StateCode.Active,
                         TimesheetStateCode = StateCode.Canceled,
                         Date = new(2024, 05, 22, 0, 0, 0)
                     },
@@ -74,7 +72,6 @@ partial class TimesheetSetGetFuncSource
                         ProjectTypeCode = 4,
                         Description = string.Empty,
                         Id = Guid.Parse("36d5fda9-fa30-45cb-bbb5-53df2d4e4d72"),
-                        IncidentStateCode = StateCode.Canceled,
                         TimesheetStateCode = StateCode.Active,
                         Date = new(2024, 11, 2, 12, 20, 22)
                     }
@@ -90,9 +87,11 @@ partial class TimesheetSetGetFuncSource
                             projectName : "SomeFirstProjectName",
                             description : "Some description",
                             id: Guid.Parse("c19387fa-7bbd-45ae-bc5f-8b2003c764af"),
-                            incidentStateCode: null!,
                             timesheetStateCode: 0,
-                            date: new(2024, 02, 01)),
+                            date: new(2024, 02, 01))
+                        {
+                            ProjectComment = "Some comment"
+                        },
                         new(
                             duration : 5,
                             projectId: Guid.Parse("6402b74b-ab14-4332-86f1-ceeac380f7d7"),
@@ -100,7 +99,6 @@ partial class TimesheetSetGetFuncSource
                             projectName : "Some Lead Name",
                             description : string.Empty,
                             id: Guid.Parse("64aa110f-258a-4771-8a6b-21e8fb9fed5d"),
-                            incidentStateCode: StateCode.Active,
                             timesheetStateCode: StateCode.Active,
                             date: new(2024, 12, 21)),
                         new(
@@ -110,7 +108,6 @@ partial class TimesheetSetGetFuncSource
                             projectName : "\n\r",
                             description : string.Empty,
                             id: Guid.Parse("a4db6d8e-a632-4f9c-ad8c-1c49261b6d85"),
-                            incidentStateCode: StateCode.Canceled,
                             timesheetStateCode: StateCode.Canceled,
                             date: new(2024, 03, 02)),
                         new(
@@ -120,7 +117,6 @@ partial class TimesheetSetGetFuncSource
                             projectName : "Third company",
                             description : "Some lead description",
                             id: Guid.Parse("6f565e16-024a-4012-ad9d-150e32216125"),
-                            incidentStateCode: StateCode.Active,
                             timesheetStateCode: StateCode.Canceled,
                             date: new(2024, 05, 22)),
                         new(
@@ -130,7 +126,6 @@ partial class TimesheetSetGetFuncSource
                             projectName : null,
                             description : string.Empty,
                             id: Guid.Parse("36d5fda9-fa30-45cb-bbb5-53df2d4e4d72"),
-                            incidentStateCode: StateCode.Canceled,
                             timesheetStateCode: StateCode.Active,
                             date: new(2024, 11, 2))
                     ]

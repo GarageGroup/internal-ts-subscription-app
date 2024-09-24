@@ -17,6 +17,9 @@ partial record class DbTimesheet
     [DbSelect(All, AliasName, $"{AliasName}.regardingobjectidname")]
     public string? ProjectName { get; init; }
 
+    [DbSelect(All, ProjectAlias, $"{ProjectAlias}.gg_comment")]
+    public string? ProjectComment { get; init; }
+
     [DbSelect(All, AliasName, SelectLastSubjectSql)]
     public string? Subject { get; init; }
 
@@ -25,9 +28,6 @@ partial record class DbTimesheet
 
     [DbSelect(All, AliasName, $"{AliasName}.activityid")]
     public Guid Id { get; init; }
-
-    [DbSelect(All, IncidentAlias, $"{IncidentAlias}.statecode")]
-    public StateCode? IncidentStateCode { get; init; }
 
     [DbSelect(All, AliasName, $"{AliasName}.statecode")]
     public StateCode TimesheetStateCode { get; init; }

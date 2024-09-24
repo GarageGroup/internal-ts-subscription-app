@@ -15,7 +15,6 @@ public sealed record class TimesheetSetGetItem
         [AllowNull] string projectName,
         decimal duration,
         [AllowNull] string description,
-        [AllowNull] StateCode? incidentStateCode,
         StateCode timesheetStateCode,
         DateOnly date)
     { 
@@ -25,7 +24,6 @@ public sealed record class TimesheetSetGetItem
         ProjectName = projectName.OrEmpty();
         Duration = duration;
         Description = description.OrEmpty();
-        IncidentStateCode = incidentStateCode;
         TimesheetStateCode = timesheetStateCode;
         Date = date;
     }
@@ -46,6 +44,10 @@ public sealed record class TimesheetSetGetItem
     [StringExample(Out.ProjectNameExample)]
     public string ProjectName { get; }
 
+    [SwaggerDescription(Out.ProjectCommentDescription)]
+    [StringExample(Out.ProjectCommentExample)]
+    public string? ProjectComment { get; init; }
+
     [SwaggerDescription(Out.DurationDescription)]
     [IntegerExample(Out.DurationExample)]
     public decimal Duration { get; }
@@ -53,10 +55,6 @@ public sealed record class TimesheetSetGetItem
     [SwaggerDescription(Out.DescriptionDescription)]
     [StringExample(Out.DescriptionExample)]
     public string Description { get; }
-
-    [SwaggerDescription(Out.IncidentStateCodeDescription)]
-    [StringExample(Out.IncidentStateCodeExample)]
-    public StateCode? IncidentStateCode { get; }
 
     [SwaggerDescription(Out.TimesheetStateCodeDescription)]
     [StringExample(Out.TimesheetStateCodeExample)]

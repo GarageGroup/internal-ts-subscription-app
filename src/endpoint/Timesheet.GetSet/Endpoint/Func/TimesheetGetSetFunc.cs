@@ -2,6 +2,4 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class TimesheetSetGetFunc(ISqlQueryEntitySetSupplier sqlApi) : ITimesheetSetGetFunc
-{
-}
+internal sealed partial class TimesheetSetGetFunc(ISqlQueryEntitySetSupplier sqlApi) : ITimesheetSetGetFunc;

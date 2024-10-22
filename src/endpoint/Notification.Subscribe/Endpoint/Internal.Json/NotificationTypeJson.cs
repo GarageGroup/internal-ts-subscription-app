@@ -19,7 +19,7 @@ internal readonly record struct NotificationTypeJson
         new(
             entityPluralName: EntityPluralName,
             selectFields: SelectedFields,
-            entityKey: new DataverseAlternateKey(KeyFieldName, $"'{typeKey}'"));
+            entityKey: new DataverseAlternateKey(KeyFieldName, DataverseFilterValue.FromString(typeKey)));
 
     [JsonPropertyName(IdFieldName)]
     public Guid Id { get; init; }

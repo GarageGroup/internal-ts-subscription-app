@@ -23,8 +23,8 @@ internal readonly record struct TelegramBotUserJson
             selectFields: SelectedFields,
             entityKey: new DataverseAlternateKey(
                 [
-                    new(SystemUserIdFieldName, $"{systemUserId}"),
-                    new(BotIdFieldName, $"'{botId}'")
+                    new(SystemUserIdFieldName, systemUserId.ToString()),
+                    new(BotIdFieldName, DataverseFilterValue.FromString(botId.ToString()))
                 ]));
     
     

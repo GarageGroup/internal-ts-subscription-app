@@ -7,7 +7,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <InvariantGlobalization>false</InvariantGlobalization>
     <IsTestProject>true</IsTestProject>
-    <NoWarn>$(NoWarn);IDE0130</NoWarn>
+    <NoWarn>$(NoWarn);IDE0130;CA1859</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Timesheet.GetSet.Test</AssemblyName>
   </PropertyGroup>

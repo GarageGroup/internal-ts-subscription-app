@@ -13,8 +13,8 @@ partial record class DbProject
                 alias: UserLastTimesheetDateAliasName,
                 selectQuery: new("gg_timesheetactivity", "t")
                 {
-                    SelectedFields = new("t.gg_date AS LastDay"),
                     Top = 1,
+                    SelectedFields = new("t.gg_date AS LastDay"),
                     Filter = new DbCombinedFilter(DbLogicalOperator.And)
                     {
                         Filters =
@@ -26,14 +26,18 @@ partial record class DbProject
                             new DbRawFilter("t.statecode = 0")
                         ]
                     },
+                    Orders =
+                    [
+                        new("t.gg_date", DbOrderType.Descending)
+                    ]
                 }),
             new(
                 type: DbApplyType.Outer,
                 alias: LastTimesheetDateAliasName,
                 selectQuery: new("gg_timesheetactivity", "t1")
                 {
-                    SelectedFields = new("t1.gg_date AS LastDay"),
                     Top = 1,
+                    SelectedFields = new("t1.gg_date AS LastDay"),
                     Filter = new DbCombinedFilter(DbLogicalOperator.And)
                     {
                         Filters =
@@ -45,6 +49,10 @@ partial record class DbProject
                             new DbRawFilter("t1.statecode = 0")
                         ]
                     },
+                    Orders =
+                    [
+                        new("t1.gg_date", DbOrderType.Descending)
+                    ]
                 })
         ];
 }

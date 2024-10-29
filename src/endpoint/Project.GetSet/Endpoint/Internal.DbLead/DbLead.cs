@@ -11,7 +11,9 @@ public sealed partial record class DbLead : IDbEntity<DbLead>, IDbProject
 
     private const string AliasName = "l";
 
-    ProjectType IDbProject.ProjectType => ProjectType.Lead;
+    ProjectType IDbProject.ProjectType
+        =>
+        ProjectType.Lead;
 
     string? IDbProject.ProjectName
     {
@@ -32,9 +34,15 @@ public sealed partial record class DbLead : IDbEntity<DbLead>, IDbProject
         }
     }
 
-    string? IDbProject.ProjectComment => null;
+    string? IDbProject.ProjectComment
+        =>
+        null;
 
-    DateTime? IDbProject.UserLastTimesheetDate => null;
+    DateTime? IDbProject.UserLastTimesheetDate
+        =>
+        null;
 
-    DateTime? IDbProject.LastTimesheetDate => null;
+    DateTime? IDbProject.LastTimesheetDate
+        =>
+        null;
 }

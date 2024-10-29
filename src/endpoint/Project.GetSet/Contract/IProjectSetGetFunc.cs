@@ -12,5 +12,5 @@ using static ProjectSetGetMetadata;
 public interface IProjectSetGetFunc
 {
     ValueTask<Result<ProjectSetGetOut, Failure<Unit>>> InvokeAsync(
-        Unit input, CancellationToken cancellationToken);
+        ProjectSetGetIn input, CancellationToken cancellationToken);
 }

@@ -10,11 +10,19 @@ public sealed partial record class DbIncident : IDbEntity<DbIncident>, IDbProjec
 
     private const string AliasName = "i";
 
-    ProjectType IDbProject.ProjectType => ProjectType.Incident;
+    ProjectType IDbProject.ProjectType
+        =>
+        ProjectType.Incident;
 
-    string? IDbProject.ProjectComment => null;
+    string? IDbProject.ProjectComment
+        =>
+        null;
 
-    DateTime? IDbProject.UserLastTimesheetDate => null;
+    DateTime? IDbProject.UserLastTimesheetDate
+        =>
+        null;
 
-    DateTime? IDbProject.LastTimesheetDate => null;
+    DateTime? IDbProject.LastTimesheetDate
+        =>
+        null;
 }

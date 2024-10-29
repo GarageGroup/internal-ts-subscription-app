@@ -13,12 +13,15 @@ partial class ProjectSetGetFunc
         AsyncPipeline.Pipe(
             input, cancellationToken)
         .PipeParallelValue(
-            GetIncidentsAsync,
             GetProjectsAsync,
+            GetIncidentsAsync,
             GetOpportunitiesAsync,
             GetLeadsAsync)
         .MapSuccess(
-            static result => MapSuccess(result.Item1, result.Item2, result.Item3, result.Item4));
+            static @out => new ProjectSetGetOut
+            {
+                Projects = ConcatProjects(@out.Item1, @out.Item2, @out.Item3, @out.Item4)
+            });
 
     private ValueTask<Result<FlatArray<DbProject>, Failure<Unit>>> GetProjectsAsync(
         ProjectSetGetIn input, CancellationToken cancellationToken)
@@ -58,48 +61,28 @@ partial class ProjectSetGetFunc
         .PipeValue(
             sqlApi.QueryEntitySetOrFailureAsync<DbIncident>);
 
-    private static ProjectSetGetOut MapSuccess(
+    private static FlatArray<ProjectItem> ConcatProjects(
+        FlatArray<DbProject> projects,
         FlatArray<DbIncident> incidents,
-        FlatArray<DbProject> projects, 
-        FlatArray<DbOpportunity> opportunities, 
+        FlatArray<DbOpportunity> opportunities,
         FlatArray<DbLead> leads)
-    {
-        return new()
-        {
-            Projects =
-                Pipeline.Pipe(
-                    projects.CastArray<IDbProject>()
-                    .Concat(opportunities.CastArray<IDbProject>())
-                    .Concat(leads.CastArray<IDbProject>())
-                    .Concat(incidents.CastArray<IDbProject>()))
-                .AsEnumerable()
-                .OrderByDescending(GetUserLastTimesheetDate)
-                .ThenByDescending(GetLastTimesheetDate)
-                .ThenBy(GetName)
-                .Select(MapProject)
-                .ToFlatArray()
-        };
-
-        static ProjectItem MapProject(IDbProject dbProject)
-            =>
-            new(
-                id: dbProject.ProjectId,
-                name: dbProject.ProjectName,
-                type: dbProject.ProjectType)
-            {
-                Comment = dbProject.ProjectComment.OrNullIfWhiteSpace()
-            };
-
-        static string? GetName(IDbProject projectItem)
-            =>
-            projectItem.ProjectName;
-
-        static DateTime? GetUserLastTimesheetDate(IDbProject projectItem)
-            =>
-            projectItem.UserLastTimesheetDate;
-
-        static DateTime? GetLastTimesheetDate(IDbProject projectItem)
-            =>
-            projectItem.LastTimesheetDate;
-    }
+        =>
+        Pipeline.Pipe(
+            projects.CastArray<IDbProject>().AsEnumerable())
+        .Concat(
+            opportunities.CastArray<IDbProject>().AsEnumerable()
+        .Concat(
+            leads.CastArray<IDbProject>().AsEnumerable())
+        .Concat(
+            incidents.CastArray<IDbProject>().AsEnumerable()))
+        .ToArray()
+        .OrderByDescending(
+            GetUserLastTimesheetDate)
+        .ThenByDescending(
+            GetLastTimesheetDate)
+        .ThenBy(
+            GetProjectName)
+        .Select(
+            MapProject)
+        .ToFlatArray();
 }

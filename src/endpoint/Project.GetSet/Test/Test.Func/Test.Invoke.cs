@@ -21,12 +21,14 @@ partial class ProjectSetGetFuncTest
 
         var expectedProjectQuery = new DbSelectQuery("gg_project", "p")
         {
-            SelectedFields = new(
+            SelectedFields =
+            [
                 "p.gg_projectid AS ProjectId",
                 "p.gg_name AS ProjectName",
                 "p.gg_comment AS ProjectComment",
                 "user_last_timesheet_date.LastDay AS UserLastTimesheetDate",
-                "last_timesheet_date.LastDay AS LastTimesheetDate"),
+                "last_timesheet_date.LastDay AS LastTimesheetDate"
+            ],
             Filter = new DbRawFilter("p.statecode = 0"),
             AppliedTables = 
             [
@@ -41,11 +43,16 @@ partial class ProjectSetGetFuncTest
                     {
                         Filters =
                         [
-                            new DbParameterFilter("t.ownerid", DbFilterOperator.Equal, Guid.Parse("fea3adc6-699e-4847-a3f9-7b93bd45c14f"), "userId"),
-                            new DbParameterFilter("t.gg_date", DbFilterOperator.GreaterOrEqual, "2024-04-30", "minDate"),
-                            new DbRawFilter("p.gg_projectid = t.regardingobjectid"),
-                            new DbRawFilter($"t.regardingobjecttypecode = 10912"),
-                            new DbRawFilter("t.statecode = 0")
+                            new DbParameterFilter(
+                                "t.ownerid", DbFilterOperator.Equal, Guid.Parse("fea3adc6-699e-4847-a3f9-7b93bd45c14f"), "userId"),
+                            new DbParameterFilter(
+                                "t.gg_date", DbFilterOperator.GreaterOrEqual, "2024-04-30", "minDate"),
+                            new DbRawFilter(
+                                "p.gg_projectid = t.regardingobjectid"),
+                            new DbRawFilter(
+                                "t.regardingobjecttypecode = 10912"),
+                            new DbRawFilter(
+                                "t.statecode = 0")
                         ]
                     },
                 }),
@@ -60,11 +67,16 @@ partial class ProjectSetGetFuncTest
                     {
                         Filters =
                         [
-                            new DbParameterFilter("t1.ownerid", DbFilterOperator.Inequal, Guid.Parse("fea3adc6-699e-4847-a3f9-7b93bd45c14f"), "userId"),
-                            new DbParameterFilter("t1.gg_date", DbFilterOperator.GreaterOrEqual, "2024-04-30", "minDate"),
-                            new DbRawFilter("p.gg_projectid = t1.regardingobjectid"),
-                            new DbRawFilter($"t1.regardingobjecttypecode = 10912"),
-                            new DbRawFilter("t1.statecode = 0")
+                            new DbParameterFilter(
+                                "t1.ownerid", DbFilterOperator.Inequal, Guid.Parse("fea3adc6-699e-4847-a3f9-7b93bd45c14f"), "userId"),
+                            new DbParameterFilter(
+                                "t1.gg_date", DbFilterOperator.GreaterOrEqual, "2024-04-30", "minDate"),
+                            new DbRawFilter(
+                                "p.gg_projectid = t1.regardingobjectid"),
+                            new DbRawFilter(
+                                "t1.regardingobjecttypecode = 10912"),
+                            new DbRawFilter(
+                                "t1.statecode = 0")
                         ]
                     },
                 })
@@ -102,9 +114,11 @@ partial class ProjectSetGetFuncTest
 
         var expectedOpportunityQuery = new DbSelectQuery("opportunity", "o")
         {
-            SelectedFields = new(
+            SelectedFields =
+            [
                 "o.opportunityid AS ProjectId",
-                "o.name AS ProjectName"),
+                "o.name AS ProjectName"
+            ],
             Filter = new DbRawFilter("o.statecode = 0")
         };
 
@@ -139,10 +153,12 @@ partial class ProjectSetGetFuncTest
 
         var expectedLeadQuery = new DbSelectQuery("lead", "l")
         {
-            SelectedFields = new(
+            SelectedFields =
+            [
                 "l.leadid AS ProjectId",
                 "l.companyname AS CompanyName",
-                "l.subject AS Subject"),
+                "l.subject AS Subject"
+            ],
             Filter = new DbRawFilter("l.statecode = 0")
         };
 
@@ -177,9 +193,11 @@ partial class ProjectSetGetFuncTest
 
         var expectedIncidentQuery = new DbSelectQuery("incident", "i")
         {
-            SelectedFields = new(
+            SelectedFields =
+            [
                 "i.incidentid AS ProjectId",
-                "i.title AS ProjectName"),
+                "i.title AS ProjectName"
+            ],
             Filter = new DbRawFilter("i.statecode = 0")
         };
 

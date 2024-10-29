@@ -4,7 +4,7 @@ using System;
 namespace GarageGroup.Internal.Timesheet;
 
 [DbEntity("incident", AliasName)]
-public sealed partial record class DbIncident : IDbEntity<DbIncident>, IDbProject
+internal sealed partial record class DbIncident : IDbEntity<DbIncident>, IDbProject
 {
     private const string All = "QueryAll";
 

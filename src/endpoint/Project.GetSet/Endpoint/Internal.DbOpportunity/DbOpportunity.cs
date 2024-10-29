@@ -10,11 +10,19 @@ public sealed partial record class DbOpportunity : IDbEntity<DbOpportunity>, IDb
 
     private const string AliasName = "o";
 
-    ProjectType IDbProject.ProjectType => ProjectType.Opportunity;
+    ProjectType IDbProject.ProjectType
+        =>
+        ProjectType.Opportunity;
 
-    string? IDbProject.ProjectComment => null;
+    string? IDbProject.ProjectComment
+        =>
+        null;
 
-    DateTime? IDbProject.UserLastTimesheetDate => null;
+    DateTime? IDbProject.UserLastTimesheetDate
+        =>
+        null;
 
-    DateTime? IDbProject.LastTimesheetDate => null;
+    DateTime? IDbProject.LastTimesheetDate
+        =>
+        null;
 }

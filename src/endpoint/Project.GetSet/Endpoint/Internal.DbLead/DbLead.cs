@@ -5,7 +5,7 @@ using System.Text;
 namespace GarageGroup.Internal.Timesheet;
 
 [DbEntity("lead", AliasName)]
-public sealed partial record class DbLead : IDbEntity<DbLead>, IDbProject
+internal sealed partial record class DbLead : IDbEntity<DbLead>, IDbProject
 {
     private const string All = "QueryAll";
 

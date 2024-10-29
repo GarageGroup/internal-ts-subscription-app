@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -30,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="GarageGroup.Infra.AspNetCore.AzureApplication" Version="4.1.1" />
-    <PackageReference Include="GarageGroup.Infra.Dataverse.Api" Version="3.17.0" />
+    <PackageReference Include="GarageGroup.Infra.Dataverse.Api" Version="3.18.0" />
     <PackageReference Include="GarageGroup.Infra.Endpoint.AspNetCore" Version="0.21.1" />
     <PackageReference Include="GarageGroup.Infra.Handler.AspNetCore" Version="0.1.0" />
     <PackageReference Include="GarageGroup.Infra.HealthCheck.Handler" Version="0.3.0" />
@@ -42,6 +42,8 @@
     <PackageReference Include="GarageGroup.Infra.Swagger.Builder" Version="3.5.2" />
     <PackageReference Include="GarageGroup.Infra.Swagger.UI" Version="2.6.0" />
     <PackageReference Include="GarageGroup.Infra.Telegram.Bot.Api" Version="0.2.0" />
+    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
 </Project>

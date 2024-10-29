@@ -37,8 +37,8 @@ partial class ProjectSetGetFuncTest
                 alias: "user_last_timesheet_date",
                 selectQuery: new("gg_timesheetactivity", "t")
                 {
-                    SelectedFields = new("t.gg_date AS LastDay"),
                     Top = 1,
+                    SelectedFields = new("t.gg_date AS LastDay"),
                     Filter = new DbCombinedFilter(DbLogicalOperator.And)
                     {
                         Filters =
@@ -55,14 +55,18 @@ partial class ProjectSetGetFuncTest
                                 "t.statecode = 0")
                         ]
                     },
+                    Orders =
+                    [
+                        new("t.gg_date", DbOrderType.Descending)
+                    ]
                 }),
             new(
                 type: DbApplyType.Outer,
                 alias: "last_timesheet_date",
                 selectQuery: new("gg_timesheetactivity", "t1")
                 {
-                    SelectedFields = new("t1.gg_date AS LastDay"),
                     Top = 1,
+                    SelectedFields = new("t1.gg_date AS LastDay"),
                     Filter = new DbCombinedFilter(DbLogicalOperator.And)
                     {
                         Filters =
@@ -79,6 +83,10 @@ partial class ProjectSetGetFuncTest
                                 "t1.statecode = 0")
                         ]
                     },
+                    Orders =
+                    [
+                        new("t1.gg_date", DbOrderType.Descending)
+                    ]
                 })
             ]
         };

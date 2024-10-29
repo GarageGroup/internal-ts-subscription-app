@@ -2,8 +2,10 @@
 
 namespace GarageGroup.Internal.Timesheet;
 
-internal sealed partial class ProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlApi) : IProjectSetGetFunc
+internal sealed partial class ProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlApi, ITodayProvider todayProvider) : IProjectSetGetFunc
 {
+    private const int LastDaysPeriod = 30;
+
     private static readonly DbSelectQuery DbIncidentQueryAll
         =
         DbIncident.QueryAll with
@@ -23,12 +25,5 @@ internal sealed partial class ProjectSetGetFunc(ISqlQueryEntitySetSupplier sqlAp
         DbOpportunity.QueryAll with
         {
             Filter = DbOpportunity.IsActiveFilter
-        };
-
-    private static readonly DbSelectQuery DbProjectQueryAll
-        =
-        DbProject.QueryAll with
-        {
-            Filter = DbProject.IsActiveFilter
         };
 }

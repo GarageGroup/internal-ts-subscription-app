@@ -52,7 +52,36 @@ partial class ProjectSetGetFuncSource
                         ProjectId = new("75468ddc-961f-45d5-8c98-7e0d60a9e404"),
                         ProjectName = "Third project",
                         ProjectComment = "Some project comment"
-                    }
+                    },
+                    new()
+                    {
+                        ProjectId = new("8d67458f-aabf-4434-acdb-dc278f8a281a"),
+                        ProjectName = "Fourth project",
+                        ProjectComment = "Some project comment",
+                        LastTimesheetDate = new DateTime(2024, 08, 30)
+                    },
+                    new()
+                    {
+                        ProjectId = new("25284da7-a1ac-4176-83c9-c4fe0ac68fea"),
+                        ProjectName = "Fifth project",
+                        ProjectComment = "Some project comment",
+                        UserLastTimesheetDate = new DateTime(2024, 08, 29)
+                    },
+                    new()
+                    {
+                        ProjectId = new("72f42e1d-035a-4bdf-a21a-3f8a5340a7f8"),
+                        ProjectName = "Sixth project",
+                        ProjectComment = "Some project comment",
+                        UserLastTimesheetDate = new DateTime(2024, 08, 2),
+                        LastTimesheetDate = new DateTime(2024, 08, 2)
+                    },
+                    new()
+                    {
+                        ProjectId = new("16f957e3-899c-4a0b-a37b-13fbf6882c92"),
+                        ProjectName = "Seventh project",
+                        ProjectComment = "Some project comment",
+                        UserLastTimesheetDate = new DateTime(2024, 08, 29)
+                    },
                 ],
                 [
                     new()
@@ -90,6 +119,34 @@ partial class ProjectSetGetFuncSource
                 {
                     Projects =
                     [
+                        new(
+                            id: new("25284da7-a1ac-4176-83c9-c4fe0ac68fea"),
+                            name: "Fifth project",
+                            type: ProjectType.Project)
+                        {
+                            Comment = "Some project comment"
+                        },
+                        new(
+                            id: new("16f957e3-899c-4a0b-a37b-13fbf6882c92"),
+                            name: "Seventh project",
+                            type: ProjectType.Project)
+                        {
+                            Comment = "Some project comment"
+                        },
+                        new(
+                            id: new("72f42e1d-035a-4bdf-a21a-3f8a5340a7f8"),
+                            name: "Sixth project",
+                            type: ProjectType.Project)
+                        {
+                            Comment = "Some project comment"
+                        },
+                        new(
+                            id: new("8d67458f-aabf-4434-acdb-dc278f8a281a"),
+                            name: "Fourth project",
+                            type: ProjectType.Project)
+                        {
+                            Comment = "Some project comment"
+                        },
                         new(
                             id: new("1689833a-1a3c-48ce-8f8b-d743cca273d9"),
                             name: "First incident name",

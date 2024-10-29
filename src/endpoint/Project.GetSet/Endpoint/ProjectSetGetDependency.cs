@@ -4,6 +4,7 @@ using System;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Endpoint.Project.SetGet.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace GarageGroup.Internal.Timesheet;
 
@@ -19,7 +20,7 @@ public static class ProjectSetGetDependency
         static ProjectSetGetFunc CreateFunc(TSqlApi sqlApi)
         {
             ArgumentNullException.ThrowIfNull(sqlApi);
-            return new(sqlApi);
+            return new(sqlApi, TodayProvider.Instance);
         }
     }
 }

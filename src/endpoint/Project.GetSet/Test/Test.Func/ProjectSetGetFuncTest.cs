@@ -69,6 +69,10 @@ public static partial class ProjectSetGetFuncTest
             }
         ];
 
+    private static readonly DateOnly SomeToday
+        =
+        new(2024, 05, 30);
+
     private static Mock<ISqlQueryEntitySetSupplier> BuildMockSqlApi(
         in Result<FlatArray<DbIncident>, Failure<Unit>> incidentResult,
         in Result<FlatArray<DbProject>, Failure<Unit>> projectResult,
@@ -95,4 +99,8 @@ public static partial class ProjectSetGetFuncTest
 
         return mock;
     }
+
+    private static ITodayProvider BuildTodayProvider(DateOnly date)
+        =>
+        Mock.Of<ITodayProvider>(t => t.Today == date);
 }

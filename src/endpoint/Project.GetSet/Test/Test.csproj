@@ -11,11 +11,11 @@
     <RootNamespace>GarageGroup.Internal.Timesheet.Endpoint.Project.SetGet.Test</RootNamespace>
     <AssemblyName>GarageGroup.Internal.Timesheet.Endpoint.Project.SetGet.Test</AssemblyName>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Endpoint\Endpoint.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="Moq" Version="4.20.72" />

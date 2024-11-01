@@ -37,8 +37,8 @@
     <PackageReference Include="GarageGroup.Infra.Http.Api" Version="0.2.1" />
     <PackageReference Include="GarageGroup.Infra.Http.Polly" Version="2.0.0" />
     <PackageReference Include="GarageGroup.Infra.SecurityToken.Validation.Middleware.Jwt" Version="3.0.0" />
-    <PackageReference Include="GarageGroup.Infra.Sql.Api" Version="2.6.0" />
-    <PackageReference Include="GarageGroup.Infra.Sql.Api.Provider.Dataverse" Version="0.1.0" />
+    <PackageReference Include="GarageGroup.Infra.Sql.Api" Version="2.7.0" />
+    <PackageReference Include="GarageGroup.Infra.Sql.Api.Provider.Dataverse" Version="0.2.0" />
     <PackageReference Include="GarageGroup.Infra.Swagger.Builder" Version="3.6.0" />
     <PackageReference Include="GarageGroup.Infra.Swagger.UI" Version="2.7.0" />
     <PackageReference Include="GarageGroup.Infra.Telegram.Bot.Api" Version="0.2.0" />

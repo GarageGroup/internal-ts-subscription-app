@@ -19,8 +19,7 @@ internal static partial class Application
 
     private static Dependency<ISqlApi> UseSqlApi()
         =>
-        DataverseDbProvider.Configure("Dataverse")
-        .UseSqlApi();
+        DataverseDbProvider.Configure("Dataverse").UseSqlApi();
 
     private static Dependency<IBotApi> UseBotApi()
         =>

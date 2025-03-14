@@ -9,7 +9,7 @@ public sealed record class NotificationUnsubscribeIn
 {
     public NotificationUnsubscribeIn(
         [ClaimIn] Guid systemUserId,
-        [JsonBodyIn, SwaggerDescription(In.NotificationTypeDesciption)] NotificationType notificationType)
+        [RouteIn, SwaggerDescription(In.NotificationTypeDesciption)] NotificationType notificationType)
     {
         SystemUserId = systemUserId;
         NotificationType = notificationType;

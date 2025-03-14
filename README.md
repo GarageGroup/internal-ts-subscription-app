@@ -1,1 +1,1 @@
-# internal-timesheet-service-app
+# internal-ts-subscription-app

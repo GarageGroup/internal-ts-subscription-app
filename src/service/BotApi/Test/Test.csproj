@@ -8,8 +8,8 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <IsTestProject>true</IsTestProject>
     <NoWarn>$(NoWarn);IDE0130;CA1859</NoWarn>
-    <RootNamespace>GarageGroup.Internal.Timesheet.Service.BotApi.Test</RootNamespace>
-    <AssemblyName>GarageGroup.Internal.Timesheet.Service.BotApi.Test</AssemblyName>
+    <RootNamespace>GarageGroup.Internal.Timesheet.Api.Subscription.BotApi.Test</RootNamespace>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Api.Subscription.BotApi.Test</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

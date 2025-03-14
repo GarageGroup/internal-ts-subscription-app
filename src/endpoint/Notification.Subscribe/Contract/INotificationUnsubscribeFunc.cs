@@ -7,7 +7,7 @@ namespace GarageGroup.Internal.Timesheet;
 
 using static NotificationSubscribeMetadata;
 
-[Endpoint(EndpointMethod.Post, Func.RouteUnsubscribe, Summary = Func.SummaryUnsubscribe, Description = Func.DescriptionUnsubscribe)]
+[Endpoint(EndpointMethod.Delete, Func.RouteUnsubscribe, Summary = Func.SummaryUnsubscribe, Description = Func.DescriptionUnsubscribe)]
 [EndpointTag(Func.Tag)]
 public interface INotificationUnsubscribeFunc
 {

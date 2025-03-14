@@ -8,7 +8,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <NoWarn>$(NoWarn);IDE0130;CA1859</NoWarn>
     <RootNamespace>GarageGroup.Internal.Timesheet</RootNamespace>
-    <AssemblyName>GarageGroup.Internal.Timesheet.Service.BotApi.Api</AssemblyName>
+    <AssemblyName>GarageGroup.Internal.Timesheet.Api.Subscription.BotApi.Api</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

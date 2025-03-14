@@ -17,10 +17,6 @@ internal static partial class Application
         .UsePollyStandard()
         .UseDataverseApiClient("Dataverse");
 
-    private static Dependency<ISqlApi> UseSqlApi()
-        =>
-        DataverseDbProvider.Configure("Dataverse").UseSqlApi();
-
     private static Dependency<IBotApi> UseBotApi()
         =>
         PrimaryHandler.UseStandardSocketsHttpHandler()

@@ -6,7 +6,7 @@ internal static class NotificationSubscribeMetadata
     {
         public const string Tag = "Notification";
 
-        public const string RouteSubscribe = "/subscribeToNotification";
+        public const string RouteSubscribe = "/";
 
         public const string SummarySubscribe
             =
@@ -16,7 +16,7 @@ internal static class NotificationSubscribeMetadata
             =
             "Allows a bot user to subscribe to specific notifications";
 
-        public const string RouteUnsubscribe = "/unsubscribeFromNotification";
+        public const string RouteUnsubscribe = "/{notificationType}";
 
         public const string SummaryUnsubscribe
             =

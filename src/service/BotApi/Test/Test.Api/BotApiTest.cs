@@ -3,7 +3,7 @@ using System.Threading;
 using GarageGroup.Infra.Telegram.Bot;
 using Moq;
 
-namespace GarageGroup.Internal.Timesheet.Service.BotApi.Test;
+namespace GarageGroup.Internal.Timesheet.Api.Subscription.BotApi.Test;
 
 public static partial class BotApiTest
 {

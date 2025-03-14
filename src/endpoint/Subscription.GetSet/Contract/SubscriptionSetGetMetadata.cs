@@ -12,7 +12,7 @@ internal static class SubscriptionSetGetMetadata
     {
         public const string Tag = "Notification";
 
-        public const string Route = "/getSubscriptions";
+        public const string Route = "/";
 
         public const string Summary
             =

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using GarageGroup.Infra.Telegram.Bot;
 using PrimeFuncPack;
 
-[assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Service.BotApi.Test")]
+[assembly: InternalsVisibleTo("GarageGroup.Internal.Timesheet.Api.Subscription.BotApi.Test")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace GarageGroup.Internal.Timesheet;

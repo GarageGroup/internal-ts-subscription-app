@@ -59,7 +59,7 @@ jobs:
           health_check_url: https://${{ vars.TEST_APIM_DNS }}/health/${{ vars.APIM_HEALTH_NAME }}?subscription-key=${{ secrets.TEST_APIM_SUBKEY }}
           contains: ${{ steps.get_version.outputs.version }}
           retry_delay_in_seconds: 15
-          max_attempts: 10
+          max_attempts: 30
 
   update-swagger-test:
     runs-on: ubuntu-latest
